@@ -1,0 +1,36 @@
+[apps/update-manager]
+first-run = false
+
+[com/ubuntu/update-notifier]
+no-show-notifications = true
+
+[org.gnome.desktop.background]
+picture-uri = 'file:///usr/share/backgrounds/emcomm-tools-wallpaper.png'
+show-desktop-icons = false
+
+[org.gnome.desktop.screensaver]
+picture-uri = 'file:///usr/share/backgrounds/emcomm-tools-wallpaper.png'
+
+[org.gnome.shell]
+favorite-apps = ['emcomm-tools.desktop', 'js8call.desktop', 'org.gnome.Terminal.desktop', 'fldigi.desktop', 'flmsg.desktop', 'org.gnome.Nautilus.desktop']
+
+[org.gnome.system.location]
+enabled = false
+
+[org.gnome.desktop.session]
+idle-delay = 0
+
+[org.gnome.desktop.interface]
+text-scaling-factor = 1.25
+
+[org.gnome.desktop.interface]
+enable-animations = false
+
+[org.gnome.desktop.a11y.applications]
+screen-keyboard-enabled = true
+
+[org.gnome.desktop.interface]
+toolkit-accessibility = true
+
+[org.gnome.desktop.peripherals.mouse]
+natural-scroll = true
