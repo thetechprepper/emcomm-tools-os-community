@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 16 March 2024
+# Purpose  : Log message to standard out and log file
+
+if [ ! -e $ET_TEMP_DIR ]; then
+  mkdir $ET_TEMP_DIR
+  chmod 755 $ET_TEMP_DIR
+fi
+
+if [ ! -e $ET_LOG_FILE ]; then
+  touch $ET_LOG_FILE
+  chmod 666 $ET_LOG_FILE
+fi
+
+if [ $# -lt 1 ]; then
+  echo "Usage $(basename $0) <msg>"
+  echo ""
+  echo "All messages written to: ${ET_LOG_FILE}"
+  exit -1
+fi
+
+TIMESTAMP=`date "+%Y-%m-%d %H:%M:%S"`
+
+echo $@
+echo "$TIMESTAMP $@" >> ${ET_LOG_FILE}
