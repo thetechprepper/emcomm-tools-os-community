@@ -7,8 +7,8 @@
 * Enabled old-releases for apt source
 * Installed base packages
 * Installed initial build tools and image creation tools
-* Replace Firefox with Brave web browser
-* Remove miscellaneous packages
+* Replaced Firefox with Brave web browser
+* Removed miscellaneous packages
 * Installed EmComm Tools branding
 * Applied initial GNOME settings
 * Initial work to improve brightness issues on Panasonic hardware
