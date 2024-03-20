@@ -1,0 +1,14 @@
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic main restricted
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic-updates main restricted
+
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic universe
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic-updates universe
+
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic multiverse
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic-updates multiverse
+
+deb http://old-releases.ubuntu.com/ubuntu/ kinetic-backports main restricted universe multiverse
+
+deb http://old-releases.ubuntu.com/ubuntu kinetic-security main restricted
+deb http://old-releases.ubuntu.com/ubuntu kinetic-security universe
+deb http://old-releases.ubuntu.com/ubuntu kinetic-security multiverse

@@ -1,0 +1,11 @@
+[Unit]
+Description=Brightness fix for Panasonic hardware
+ConditionPathExists=/sys/class/backlight/panasonic
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/opt/emcomm-tools/sbin/panasonic-set-brightness.sh
+
+[Install]
+WantedBy=multi-user.target
