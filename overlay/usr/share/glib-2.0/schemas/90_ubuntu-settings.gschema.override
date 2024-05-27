@@ -13,6 +13,7 @@ picture-uri = 'file:///usr/share/backgrounds/emcomm-tools-wallpaper.png'
 
 [org.gnome.shell]
 favorite-apps = ['emcomm-tools.desktop', 'js8call.desktop', 'org.gnome.Terminal.desktop', 'fldigi.desktop', 'flmsg.desktop', 'org.gnome.Nautilus.desktop']
+last-selected-power-profile = 'performance'
 
 [org.gnome.system.location]
 enabled = false
@@ -22,9 +23,8 @@ idle-delay = 0
 
 [org.gnome.desktop.interface]
 text-scaling-factor = 1.25
-
-[org.gnome.desktop.interface]
 enable-animations = false
+show-battery-percentage = true
 
 [org.gnome.desktop.a11y.applications]
 screen-keyboard-enabled = true
@@ -32,5 +32,7 @@ screen-keyboard-enabled = true
 [org.gnome.desktop.interface]
 toolkit-accessibility = true
 
-[org.gnome.desktop.peripherals.mouse]
-natural-scroll = true
+[org.gnome.settings-daemon.plugins.power]
+sleep-inactive-ac-type = 'nothing'
+sleep-inactive-battery-type = 'nothing'
+power-saver-profile-on-low-battery = false
