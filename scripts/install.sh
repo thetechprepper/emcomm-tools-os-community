@@ -2,10 +2,8 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
+# Updated : 19 May 2024
 # Purpose : Main installer for EmComm Tools OS Community
-set -e
-trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
 . ./functions.sh
@@ -24,4 +22,7 @@ exitIfNotRoot
 ./configure-gnome.sh
 ./configure-user.sh
 
-#./cf20-fix-brightness.sh
+./fix-panasonic-brightness.sh
+
+./install-hamlib.sh
+./install-js8call.sh
