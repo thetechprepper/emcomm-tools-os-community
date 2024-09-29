@@ -8,20 +8,23 @@
 # Postconditions:
 # 1. /dev/et-cat created
 # 2. /dev/et-gps created
-#
+# 
 # Resources
 # - https://www.florian-wolters.de/posts/ic705-serial-device-symlinks/
 
-# Set "IC-705" as an environment variable. This workaround is needed for the IC-705.
-# Refer to the document under the Resources above for the background details..
-KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{product}=="IC-705", ENV{PROD}="IC-705"
+# Set "IC-705" as an environment variable. This workaround is needed for the IC-705. 
+# Refer to the document under the Resources above for the background details.
+KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{product}=="IC-705", \
+    ENV{ET_DEVICE}="IC-705"
 
 # Create consistent device name/path for the CAT serial device
-ENV{PROD}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="00", \
-    ACTION=="add", GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
+ENV{ET_DEVICE}=="ET_DEVICE", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="00", \
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="CAT" GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
 
 # Create consistent device name/path for the GPS serial device
-ENV{PROD}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
-    ACTION=="add", GROUP="dialout", MODE="0660", SYMLINK+="et-gps"
+ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="GPS" GROUP="dialout", MODE="0660", SYMLINK+="et-gps"
 
 # TODO: Add rules for sound card

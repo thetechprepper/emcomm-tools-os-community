@@ -1,0 +1,20 @@
+# Author   : Gaston Gonzalez
+# Date     : 29 September 2024
+# Purpose  : udev rules for the Icom IC-7200
+#
+# Preconditions:
+# 1. IC-7200 connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 
+
+KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7200*", \
+    ENV{ET_DEVICE}="IC-7200"
+
+# Create consistent device name/path for the CAT serial device
+ENV{ET_DEVICE}=="IC-7200", SUBSYSTEMS=="usb", ATTRS{idVendor}=="10c4" ATTRS{idProduct}=="ea60", \
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
+
+# TODO: Add rules for sound card
