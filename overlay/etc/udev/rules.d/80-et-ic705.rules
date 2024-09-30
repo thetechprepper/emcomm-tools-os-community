@@ -1,5 +1,6 @@
 # Author   : Gaston Gonzalez
 # Date     : 28 September 2024
+# Updated  : 30 September 2024
 # Purpose  : udev rules for the Icom IC-705
 #
 # Preconditions:
@@ -18,7 +19,7 @@ KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{product}=="IC-705", \
     ENV{ET_DEVICE}="IC-705"
 
 # Create consistent device name/path for the CAT serial device
-ENV{ET_DEVICE}=="ET_DEVICE", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="00", \
+ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="00", \
     ACTION=="add", \
     ENV{ET_SUBDEVICE}="CAT" GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
 
