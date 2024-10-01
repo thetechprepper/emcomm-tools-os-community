@@ -1,0 +1,4 @@
+START_DAEMON="true"
+USBAUTO="false"
+DEVICES="/dev/et-gps"
+GPSD_OPTIONS="-n"
