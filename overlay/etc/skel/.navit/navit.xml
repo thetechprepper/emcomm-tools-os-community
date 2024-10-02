@@ -58,7 +58,7 @@
 		Options include internal (optimized for touch screen devices), gtk (useful for desktop computers).
 		If you don't like the internal gui, set enabled=yes for the following tag and enabled=no for the gui internal tag
 		-->
-		<gui type="gtk" enabled="yes" menubar="1" toolbar="1" statusbar="1"/>
+		<gui type="gtk" enabled="no" menubar="1" toolbar="1" statusbar="1"/>
 		<!--
 		In case of the internal GUI, you can even influence the size of the text and of the icons in the toolbar and the viewport.
 		Here's an example for a freerunner:
@@ -69,7 +69,7 @@
 		The action that appears on map click is configurable with the attribute "on_map_click".
 		To get the previous behaviour of showing the map point menu use on_map_click='menu("#Map Point")'
 		-->
-		<gui type="internal" enabled="no" fullscreen="1"><![CDATA[
+		<gui type="internal" enabled="yes" fullscreen="1" font_size="250" icon_xs="48" icon_s="48" icon_l="192"><![CDATA[
 			<html>
 				<a name='Main Menu'><text>Main menu</text>
 					<a href='#Actions'><img src='gui_actions'>Actions</img></a>
@@ -410,7 +410,7 @@ Waypoint</text></img>
 		<speech type="cmdline" data="echo 'Fix the speech tag in navit.xml to let navit say:' '%s'" cps="15"/>
         -->
   
-        <speech type="cmdline" data="espeak -s 150 -v english_rp %s"/>
+        <speech type="cmdline" data="espeak -s 150 %s"/>
 		<!--
 		Instead of using a speech synthesizer, navit can also play pre-recorded samples for each word.
 		See http://wiki.navit-project.org/index.php/Configuration for details.
