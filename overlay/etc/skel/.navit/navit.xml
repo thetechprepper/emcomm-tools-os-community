@@ -9,7 +9,6 @@
 <config xmlns:xi="http://www.w3.org/2001/XInclude">
 	<plugins>
 		<plugin path="$NAVIT_LIBDIR/*/${NAVIT_LIBPREFIX}lib*.so" ondemand="yes"/>
-		<plugin path="$NAVIT_LIBDIR/autoload/${NAVIT_LIBPREFIX}lib*.so"/>
 		<plugin path="$NAVIT_LIBDIR/*/${NAVIT_LIBPREFIX}libbinding_dbus.so" active="no"/>
 		<plugin path="$NAVIT_LIBDIR/*/${NAVIT_LIBPREFIX}libgraphics_null.so" active="no"/>
 	</plugins>
@@ -34,7 +33,9 @@
 	Center coordinates format: "Long Lat" in decimal degrees (WGS 84).
 	For other formats see http://wiki.navit-project.org/index.php/Coordinate_format.
 	-->
-	<navit center="-112.14991 33.58280" zoom="256" tracking="1" orientation="-1" recent_dest="250" drag_bitmap="0" default_layout="Car">
+	<navit center="-112.15530 33.70606" zoom="64" tracking="1" orientation="0" recent_dest="250" drag_bitmap="0" default_layout="Car"
+        imperial="1"
+    >
 		<!-- Use one of gtk_drawing_area, qt_qpainter or sdl. On windows systems, use win32 -->
 		<graphics type="gtk_drawing_area"/>
 
@@ -68,7 +69,7 @@
 		The action that appears on map click is configurable with the attribute "on_map_click".
 		To get the previous behaviour of showing the map point menu use on_map_click='menu("#Map Point")'
 		-->
-		<gui type="internal" enabled="no"><![CDATA[
+		<gui type="internal" enabled="no" fullscreen="1"><![CDATA[
 			<html>
 				<a name='Main Menu'><text>Main menu</text>
 					<a href='#Actions'><img src='gui_actions'>Actions</img></a>
@@ -405,7 +406,11 @@ Waypoint</text></img>
 		If you have a speech synthesizer like festival lite installed, you can get turn by turn directions out of navit. Please set the "cps"-value to how many characters your tts engine approximately speaks per second.
 		The default is text output to the shell
 		-->
+        <!--
 		<speech type="cmdline" data="echo 'Fix the speech tag in navit.xml to let navit say:' '%s'" cps="15"/>
+        -->
+  
+        <speech type="cmdline" data="espeak -s 150 -v english_rp %s"/>
 		<!--
 		Instead of using a speech synthesizer, navit can also play pre-recorded samples for each word.
 		See http://wiki.navit-project.org/index.php/Configuration for details.
