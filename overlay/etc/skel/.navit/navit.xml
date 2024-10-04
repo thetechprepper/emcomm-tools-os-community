@@ -439,7 +439,7 @@ Waypoint</text></img>
 
 		<!-- Mapset template for OpenStreetMap -->
 		<mapset enabled="yes">
-			<map type="binfile" enabled="yes" data="~/.navit/maps/et_default.bin"/>
+			<map type="binfile" enabled="yes" data="~/.navit/maps/*.bin"/>
 		</mapset>
 
 		<!-- Mapset template for garmin maps -->
