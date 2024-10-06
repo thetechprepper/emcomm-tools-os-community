@@ -22,8 +22,8 @@ et-log "Updating gpsd systemd script..."
 cp ../overlay/lib/systemd/system/gpsd.service /lib/systemd/system/
 systemctl daemon-reload
 
-et-log "Enabling gpsd..."
-systemctl enable gpsd
+et-log "Disable automatic start of gpsd..."
+systemctl disable gpsd
 
 et-log "Updating chronyd to support GPS as a time source..."
 echo "# ET: Enable GPS as a time source" >> /etc/chrony/chrony.conf

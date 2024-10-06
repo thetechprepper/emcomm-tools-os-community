@@ -1,7 +1,7 @@
 # Author   : Gaston Gonzalez
 # Author   : William McKeehan (https://github.com/mckeehan) 
 # Date     : 30 September 2024
-# Updated  : 1 October 2024
+# Updated  : 5 October 2024
 # Purpose  : udev rules for the Icom IC-7100
 #
 # Preconditions:
@@ -21,12 +21,13 @@ KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7100*", \
 ENV{ET_DEVICE}=="IC-7100", SUBSYSTEMS=="usb", ATTRS{serial}=="IC-7100*A", \
     ACTION=="add", \
     ENV{SYSTEMD_WANTS}="", \
-    ENV{ET_SUBDEVICE}="CAT" GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
 
 # Create consistent device name/path for the GPS serial device
 ENV{ET_DEVICE}=="IC-7100", SUBSYSTEMS=="usb", ATTRS{serial}=="IC-7100*B", \
     ACTION=="add", \
-    ENV{ET_SUBDEVICE}="GPS" GROUP="dialout", MODE="0660", SYMLINK+="et-gps"
+    ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
+    RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
 
 # TODO: Add rules to trigger rigctld
 # TODO: Add rules for ACTION="remove"
