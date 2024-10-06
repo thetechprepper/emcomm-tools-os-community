@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 6 October 2024
+# Purpose  : Utility script for dumping system information
+
+function usage() {
+  echo "Usage: $(basename $0) <command>"
+  echo " et-cat  - Is CAT control connected"
+  echo " et-gps  - Is the GPS connected"
+  echo " ip      - System IP address"
+  echo " release - EmComm Tools Release"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+case $1 in
+  et-cat)
+    if [ -e /dev/et-cat ]; then echo "Yes"; else echo "No"; fi
+    ;; 
+  et-gps)
+    if [ -e /dev/et-gps ]; then echo "Yes"; else echo "No"; fi
+    ;; 
+  ip)
+    hostname -I
+    ;;
+  release)
+    grep DISTRIB_DESCRIPTION /etc/lsb-release | sed 's|"||g' | awk '{print $1}' | cut -d"=" -f2
+    ;;  
+  *)
+    echo "Command not supported."
+    usage
+    exit 1
+    ;;
+esac
