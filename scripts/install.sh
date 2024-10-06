@@ -22,6 +22,7 @@ exitIfNotRoot
 ./configure-gnome.sh
 ./configure-user.sh
 
+./install-emcomm-tools.sh
 ./fix-panasonic-brightness.sh
 
 ./install-hamlib.sh
