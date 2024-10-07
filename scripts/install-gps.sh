@@ -2,9 +2,8 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 1 October 2022
-# Updated : 4 October 2024
+# Updated : 6 October 2024
 # Purpose : Configure GPS and time synch
-set -e
 
 et-log "Installing GPS packages and dependencies..."
 apt install \
@@ -26,6 +25,5 @@ et-log "Disable automatic start of gpsd..."
 systemctl disable gpsd
 
 et-log "Updating chronyd to support GPS as a time source..."
-echo "# ET: Enable GPS as a time source" >> /etc/chrony/chrony.conf
-echo "refclock SHM 0 refid GPS poll 4 precision 1e-3 offset 0.128" >> /etc/chrony/chrony.conf
+cp ../overlay/etc/chrony/chrony.conf /etc/chrony/
 systemctl restart chronyd
