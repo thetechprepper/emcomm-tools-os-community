@@ -17,12 +17,12 @@ conky.config = {
 };
 
 conky.text = [[
-${font DejaVu Sans Mono:size=12}${alignc}${time %A, %B %d %Y}
+${font DejaVu Sans Mono:size=14}${alignc}${time %A, %B %d %Y}
 Local: ${alignr}${time %H:%M:%S}
 UTC: ${alignr}${tztime UTC %H:%M:%S}
 Uptime: ${uptime}
 
-IP: ${execpi 3600 /opt/emcomm-tools/bin/et-system-info ip} 
+IP: ${execpi 60 /opt/emcomm-tools/bin/et-system-info ip} 
 
 ${execp /opt/emcomm-tools/bin/et-system-info release}
 CAT: ${execpi 15 /opt/emcomm-tools/bin/et-system-info et-cat}
