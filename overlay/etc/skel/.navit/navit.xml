@@ -33,7 +33,7 @@
 	Center coordinates format: "Long Lat" in decimal degrees (WGS 84).
 	For other formats see http://wiki.navit-project.org/index.php/Coordinate_format.
 	-->
-	<navit center="-112.15530 33.70606" zoom="64" tracking="1" orientation="0" recent_dest="250" drag_bitmap="0" default_layout="Car"
+	<navit center="-112.15530 33.70606" zoom="32" tracking="1" orientation="-1" recent_dest="250" drag_bitmap="0" default_layout="Car"
         imperial="1"
     >
 		<!-- Use one of gtk_drawing_area, qt_qpainter or sdl. On windows systems, use win32 -->
@@ -69,7 +69,7 @@
 		The action that appears on map click is configurable with the attribute "on_map_click".
 		To get the previous behaviour of showing the map point menu use on_map_click='menu("#Map Point")'
 		-->
-		<gui type="internal" enabled="yes" fullscreen="1" font_size="250" icon_xs="48" icon_s="48" icon_l="192"><![CDATA[
+		<gui type="internal" enabled="yes" fullscreen="1" font_size="500" icon_xs="48" icon_s="48" icon_l="192"><![CDATA[
 			<html>
 				<a name='Main Menu'><text>Main menu</text>
 					<a href='#Actions'><img src='gui_actions'>Actions</img></a>
@@ -190,16 +190,20 @@ Waypoint</text></img>
 		<!-- osd items allow to position display and control items directly on top of the map.
 		You can find a list of all the available OSDs items here:
 		http://wiki.navit-project.org/index.php/OSD -->
-		<osd enabled="no" type="compass"/>
-		<osd enabled="no" type="navigation_next_turn"/>
+		<osd enabled="yes" type="compass"/>
+		<osd enabled="yes" type="navigation_next_turn"/>
 
 		<!-- Commands include gui_internal_menu, gui_internal_fullscreen, zoom_in and zoom_out.
 			Usage of negative values change the button origins. x="0" y="0" specifies the top left, x="-0" y="-0" the bottom right corner.
 			It's always the top left corner of the icon, so you need to consider the icon's size when you enter the values. -->
 		<osd enabled="no" type="button" x="0" y="0" command="gui.fullscreen=!gui.fullscreen" src="toggle_fullscreen.png"/>
 		<osd enabled="no" type="button" x="-96" y="0" command="gui.menu(1)" src="menu.png"/>
-		<osd enabled="no" type="button" x="-96" y="-96" command="zoom_in()" src="zoom_in.png"/>
-		<osd enabled="no" type="button" x="0" y="-96" command="zoom_out()" src="zoom_out.png"/>
+
+        <!-- Zoom out: top-right -->
+		<osd enabled="yes" type="button" x="-96" y="0" w="64" h="64" command="zoom_out()" src="zoom_out.png"/>
+
+        <!-- Zoom in: bottom-right -->
+		<osd enabled="yes" type="button" x="-96" y="-96" w="64" h="64" command="zoom_in()" src="zoom_in.png"/>
 
 		<!-- Traffic -->
 		<traffic type="null"/>
