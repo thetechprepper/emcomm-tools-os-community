@@ -10,6 +10,7 @@
 # 1. /dev/et-cat created
 # 2. /dev/et-gps created
 # 3. rigctld is started
+# 4. gpsd is started
 # 
 # Resources
 # - https://www.florian-wolters.de/posts/ic705-serial-device-symlinks/
@@ -23,15 +24,19 @@ KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{product}=="IC-705", \
 ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="00", \
     ACTION=="add", \
     ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
-    RUN+="/opt/emcomm-tools/sbin/wrapper-rigtctld.sh start"
+    RUN+="/usr/bin/systemctl start rigctld"
 
 # Create consistent device name/path for the GPS serial device
 ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
     ACTION=="add", \
     ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
-    RUN+="/usr/bin/systemctl start rigctld"
+    RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
 
-# TODO make more specific
-SUBSYSTEM=="tty", ACTION=="remove", RUN+="/usr/bin/systemctl stop rigctld"
+# TODO: Make this rule more specific
+#
+# If we do not stop rigctld, the rigctl progress will continue to run and maintain
+# a stale reference to /dev/et-cat. This condition will prevent subsequent attach
+# and detatch events of the radio from working.
+SUBSYSTEM=="tty", ACTION=="remove", RUN+="/opt/emcomm-tools/sbin/wrapper-rigctld.sh stop"
 
 # TODO: Add rules for sound card

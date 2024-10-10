@@ -58,7 +58,13 @@ start() {
 }
 
 stop() {
-  et-log "Not implemented yet"
+  et-log "Stopping rigctld  service..."
+  systemctl stop rigctld
+
+  if [ -L /dev/et-cat ]; then
+    et-log "Removing stale /dev/et-cat symlink"
+    rm -f /dev/et-cat
+  fi
 }
 
 usage() {
