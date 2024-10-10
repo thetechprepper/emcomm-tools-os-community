@@ -37,13 +37,13 @@ start() {
     exit 1
   fi
 
-  # check if rigctld is already running
+  # Check if rigctld is already running
   ps -ef | grep [r]igctld
   if [ $? -eq 0 ]; then
     PID=$(ps -ef | grep [r]igctld | awk '{print $2}')
-    et-log "Rig control is already running with process ID: ${PID}. Killing it now..." 
-    kill -9 ${PID} 
-    sleep 1
+    et-log "Rig control is already running with process ID: ${PID}."
+    #kill -9 ${PID} 
+    #sleep 1
   fi
 
   # Grab rigctld values from active radio configuration

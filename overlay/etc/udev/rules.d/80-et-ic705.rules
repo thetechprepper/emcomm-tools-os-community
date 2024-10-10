@@ -1,6 +1,6 @@
 # Author   : Gaston Gonzalez
 # Date     : 28 September 2024
-# Updated  : 9 October 2024
+# Updated  : 10 October 2024
 # Purpose  : udev rules for the Icom IC-705
 #
 # Preconditions:
@@ -30,5 +30,8 @@ ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
     ACTION=="add", \
     ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
     RUN+="/usr/bin/systemctl start rigctld"
+
+# TODO make more specific
+SUBSYSTEM=="tty", ACTION=="remove", RUN+="/usr/bin/systemctl stop rigctld"
 
 # TODO: Add rules for sound card
