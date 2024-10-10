@@ -28,7 +28,28 @@ case $1 in
     fi 
     ;;
   et-cat)
-    if [ -e /dev/et-cat ]; then echo "Yes"; else echo "No"; fi
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-cat ]; then 
+
+      # 2. Check if the rigctl systemd unit is running properly
+      systemctl status rigctld --no-pager > /dev/null 
+      if [ $? -eq 0 ]; then
+     
+        # 3. Grab and format frequency 
+        FREQ=$(timeout 1 rigctl -m 2 f)
+        if [ $? -eq 0 ]; then
+          printf "%'d MHz\n" "$FREQ" | sed 's|,|.|g'
+        else
+          echo "Connected. Can't access VFO"; 
+        fi
+      else
+        echo "rigctld not running"
+      fi
+    else
+      echo "Not connected"; 
+    fi
+
     ;; 
   et-gps)
     if [ -e /dev/et-gps ]; then echo "Yes"; else echo "No"; fi
