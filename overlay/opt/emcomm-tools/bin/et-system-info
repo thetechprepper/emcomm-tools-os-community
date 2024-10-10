@@ -22,12 +22,17 @@ fi
 case $1 in
   active-radio)
     if [ -L  "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
-      cat /opt/emcomm-tools/conf/radios.d/active-radio.json | jq -r .model
+      cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .model
     else
-      echo "None"
+      echo "No radio selected"
     fi 
     ;;
   et-cat)
+
+    if [ ! -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+      echo "N/A"
+      exit 0
+    fi
 
     # 1. Check if the symlink was created by the udev rules
     if [ -e /dev/et-cat ]; then 
@@ -44,7 +49,7 @@ case $1 in
           echo "Connected. Can't access VFO"; 
         fi
       else
-        echo "rigctld not running"
+        echo "Connected. rigctld not running"
       fi
     else
       echo "Not connected"; 

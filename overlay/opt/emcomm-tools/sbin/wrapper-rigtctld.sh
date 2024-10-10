@@ -32,14 +32,6 @@ start() {
     exit 1
   fi
 
-  # Attempt "full auto" plug-and-play for select devices
-  udevadm info ${CAT_DEVICE} | grep ET_DEVICE > /dev/null
-  if [ $? -eq 0 ]; then
-    et-log "Attempting full auto plug and play..." 
-    ET_DEVICE=$(udevadm info ${CAT_DEVICE} | grep ET_DEVICE | cut -d"=" -f2)
-    do_full_auto $ET_DEVICE
-  fi
-
   if [ ! -L ${ACTIVE_RADIO} ]; then
     et-log "No active radio defined. ${ACTIVE_RADIO} symlink is missing."
     exit 1
