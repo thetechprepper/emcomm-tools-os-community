@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 6 October 2024
+# Updated : 9 October 2024
 # Purpose : Main installer for EmComm Tools OS Community
 
 . ./env.sh
@@ -31,5 +31,6 @@ exitIfNotRoot
 ./install-udev.sh
 ./install-gps.sh 
 ./install-navit.sh
+./install-cat.sh
 
 ./install-conky.sh

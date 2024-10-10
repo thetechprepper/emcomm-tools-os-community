@@ -6,10 +6,14 @@
 # Purpose : Configure users and groups
 set -e
 
+ET_GID=1981
+
 et-log "Adding '${ET_GROUP}' group..."
-groupadd -g 1981  ${ET_GROUP} 
+groupadd -g ${ET_GID} ${ET_GROUP} 
 
 et-log "Configuring users..."
+et-log "Adding et system user..."
+useradd -m -s /bin/bash et
 
 cp -r ../overlay/etc/skel /etc/
 [ ! -e /etc/skel/Desktop ] && mkdir /etc/skel/Desktop

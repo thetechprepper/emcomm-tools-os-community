@@ -2,14 +2,16 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
+# Updated  : 10 October 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
   echo "Usage: $(basename $0) <command>"
-  echo " et-cat  - Is CAT control connected"
-  echo " et-gps  - Is the GPS connected"
-  echo " ip      - System IP address"
-  echo " release - EmComm Tools Release"
+  echo "  active-radio - Display model of active radio" 
+  echo "  et-cat       - Is CAT control connected"
+  echo "  et-gps       - Is the GPS connected"
+  echo "  ip           - System IP address"
+  echo "  release      - EmComm Tools Release"
 }
 
 if [ $# -ne 1 ]; then
@@ -18,6 +20,13 @@ if [ $# -ne 1 ]; then
 fi
 
 case $1 in
+  active-radio)
+    if [ -L  "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+      cat /opt/emcomm-tools/conf/radios.d/active-radio.json | jq -r .model
+    else
+      echo "None"
+    fi 
+    ;;
   et-cat)
     if [ -e /dev/et-cat ]; then echo "Yes"; else echo "No"; fi
     ;; 

@@ -4,20 +4,21 @@
 # Date    : 9 October 2024
 # Purpose : Wrapper startup/shutdown script around systemd/rigctld
 
+ET_HOME=/opt/emcomm-tools
 ACTIVE_RADIO="${ET_HOME}/conf/radios.d/active-radio.json"
 CAT_DEVICE=/dev/et-cat
 
 do_full_auto() {
-  et-log "Found ET_DEVICE=$ET_DEVICE"
+  et-log "Found ET_DEVICE='${ET_DEVICE}'"
 
   case "$1" in
     IC-705)
-      echo "Automatically configuring $1.."
+      echo "Automatically configuring $1..."
       if [ -L ${ACTIVE_RADIO} ]; then
         rm -v  ${ACTIVE_RADIO}
       fi
 
-      ln -v -s /opt/emcomm-tools/conf/radios.d/icom-ic705.json ${ACTIVE_RADIO}
+      ln -v -s ${ET_HOME}/conf/radios.d/icom-ic705.json ${ACTIVE_RADIO}
     ;;
   *)
     et-log "Full auto configuration not available for ET_DEVICE=$1"
@@ -40,7 +41,7 @@ start() {
   fi
 
   if [ ! -L ${ACTIVE_RADIO} ]; then
-    et-log "No active defined. ${ACTIVE_RADIO} symlink is missing."
+    et-log "No active radio defined. ${ACTIVE_RADIO} symlink is missing."
     exit 1
   fi
 

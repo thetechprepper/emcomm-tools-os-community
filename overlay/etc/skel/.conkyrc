@@ -17,15 +17,17 @@ conky.config = {
 };
 
 conky.text = [[
-${font DejaVu Sans Mono:size=14}${alignc}${time %A, %B %d %Y}
+${font DejaVu Sans Mono:size=12}${alignc}${time %A, %B %d %Y}
 Local: ${alignr}${time %H:%M:%S}
 UTC: ${alignr}${tztime UTC %H:%M:%S}
 Uptime: ${uptime}
 
 IP: ${execpi 60 /opt/emcomm-tools/bin/et-system-info ip} 
 
-${execp /opt/emcomm-tools/bin/et-system-info release}
-CAT: ${execpi 15 /opt/emcomm-tools/bin/et-system-info et-cat}
-GPS: ${execpi 15 /opt/emcomm-tools/bin/et-system-info et-gps}
+Radio: ${execpi 10 et-system-info active-radio}
+CAT  : ${execpi 10 et-system-info et-cat}
+GPS  : ${execpi 10 et-system-info et-gps}
+
+${font DejaVu Sans Mono:size=10}${alignc}${execp /opt/emcomm-tools/bin/et-system-info release}
 ]];
 
