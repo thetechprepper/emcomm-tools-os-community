@@ -5,7 +5,7 @@ After=multi-user.target
 
 [Service]
 User=et
-ExecStart=/opt/emcomm-tools/sbin/wrapper-rigtctld.sh start
+ExecStart=/opt/emcomm-tools/sbin/wrapper-rigctld.sh start
 SuccessExitStatus=143
 
 [Install]
