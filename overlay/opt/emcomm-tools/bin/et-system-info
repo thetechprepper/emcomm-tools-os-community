@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 10 October 2024
+# Updated  : 11 October 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -57,7 +57,59 @@ case $1 in
 
     ;; 
   et-gps)
-    if [ -e /dev/et-gps ]; then echo "Yes"; else echo "No"; fi
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-gps ]; then 
+
+      # 2. Check if the gpsd systemd unit is running properly
+      systemctl status gpsd --no-pager > /dev/null 
+      if [ $? -eq 0 ]; then
+
+        # 3. Obtain the current GPS mode
+        GPS_MODE=$(gpspipe -w -n 10 | grep -m 1 TPV | jq --exit-status -r .mode)
+        if [ $? -eq 0 ]; then
+
+          case $GPS_MODE in
+            0)
+              echo "No fix"
+            ;;
+            1)
+              echo "2D fix"
+            ;;
+            2)
+              echo "3D fix"
+            ;;
+            3)
+              echo "3D fix + timing"
+            ;;
+            4)
+              echo "High accuracy fix"
+            ;;
+            5)
+              echo "High accuracy fix"
+            ;;
+            6)
+              echo "Estimated fix"
+            ;;
+            7)
+              echo "Manual fix"
+            ;;
+            *)
+              echo "Uknown mode $GPS_MODE"
+            ;;
+          esac 
+
+        else
+          echo "Connected. Can't decode"
+        fi
+
+      else
+        echo "Connected. gpsd not running"
+      fi
+    else 
+      echo "Not connected" 
+    fi
+
     ;; 
   ip)
     hostname -I
