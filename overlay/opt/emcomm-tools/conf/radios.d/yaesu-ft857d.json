@@ -1,0 +1,23 @@
+{
+  "id": "yaesu-ft857d",
+  "vendor": "Yaesu",
+  "model": "FT-857D",
+  "rigctrl": {
+    "id": "1022",
+    "baud": "38400",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "Menu 019 CAT RATE = 38400",
+    "Menu 020 CAT = CAT",
+    "Menu 036 DIG DISP = 0 Hz",
+    "Menu 037 DIG GAIN = 50",
+    "Menu 088 DIG MODE = USB-U",
+    "Menu 039 DIG SHIFT = 0 Hz",
+    "Menu 040 DIG VOX = 0",
+    "Menu 071 PKT 1200 = 10",
+    "Menu 073 1200 RATE = 1200 bps",
+    "For VHF/UHF packet, set mode = PKT; Menu 080 = SQL",
+    "For HF, set mode = DIGI; Menu 080 = RF GAIN"
+  ]
+}

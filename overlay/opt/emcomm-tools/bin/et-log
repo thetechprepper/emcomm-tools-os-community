@@ -2,7 +2,11 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 16 March 2024
+# Updated  : 9 October 2024
 # Purpose  : Log message to standard out and log file
+
+ET_TEMP_DIR=/tmp/et
+ET_LOG_FILE=$ET_TEMP_DIR/et.log
 
 if [ ! -e $ET_TEMP_DIR ]; then
   mkdir $ET_TEMP_DIR

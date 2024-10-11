@@ -1,0 +1,12 @@
+[Unit]
+Description=rigctld service
+ConditionPathExists=/dev/et-cat
+After=multi-user.target
+
+[Service]
+User=et
+ExecStart=/opt/emcomm-tools/sbin/wrapper-rigctld.sh start
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

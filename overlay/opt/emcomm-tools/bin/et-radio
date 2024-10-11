@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 11 October 2024
+# Purpose  : A script for managaing plug-and-play radios
+set -e
+
+function usage() {
+  echo "Usage: $(basename $0) <command>"
+  echo "  active          - show active radio" 
+  echo "  list            - list supported radios by id" 
+  echo "  set <radio id>  - set radio as active by id" 
+}
+
+if [ $# -lt 1 ]; then
+  usage
+  exit 1
+fi
+
+ACTIVE_RADIO="${ET_HOME}/conf/radios.d/active-radio.json"
+
+case $1 in
+  list)
+
+    printf "%-20s %-10s %-10s\n" "ID" "Vendor" "Model"
+
+    find ${ET_HOME}/conf/radios.d -type f -name \*.json | sort -n | while read radio; do
+      ID=$(cat $radio | jq -r .id)
+      VENDOR=$(cat $radio | jq -r .vendor)
+      MODEL=$(cat $radio | jq -r .model)
+
+      printf "%-20s %-10s %-10s\n" $ID $VENDOR $MODEL
+    done
+
+    ;;
+  set)
+    if [ $# -ne 2 ]; then
+      echo "Radio ID required. Run '$(basename $0) list' to get list of radios"
+      usage
+      exit 1
+    fi
+  
+    RADIO_CONF="${ET_HOME}/conf/radios.d/$2.json"
+    if [ ! -e ${RADIO_CONF} ]; then
+      echo "Radio configuration does not exist for radio ID: '$2'"
+      exit 1
+    fi
+
+    [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+    ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
+
+    ;;
+  active)
+
+    if [ ! -L "${ACTIVE_RADIO}" ]; then
+      echo "No active radio defined. Run: '$(basename $0) set <radio ID>'"
+      exit 1
+    fi
+
+    ID=$(cat ${ACTIVE_RADIO} | jq -r .id)
+    VENDOR=$(cat ${ACTIVE_RADIO} | jq -r .vendor)
+    MODEL=$(cat ${ACTIVE_RADIO} | jq -r .model)
+
+    printf "%-20s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
+    printf "%-20s %-10s %-10s\n" $ID $VENDOR $MODEL
+
+    printf "\nConfiguration Notes\n"
+    cat ${ACTIVE_RADIO} | jq -r '.notes[] | "* \(.)"'
+    ;;
+  *)
+    echo "Command not supported."
+    usage
+    exit 1
+    ;;
+esac
