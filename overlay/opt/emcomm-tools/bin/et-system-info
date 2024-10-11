@@ -70,32 +70,17 @@ case $1 in
         if [ $? -eq 0 ]; then
 
           case $GPS_MODE in
-            0)
+            1)
               echo "No fix"
             ;;
-            1)
+            2)
               echo "2D fix"
             ;;
-            2)
+            3)
               echo "3D fix"
             ;;
-            3)
-              echo "3D fix + timing"
-            ;;
-            4)
-              echo "High accuracy fix"
-            ;;
-            5)
-              echo "High accuracy fix"
-            ;;
-            6)
-              echo "Estimated fix"
-            ;;
-            7)
-              echo "Manual fix"
-            ;;
             *)
-              echo "Uknown mode $GPS_MODE"
+              echo "Unknown mode"
             ;;
           esac 
 
