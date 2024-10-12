@@ -29,7 +29,7 @@ case $1 in
       VENDOR=$(cat $radio | jq -r .vendor)
       MODEL=$(cat $radio | jq -r .model)
 
-      printf "%-20s %-10s %-10s\n" $ID $VENDOR $MODEL
+      printf "%-20s %-10s %-10s\n" $ID "$VENDOR" "$MODEL"
     done
 
     ;;
@@ -62,7 +62,7 @@ case $1 in
     MODEL=$(cat ${ACTIVE_RADIO} | jq -r .model)
 
     printf "%-20s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
-    printf "%-20s %-10s %-10s\n" $ID $VENDOR $MODEL
+    printf "%-20s %-10s %-10s\n" $ID "$VENDOR" "$MODEL"
 
     printf "\nConfiguration Notes\n"
     cat ${ACTIVE_RADIO} | jq -r '.notes[] | "* \(.)"'
