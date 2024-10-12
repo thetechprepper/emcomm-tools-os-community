@@ -2,6 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
+# Updated  : 12 October 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -22,7 +23,7 @@ ACTIVE_RADIO="${ET_HOME}/conf/radios.d/active-radio.json"
 case $1 in
   list)
 
-    printf "%-20s %-10s %-10s\n" "ID" "Vendor" "Model"
+    printf "%-20s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
 
     find ${ET_HOME}/conf/radios.d -type f -name \*.json | sort -n | while read radio; do
       ID=$(cat $radio | jq -r .id)
