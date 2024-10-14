@@ -192,19 +192,64 @@ Waypoint</text></img>
 		http://wiki.navit-project.org/index.php/OSD -->
 
                 <!-- Top left -->
-		<osd enabled="yes" type="compass" x="0" y="0" w="64" h="64"/>
-                <osd enabled="yes" type="odometer" x="64" y="0" w="64" h="64" />
+		<osd enabled="yes" type="compass" x="-64" y="-108" w="64" h="64"/>
 
-                <!-- Bottom left -->
-		<osd enabled="yes" type="navigation_next_turn" x="0" y="-64" w="64" h="64" />
+                <!-- 
+                  | The OSD configuration that follows is taken from the post below. It has been modified to suite the 
+                  | Pansonic FZ-M1 at its native 1280x800 resolution with 125% scaling"
+                  | 
+                  | Post: https://ozzmaker.com/navigating-navit-raspberry-pi/
+                  | Configuration:  https://ozzmaker.com/downloads/navit-OSD-800-480.txt
+                  -->
 
-                <!-- Top right -->
-		<osd enabled="yes" type="button" x="-64" y="0" w="64" h="64" command="zoom_out()" src="zoom_out.png"/>
-		<osd enabled="yes" type="button" x="-64" y="64" w="64" h="64" command="zoom_in()" src="zoom_in.png"/>
+                <!-- Distance to Next Maneouvre -->
+                <osd enabled="yes" type="text" label="${navigation.item[1].length[named]}" x="0" y="0" font_size="350" w="75" h="30" align="0" background_color="#000000c8" osd_configuration="2" />
 
-                <!-- Bottom right -->
-                <osd enabled="yes" type="gps_status" x="-64" y="-64" w="64" h="64" />
+                <!-- Next Maneouvre Icon -->
+                <osd enabled="yes" type="navigation_next_turn" x="0" y="30" background_color="#000000c8" w="75" osd_configuration="2" />
 
+                <!-- Next Road -->
+                <osd enabled="yes" type="text" label="   ${navigation.item[1].street_name} ${navigation.item[1].street_name_systematic}" x="75" y="0" font_size="450" w="824" h="40" align="4" background_color="#000000c8" osd_configuration="2" />
+
+                <!-- TOP RIGHT -->
+                <!-- Route Distance -->
+                <osd enabled="yes" type="text" label="Dist ${navigation.item.destination_length[named]}" w="125" h="20"  x="-125" y="0"  font_size="300" align="8" background_color="#000000c8" osd_configuration="2" />
+                <!-- Arrival Time -->
+                <osd enabled="yes" type="text" label="ETA ${navigation.item.destination_time[arrival]}" x="-125" y="20"  font_size="300" w="125" h="20" align="8" background_color="#000000c8" osd_configuration="2" />
+
+                <!-- BOTTOM -->
+                <!-- Current Altitude -->
+                <osd enabled="yes" type="text" label="${vehicle.position_height}" x="0" y="-20"  font_size="300" w="60" h="20" align="4" background_color="#000000c8"/>
+                <!-- Current Direction -->
+                <osd enabled="yes" type="text" label="ALT" x="0" y="-40"  font_size="200" w="60" h="20" align="4" background_color="#000000c8"/>
+                <!-- Current Street -->
+                <osd enabled="yes" type="text" label="${tracking.item.street_name} ${tracking.item.street_name_systematic}" x="60" y="-40"  font_size="500" w="764" h="40" align="4" background_color="#000000c8"/>
+                <!-- Speed Warner -->
+                <osd enabled="yes" type="speed_warner" w="100" h="40" x="-300" y="-40" font_size="500" speed_exceed_limit_offset="15" speed_exceed_limit_percent="10" announce_on="1" background_color="#00000000" label="text_only" align="8"/>
+                <!-- Current Speed -->
+                <osd enabled="yes" type="text" label="${vehicle.position_speed}" x="-200" y="-40" font_size="500" w="150" h="40" align="0" background_color="#000000c8"/>
+                <!-- GPS Status -->
+                <osd enabled="yes" type="gps_status" x="-50" y="-40" w="50" h="40" background_color="#000000c8"/>
+
+                <!-- RIGHT CONTROLS -->
+                <osd type="button" x="-65" y="55" command="zoom_in()" src="zoom_in.png" />
+                <osd enabled="yes" type="scale" x="-90" y="290" font_size="150" w="100" h="30" align="0"/>
+                <osd type="button" x="-65" y="150" command="zoom_out()" src="zoom_out.xpm"  />
+
+
+                <!-- Enable/Disable routing information depending upon the route status -->
+                <osd name="my_osd_cmdif_2" h="1" w="1"  update_period="2"  enabled="yes" type="cmd_interface" x="-100"  y="-100" command='osd_configuration=
+                route.route_status==1     ? 1 : 
+                (route.route_status==0     ? 1 :  
+                (route.route_status==3     ? 1 : 
+                (route.route_status==5     ? 1 : 
+                (route.route_status==13    ? 1 : 
+                (route.route_status==17    ? 2 : 
+                (route.route_status==33    ? 2 : 1
+                )))))))
+                ' />
+
+                <!-- End of import from ozzmaker article -->
 
 		<!-- Commands include gui_internal_menu, gui_internal_fullscreen, zoom_in and zoom_out.
 			Usage of negative values change the button origins. x="0" y="0" specifies the top left, x="-0" y="-0" the bottom right corner.
@@ -218,7 +263,7 @@ Waypoint</text></img>
 		<traffic type="null"/>
 
 		<!-- Vehicle with GPS enabled for gpsd on unix -->
-		<vehicle name="Local GPS" profilename="car" enabled="yes" active="1" source="gpsd://localhost" gpsd_query="w+xj">
+		<vehicle name="Local GPS" profilename="car" enabled="yes" active="1" source="gpsd://localhost" gpsd_query="w+xj" follow="2">
 		<!-- Vehicle with GPS enabled for direct communication on windows. Remove the line above if you use this. -->
 		<!-- <vehicle name="Local GPS" profilename="car" follow="1" enabled="yes" active="1"
 				source="serial:COM4 baudrate=4800 parity=N data=8 stop=1" > -->
