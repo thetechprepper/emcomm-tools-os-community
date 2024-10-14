@@ -1,0 +1,18 @@
+{
+  "id": "icom-ic7200",
+  "vendor": "Icom",
+  "model": "IC-7200",
+  "rigctrl": {
+    "id": "3061",
+    "baud": "19200",
+    "ptt": "RIG"
+  },
+  "notes": [
+    "Set SSB to USB",
+    "Set filter to wide",
+    "Menu DATA = ON",
+    "Menu D-Mod = U ",
+    "Menu USB Lvl = 75",
+    "Menu CIV BAUD = At (Automatic) or 19200"
+  ]
+}

@@ -1,5 +1,6 @@
 # Author   : Gaston Gonzalez
 # Date     : 29 September 2024
+# Updated  : 14 October 2024
 # Purpose  : udev rules for the Icom IC-7200
 #
 # Preconditions:
@@ -7,7 +8,7 @@
 #
 # Postconditions:
 # 1. /dev/et-cat created
-# 
+# 2. rigctld started
 
 KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7200*", \
     ENV{ET_DEVICE}="IC-7200"
@@ -17,6 +18,7 @@ KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7200*", \
 ENV{ET_DEVICE}=="IC-7200", SUBSYSTEMS=="usb", ATTRS{idVendor}=="10c4" ATTRS{idProduct}=="ea60", \
     ACTION=="add", \
     ENV{SYSTEMD_WANTS}="", \
-    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat"
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
 
 # TODO: Add rules for sound card
