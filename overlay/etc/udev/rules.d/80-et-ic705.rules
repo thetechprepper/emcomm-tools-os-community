@@ -1,6 +1,6 @@
 # Author   : Gaston Gonzalez
 # Date     : 28 September 2024
-# Updated  : 10 October 2024
+# Updated  : 14 October 2024
 # Purpose  : udev rules for the Icom IC-705
 #
 # Preconditions:
@@ -31,12 +31,5 @@ ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
     ACTION=="add", \
     ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
     RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
-
-# TODO: Make this rule more specific
-#
-# If we do not stop rigctld, the rigctl progress will continue to run and maintain
-# a stale reference to /dev/et-cat. This condition will prevent subsequent attach
-# and detatch events of the radio from working.
-SUBSYSTEM=="tty", ACTION=="remove", RUN+="/opt/emcomm-tools/sbin/wrapper-rigctld.sh stop"
 
 # TODO: Add rules for sound card

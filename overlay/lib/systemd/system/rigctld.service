@@ -1,11 +1,10 @@
 [Unit]
-Description=rigctld service
+Description=Rig Control Service
 ConditionPathExists=/dev/et-cat
 After=multi-user.target
 
 [Service]
 ExecStart=/opt/emcomm-tools/sbin/wrapper-rigctld.sh start
-SuccessExitStatus=143
 
 [Install]
 WantedBy=multi-user.target
