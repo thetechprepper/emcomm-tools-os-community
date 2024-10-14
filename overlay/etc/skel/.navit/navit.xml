@@ -192,10 +192,12 @@ Waypoint</text></img>
 		http://wiki.navit-project.org/index.php/OSD -->
 
                 <!-- Top left -->
-		<osd enabled="no" type="compass" x="0" y="0" w="64" h="64"/>
+		<osd enabled="yes" type="compass" x="-64" y="-108" w="64" h="64"/>
 
                 <!-- 
-                  | The OSD configuration that follows is taken from the post below.
+                  | The OSD configuration that follows is taken from the post below. It has been modified to suite the 
+                  | Pansonic FZ-M1 at its native 1280x800 resolution with 125% scaling"
+                  | 
                   | Post: https://ozzmaker.com/navigating-navit-raspberry-pi/
                   | Configuration:  https://ozzmaker.com/downloads/navit-OSD-800-480.txt
                   -->
@@ -211,7 +213,7 @@ Waypoint</text></img>
 
                 <!-- TOP RIGHT -->
                 <!-- Route Distance -->
-                <osd enabled="yes" type="text" label="DTG ${navigation.item.destination_length[named]}" w="125" h="20"  x="-125" y="0"  font_size="300" align="8" background_color="#000000c8" osd_configuration="2" />
+                <osd enabled="yes" type="text" label="Dist ${navigation.item.destination_length[named]}" w="125" h="20"  x="-125" y="0"  font_size="300" align="8" background_color="#000000c8" osd_configuration="2" />
                 <!-- Arrival Time -->
                 <osd enabled="yes" type="text" label="ETA ${navigation.item.destination_time[arrival]}" x="-125" y="20"  font_size="300" w="125" h="20" align="8" background_color="#000000c8" osd_configuration="2" />
 
@@ -234,20 +236,6 @@ Waypoint</text></img>
                 <osd enabled="yes" type="scale" x="-90" y="290" font_size="150" w="100" h="30" align="0"/>
                 <osd type="button" x="-65" y="150" command="zoom_out()" src="zoom_out.xpm"  />
 
-                <!-- Display routing status-->
-                <osd name="my_osd_cmdif_1" h="1" w="1"  update_period="2"  enabled="yes" type="cmd_interface" x="-100"  y="-100" command='
-                osd[@name=="icon_route_status"].src = 
-                route.route_status==1     ? "Destination_set.xpm" : 
-                (route.route_status==0     ? "No_destination.xpm" :  
-                (route.route_status==3     ? "No_route.xpm" : 
-                (route.route_status==5     ? "Calculating_route.xpm" : 
-                (route.route_status==13    ? "Calculating_route.xpm" : 
-                (route.route_status==17    ? "Routing.xpm" : 
-                (route.route_status==33    ? "Routing.xpm" : "unhandled"
-                )))))))
-                '  />
-
-                <osd name="icon_route_status" enabled="yes" type="button" command="" src="no_destination.xpm" x="-65" y="-105" />
 
                 <!-- Enable/Disable routing information depending upon the route status -->
                 <osd name="my_osd_cmdif_2" h="1" w="1"  update_period="2"  enabled="yes" type="cmd_interface" x="-100"  y="-100" command='osd_configuration=
