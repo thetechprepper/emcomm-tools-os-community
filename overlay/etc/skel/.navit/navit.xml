@@ -190,8 +190,21 @@ Waypoint</text></img>
 		<!-- osd items allow to position display and control items directly on top of the map.
 		You can find a list of all the available OSDs items here:
 		http://wiki.navit-project.org/index.php/OSD -->
-		<osd enabled="yes" type="compass"/>
-		<osd enabled="yes" type="navigation_next_turn"/>
+
+                <!-- Top left -->
+		<osd enabled="yes" type="compass" x="0" y="0" w="64" h="64"/>
+                <osd enabled="yes" type="odometer" x="64" y="0" w="64" h="64" />
+
+                <!-- Bottom left -->
+		<osd enabled="yes" type="navigation_next_turn" x="0" y="-64" w="64" h="64" />
+
+                <!-- Top right -->
+		<osd enabled="yes" type="button" x="-64" y="0" w="64" h="64" command="zoom_out()" src="zoom_out.png"/>
+		<osd enabled="yes" type="button" x="-64" y="64" w="64" h="64" command="zoom_in()" src="zoom_in.png"/>
+
+                <!-- Bottom right -->
+                <osd enabled="yes" type="gps_status" x="-64" y="-64" w="64" h="64" />
+
 
 		<!-- Commands include gui_internal_menu, gui_internal_fullscreen, zoom_in and zoom_out.
 			Usage of negative values change the button origins. x="0" y="0" specifies the top left, x="-0" y="-0" the bottom right corner.
@@ -199,11 +212,7 @@ Waypoint</text></img>
 		<osd enabled="no" type="button" x="0" y="0" command="gui.fullscreen=!gui.fullscreen" src="toggle_fullscreen.png"/>
 		<osd enabled="no" type="button" x="-96" y="0" command="gui.menu(1)" src="menu.png"/>
 
-        <!-- Zoom out: top-right -->
-		<osd enabled="yes" type="button" x="-96" y="0" w="64" h="64" command="zoom_out()" src="zoom_out.png"/>
 
-        <!-- Zoom in: bottom-right -->
-		<osd enabled="yes" type="button" x="-96" y="-96" w="64" h="64" command="zoom_in()" src="zoom_in.png"/>
 
 		<!-- Traffic -->
 		<traffic type="null"/>
