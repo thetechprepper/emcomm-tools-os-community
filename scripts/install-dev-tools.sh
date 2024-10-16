@@ -2,18 +2,21 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 29 December 2023
+# Updated : 16 October 2024
 # Purpose : Install development tools
 set -e
 
 et-log "Installing dev tools for fldigi"
 apt install \
   autoconf \
+  dialog \
   gettext \
   libfltk1.3-dev \
   libportaudio2 \
   libsamplerate0-dev \
   libsndfile1-dev \
   libudev-dev \
+  meld \
   pkg-config \
   portaudio19-dev \
   -y
