@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 12 October 2024
+# Updated  : 16 October 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -10,7 +10,7 @@ function usage() {
   echo "Usage: $(basename $0) <command>"
   echo "  active          - show active radio" 
   echo "  list            - list supported radios by id" 
-  echo "  set <radio id>  - set radio as active by id" 
+  echo "  set             - select active radio"
 }
 
 if [ $# -lt 1 ]; then
@@ -35,20 +35,30 @@ case $1 in
 
     ;;
   set)
-    if [ $# -ne 2 ]; then
-      echo "Radio ID required. Run '$(basename $0) list' to get list of radios"
-      usage
-      exit 1
-    fi
-  
-    RADIO_CONF="${ET_HOME}/conf/radios.d/$2.json"
-    if [ ! -e ${RADIO_CONF} ]; then
-      echo "Radio configuration does not exist for radio ID: '$2'"
-      exit 1
-    fi
 
-    [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
-    ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
+    options=()
+    while IFS= read -r radio; do
+        ID=$(cat $radio | jq -r .id)
+        VENDOR=$(cat $radio | jq -r .vendor)
+        MODEL=$(cat $radio | jq -r .model)
+
+        options+=("$ID" "$VENDOR $MODEL")
+    done < <(find $ET_HOME/conf/radios.d -type f | sort)
+
+    selected_radio=$(dialog --clear --menu "Select a radio:" 15 50 10 "${options[@]}" 3>&1 1>&2 2>&3)
+    exit_status=$?
+
+    # Reset terminal to its original state
+    clear &&  tput sgr0
+
+    if [ $exit_status -eq 0 ]; then
+      RADIO_CONF="${ET_HOME}/conf/radios.d/$selected_radio.json"
+      [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+      ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
+      echo "Set active radio to: $selected_radio"
+    else
+      echo "No radio selected."
+    fi
 
     ;;
   active)
