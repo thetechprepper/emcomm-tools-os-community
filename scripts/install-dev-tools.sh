@@ -2,11 +2,11 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 29 December 2023
-# Updated : 16 October 2024
+# Updated : 20 October 2024
 # Purpose : Install development tools
 set -e
 
-et-log "Installing dev tools for fldigi"
+et-log "Installing dev tools for fldigi..."
 apt install \
   autoconf \
   dialog \
@@ -16,19 +16,20 @@ apt install \
   libsamplerate0-dev \
   libsndfile1-dev \
   libudev-dev \
-  meld \
   pkg-config \
   portaudio19-dev \
   -y
 
-et-log "Installing dev tools for building EmComm Tools packages"
+et-log "Installing dev tools for building EmComm Tools packages and general development..."
 apt install \
   git \
   libfuse2 \
+  meld \
   rpm \
+  vim \
   -y
 
-et-log "Installing tools for building custom ISO image"
+et-log "Installing tools for building custom ISO image..."
 if ! command -v cubic
 then
   sudo apt-add-repository universe -y
