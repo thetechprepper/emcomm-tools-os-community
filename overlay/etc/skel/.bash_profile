@@ -1,12 +1,15 @@
 # Author      : Gaston Gonzalez
 # Date        : 23 April 2024
-# Updated     : 9 October 2024
+# Updated     : 20 October 2024
 # Description : bash profile
 
 # All user accounts should be in the 'et-data' group to allow data sharing with
 # EmComm Tools. A umask of 002 is required to allow users and the system to
 # read and write shared data files.
 umask 002
+
+# Disable the terminal bell for opsec
+xset b off
 
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
