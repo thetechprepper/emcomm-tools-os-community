@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 11 October 2024
+# Updated  : 20 October 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -100,7 +100,7 @@ case $1 in
 
     ;; 
   ip)
-    hostname -I
+    hostname -I | awk '{print $1}'
     ;;
   release)
     grep DISTRIB_DESCRIPTION /etc/lsb-release | sed 's|"||g' | awk '{print $1}' | cut -d"=" -f2
