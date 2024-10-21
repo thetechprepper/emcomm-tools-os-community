@@ -2,16 +2,17 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 20 October 2024
+# Updated  : 21 October 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
   echo "Usage: $(basename $0) <command>"
   echo "  active-radio - Display model of active radio" 
-  echo "  et-cat       - Is CAT control connected"
-  echo "  et-gps       - Is the GPS connected"
+  echo "  et-audio     - State of audio interface"
+  echo "  et-cat       - State of CAT control interface"
+  echo "  et-gps       - State of GPS interface"
   echo "  ip           - System IP address"
-  echo "  release      - EmComm Tools Release"
+  echo "  release      - EmComm Tools release"
 }
 
 if [ $# -ne 1 ]; then
@@ -26,6 +27,16 @@ case $1 in
     else
       echo "No radio selected"
     fi 
+    ;;
+  et-audio)
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then 
+      echo "Connected"
+    else
+      echo "Not connected" 
+    fi
+
     ;;
   et-cat)
 
