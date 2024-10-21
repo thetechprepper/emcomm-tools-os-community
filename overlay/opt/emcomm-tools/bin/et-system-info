@@ -7,12 +7,13 @@
 
 function usage() {
   echo "Usage: $(basename $0) <command>"
-  echo "  active-radio - Display model of active radio" 
-  echo "  et-audio     - State of audio interface"
-  echo "  et-cat       - State of CAT control interface"
-  echo "  et-gps       - State of GPS interface"
-  echo "  ip           - System IP address"
-  echo "  release      - EmComm Tools release"
+  echo "  active-radio  - Display model of active radio" 
+  echo "  et-audio      - Show state of audio interface"
+  echo "  et-audio-card - Display audio card and device: <card>,<device>"
+  echo "  et-cat        - Show state of CAT control interface"
+  echo "  et-gps        - Show state of GPS interface"
+  echo "  ip            - System IP address"
+  echo "  release       - EmComm Tools release"
 }
 
 if [ $# -ne 1 ]; then
@@ -42,6 +43,25 @@ case $1 in
 
     else
       echo "Not connected" 
+    fi
+
+    ;;
+  et-audio-card)
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then 
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [ $? -eq 0 ]; then
+         AUDIO_CARD=$(echo $APLAY_OUT | cut -d":" -f1 | awk '{print $2}')
+         AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+         echo $AUDIO_CARD,$AUDIO_DEVICE
+       else
+         exit 1
+       fi
+    else
+      exit 1
     fi
 
     ;;
