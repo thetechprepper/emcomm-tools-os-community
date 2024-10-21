@@ -32,7 +32,14 @@ case $1 in
 
     # 1. Check if the symlink was created by the udev rules
     if [ -e /dev/et-audio ]; then 
-      echo "Connected"
+
+      UDEV_OUT=$(udevadm info /dev/et-audio | grep ET_DEVICE)
+      if [ $? -eq 0 ]; then
+        udevadm info /dev/et-audio | grep ET_DEVICE | cut -d"=" -f2
+      else
+        echo "Connected" 
+      fi
+
     else
       echo "Not connected" 
     fi
