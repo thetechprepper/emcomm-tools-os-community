@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 21 October 2024
+# Updated  : 23 October 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -36,7 +36,21 @@ case $1 in
 
       UDEV_OUT=$(udevadm info /dev/et-audio | grep ET_DEVICE)
       if [ $? -eq 0 ]; then
-        udevadm info /dev/et-audio | grep ET_DEVICE | cut -d"=" -f2
+
+        # Display friendly audio device name
+        ET_DEVICE=$(udevadm info /dev/et-audio | grep ET_DEVICE | cut -d"=" -f2)
+        case $ET_DEVICE in
+          "DIGIRIG_LITE")
+            echo "DigiRig Lite"
+          ;;
+          "DIGIRIG_MOBILE")
+            echo "DigiRig Mobile"
+          ;;
+          *)
+            echo $ET_DEVICE
+          ;;
+        esac
+
       else
         echo "Connected" 
       fi
