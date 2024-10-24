@@ -22,7 +22,7 @@ if [ $# -ne 1 ]; then
 fi
 
 start() {
-  echo "Not yet implemented"
+  update-config && /usr/bin/js8call &
 }
 
 update-config () {
