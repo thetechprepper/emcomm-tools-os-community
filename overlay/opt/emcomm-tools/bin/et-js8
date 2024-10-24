@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 24 October 2024
+# Purpose : Wrapper script for starting JS8Call with PnP support
+#
+# Preconditions
+# 1. Support radio and audio interface are connected and properly detected
+#
+# Postconditions
+# 1. JS8Call is started with audio settings updated
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  start           - Update config and start JS8Call"
+  echo "  update-config   - Update config"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+start() {
+  echo "Not yet implemented"
+}
+
+update-config () {
+
+    JS8CALL_CONF_FILE="${HOME}/.config/JS8Call.ini"
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [ $? -eq 0 ]; then
+         AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+         JS8_AUDIO_DEVICE="plughw:CARD=ET_AUDIO,DEV=${AUDIO_DEVICE}"
+         et-log "Using '${JS8_AUDIO_DEVICE}' for JS8Call configuration."
+
+         # 3. Check for existing JS8Call sound configuration
+
+         ## Update input
+         grep "^SoundInName" ${JS8CALL_CONF_FILE}
+         if [ $? -eq 0 ]; then
+           sed -i 's|^SoundInName.*|SoundInName=plughw:CARD=ET_AUDIO,DEV=0|' ${JS8CALL_CONF_FILE} 
+         else
+           echo "SoundInName=${JS8_AUDIO_DEVICE}" >> ${JS8CALL_CONF_FILE}
+         fi
+
+         ## Update output
+         grep "^SoundOutName" ${JS8CALL_CONF_FILE}
+         if [ $? -eq 0 ]; then
+           sed -i 's|^SoundOutName.*|SoundOutName=plughw:CARD=ET_AUDIO,DEV=0|' ${JS8CALL_CONF_FILE} 
+         else
+           echo "SoundOutName=${JS8_AUDIO_DEVICE}" >> ${JS8CALL_CONF_FILE}
+         fi
+
+       else
+         et-log "No ET_AUDIO device detected."
+         exit 1
+       fi
+    else
+      et-log "No ET_AUDIO device plugged in."
+      exit 1
+    fi
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
