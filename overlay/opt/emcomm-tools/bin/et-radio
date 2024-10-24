@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 16 October 2024
+# Updated  : 24 October 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -36,7 +36,10 @@ case $1 in
     ;;
   set)
 
+    NO_RADIO_ID="no-radio"
+
     options=()
+    options+=("${NO_RADIO_ID}" "No radio")
     while IFS= read -r radio; do
         ID=$(cat $radio | jq -r .id)
         VENDOR=$(cat $radio | jq -r .vendor)
@@ -45,17 +48,25 @@ case $1 in
         options+=("$ID" "$VENDOR $MODEL")
     done < <(find $ET_HOME/conf/radios.d -type f | sort)
 
-    selected_radio=$(dialog --clear --menu "Select a radio:" 15 50 10 "${options[@]}" 3>&1 1>&2 2>&3)
+    SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 15 50 10 "${options[@]}" 3>&1 1>&2 2>&3)
     exit_status=$?
 
     # Reset terminal to its original state
-    clear &&  tput sgr0
+    clear && tput sgr0
 
     if [ $exit_status -eq 0 ]; then
-      RADIO_CONF="${ET_HOME}/conf/radios.d/$selected_radio.json"
+
+      # Special case to run without a radio configured
+      if [ ${SELECTED_RADIO} == ${NO_RADIO_ID} ]; then
+        [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+        echo "Set active radio to: $SELECTED_RADIO"
+        exit 0
+      fi
+
+      RADIO_CONF="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.json"
       [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
       ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
-      echo "Set active radio to: $selected_radio"
+      echo "Set active radio to: $SELECTED_RADIO"
     else
       echo "No radio selected."
     fi
@@ -64,7 +75,7 @@ case $1 in
   active)
 
     if [ ! -L "${ACTIVE_RADIO}" ]; then
-      echo "No active radio defined. Run: '$(basename $0) set <radio ID>'"
+      echo "No active radio defined. Run: '$(basename $0) set'"
       exit 1
     fi
 
