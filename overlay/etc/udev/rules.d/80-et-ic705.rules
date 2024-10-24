@@ -33,7 +33,10 @@ ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
     ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
     RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
 
+# This rule generically matches the following Icom radios: 
+# 1. IC-705
+# 2. IC-7200
 SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="2901", ENV{ET_DEVICE}=="", \
     ACTION=="add", \
     ATTR{id}="ET_AUDIO", \
-    ENV{ET_DEVICE}="IC-705", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
+    ENV{ET_DEVICE}="Icom generic", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
