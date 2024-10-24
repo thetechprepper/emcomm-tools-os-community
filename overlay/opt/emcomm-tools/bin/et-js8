@@ -44,7 +44,7 @@ update-config () {
          ## Update input
          grep "^SoundInName" ${JS8CALL_CONF_FILE}
          if [ $? -eq 0 ]; then
-           sed -i 's|^SoundInName.*|SoundInName=plughw:CARD=ET_AUDIO,DEV=0|' ${JS8CALL_CONF_FILE} 
+           sed -i "s|^SoundInName.*|SoundInName=${JS8_AUDIO_DEVICE}|" ${JS8CALL_CONF_FILE} 
          else
            echo "SoundInName=${JS8_AUDIO_DEVICE}" >> ${JS8CALL_CONF_FILE}
          fi
@@ -52,7 +52,7 @@ update-config () {
          ## Update output
          grep "^SoundOutName" ${JS8CALL_CONF_FILE}
          if [ $? -eq 0 ]; then
-           sed -i 's|^SoundOutName.*|SoundOutName=plughw:CARD=ET_AUDIO,DEV=0|' ${JS8CALL_CONF_FILE} 
+           sed -i "s|^SoundOutName.*|SoundOutName=${JS8_AUDIO_DEVICE}|" ${JS8CALL_CONF_FILE} 
          else
            echo "SoundOutName=${JS8_AUDIO_DEVICE}" >> ${JS8CALL_CONF_FILE}
          fi
