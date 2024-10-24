@@ -1,0 +1,11 @@
+{
+  "id": "generic-vox",
+  "vendor": "Generic",
+  "model": "VOX",
+  "rigctrl": {
+    "id": "1",
+    "ptt": "NONE"
+  },
+  "notes": [
+  ]
+}

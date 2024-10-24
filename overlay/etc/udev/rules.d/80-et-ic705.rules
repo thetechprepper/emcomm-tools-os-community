@@ -1,6 +1,6 @@
 # Author   : Gaston Gonzalez
 # Date     : 28 September 2024
-# Updated  : 14 October 2024
+# Updated  : 21 October 2024
 # Purpose  : udev rules for the Icom IC-705
 #
 # Preconditions:
@@ -9,6 +9,7 @@
 # Postconditions:
 # 1. /dev/et-cat created
 # 2. /dev/et-gps created
+# 3. /dev/et-audio created
 # 3. rigctld is started
 # 4. gpsd is started
 # 
@@ -32,4 +33,10 @@ ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
     ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
     RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
 
-# TODO: Add rules for sound card
+# This rule generically matches the following Icom radios: 
+# 1. IC-705
+# 2. IC-7200
+SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="2901", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="Icom generic", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"

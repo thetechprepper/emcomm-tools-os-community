@@ -17,17 +17,25 @@ conky.config = {
 };
 
 conky.text = [[
-${font DejaVu Sans Mono:size=12}${alignc}${time %A, %B %d %Y}
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}DATE/TIME
+${font DejaVu Sans Mono:size=11}${color yellow}${alignc}${time %A, %B %d %Y}
 Local: ${alignr}${time %H:%M:%S}
 UTC: ${alignr}${tztime UTC %H:%M:%S}
-Uptime: ${uptime}
 
-IP: ${execpi 60 /opt/emcomm-tools/bin/et-system-info ip} 
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}SYSTEM
+${font DejaVu Sans Mono:size=11}${color yellow}Uptime   : ${uptime}
+CPU Util : ${cpu}%
+Disk Free: ${fs_free /}
 
-Radio: ${execpi 10 et-system-info active-radio}
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}NETWORK
+${font DejaVu Sans Mono:size=11}${color yellow}IP: ${execpi 60 /opt/emcomm-tools/bin/et-system-info ip} 
+
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}INTERFACES
+${font DejaVu Sans Mono:size=11}${color yellow}Radio: ${execpi 10 et-system-info active-radio}
 CAT  : ${execpi 10 et-system-info et-cat}
 GPS  : ${execpi 10 et-system-info et-gps}
+Audio: ${execpi 10 et-system-info et-audio} ${execpi 10 et-system-info et-audio-card}
 
-${font DejaVu Sans Mono:size=10}${alignc}${execp /opt/emcomm-tools/bin/et-system-info release}
+${font DejaVu Sans:bold:size=9}${color #805f4f}${alignc}${execp /opt/emcomm-tools/bin/et-system-info release}
 ]];
 

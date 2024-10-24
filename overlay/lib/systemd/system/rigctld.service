@@ -1,6 +1,6 @@
 [Unit]
 Description=Rig Control Service
-ConditionPathExists=/dev/et-cat
+#ConditionPathExists=/dev/et-cat
 After=multi-user.target
 
 [Service]

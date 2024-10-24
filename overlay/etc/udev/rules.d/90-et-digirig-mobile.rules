@@ -1,25 +1,26 @@
 # Author   : Gaston Gonzalez
 # Date     : 30 September 2024
-# Updated  : 11 October 2024
+# Updated  : 23 October 2024
 # Purpose  : udev rules for the DigiRig Mobile v1.9 
 #
 # Preconditions:
-# 1. DigiRig Mobile  connected via USB cable
+# 1. DigiRig Mobile connected via USB cable
 # 2. This rule is processed after the IC-7200
 #
 # Postconditions:
 # 1. /dev/et-cat created
 # 2. rigctld is started
-# 
+# 3. /dev/et-audio created
 
-# The IC-7200 uses the same chipsset. In order to avoid incorrect detection, we will check
-# for the presence of ET_DEVICE as the IC-7200 will set it as an earlier rule. With this
-# approach, the DigiRig Mobile rules must be processed later in the chain.
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ENV{ET_DEVICE}=="", \
     ACTION=="add", \
     ENV{SYSTEMD_WANTS}="", \
     ENV{ET_DEVICE}="DIGIRIG_MOBILE", ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
     RUN+="/usr/bin/systemctl start rigctld"
 
+SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="013c", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="DIGIRIG_MOBILE", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
+
 # TODO: Add rules for earlier 1.9 release
-# TODO: Add rules for sound card

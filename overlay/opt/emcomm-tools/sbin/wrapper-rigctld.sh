@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 9 October 2024
+# Updated : 24 October 2024
 # Purpose : Wrapper startup/shutdown script around systemd/rigctld
 
 ET_HOME=/opt/emcomm-tools
@@ -27,6 +28,24 @@ do_full_auto() {
 }
 
 start() {
+
+  # Special case for VOX devices like the DigiRig Lite.
+  if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+    CUR_RADIO=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .model)
+    if [ "${CUR_RADIO}" = "VOX" ]; then
+      et-log "Starting dummy rigctld service for VOX device."
+
+      ID=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.id)
+      PTT=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.ptt)
+
+      CMD="rigctld -m ${ID} -P ${PTT} "
+      et-log "Starting rigctld with: ${CMD}"
+      $CMD
+
+      exit 0
+    fi
+  fi
+
   if [ ! -e ${CAT_DEVICE} ]; then
     et-log "No CAT device found. ${CAT_DEVICE} symlink is missing."
     exit 1
@@ -58,7 +77,7 @@ start() {
 }
 
 stop() {
-  et-log "Stopping rigctld  service..."
+  et-log "Stopping rigctld service..."
   systemctl stop rigctld
 
   if [ -L /dev/et-cat ]; then
