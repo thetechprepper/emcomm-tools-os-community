@@ -34,7 +34,7 @@ ${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}INTERFACES
 ${font DejaVu Sans Mono:size=11}${color yellow}Radio: ${execpi 10 et-system-info active-radio}
 CAT  : ${execpi 10 et-system-info et-cat}
 GPS  : ${execpi 10 et-system-info et-gps}
-Audio: ${execpi 10 et-system-info et-audio} ${execpi 10 et-system-info et-audio-card}
+Audio: ${execpi 10 et-system-info et-audio}
 
 ${font DejaVu Sans:bold:size=9}${color #805f4f}${alignc}${execp /opt/emcomm-tools/bin/et-system-info release}
 ]];

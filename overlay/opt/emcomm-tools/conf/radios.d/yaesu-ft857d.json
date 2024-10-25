@@ -1,7 +1,7 @@
 {
   "id": "yaesu-ft857d",
   "vendor": "Yaesu",
-  "model": "FT-857D",
+  "model": "FT-857D (DigiRig)",
   "rigctrl": {
     "id": "1022",
     "baud": "38400",

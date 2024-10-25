@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 9 October 2024
-# Updated : 24 October 2024
+# Updated : 25 October 2024
 # Purpose : Wrapper startup/shutdown script around systemd/rigctld
 
 ET_HOME=/opt/emcomm-tools
@@ -29,17 +29,21 @@ do_full_auto() {
 
 start() {
 
-  # Special case for VOX devices like the DigiRig Lite.
+  # Special case for VOX devices like the DigiRig Lite and for the DigiRig Mobile
+  # when connected to a radio that does not support CAT control.
   if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
-    CUR_RADIO=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .model)
-    if [ "${CUR_RADIO}" = "VOX" ]; then
-      et-log "Starting dummy rigctld service for VOX device."
+    RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
+
+    # All devices that have no CAT control must have their ID set to 1. This
+    # a special test mode provided by Hamlib's rigctl NET interface.
+    if [ "${RIG_ID}" = "1" ]; then
+      et-log "Starting dummy rigctld service for device with no CAT support."
 
       ID=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.id)
       PTT=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.ptt)
 
       CMD="rigctld -m ${ID} -P ${PTT} "
-      et-log "Starting rigctld with: ${CMD}"
+      et-log "Starting rigctld n VOX mode with: ${CMD}"
       $CMD
 
       exit 0

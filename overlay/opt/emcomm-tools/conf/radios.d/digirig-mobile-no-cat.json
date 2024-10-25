@@ -1,0 +1,12 @@
+{
+  "id": "digirig-mobile-no-cat",
+  "vendor": "DigiRig",
+  "model": "Mobile (No CAT)",
+  "rigctrl": {
+    "id": "1",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "Uses RTS to trigger PTT"
+  ]
+}
