@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 24 October 2024
+# Updated : 25 October 2024
 # Purpose : Wrapper script for starting JS8Call with PnP support
 #
 # Preconditions
@@ -20,6 +21,13 @@ if [ $# -ne 1 ]; then
   usage
   exit 1
 fi
+
+notify_user() {
+  notify-send \
+   -t 10000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
 
 start() {
   update-config && /usr/bin/js8call &
@@ -59,10 +67,12 @@ update-config () {
 
        else
          et-log "No ET_AUDIO device detected."
+         notify_user "Can't start JS8Call. No ET_AUDIO device detected."
          exit 1
        fi
     else
       et-log "No ET_AUDIO device plugged in."
+      notify_user "Can't start JS8Call. No supported audio device plugged in."
       exit 1
     fi
 }
