@@ -2,16 +2,18 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 23 October 2024
+# Updated  : 25 October 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
   echo "Usage: $(basename $0) <command>"
   echo "  active-radio  - Display model of active radio" 
+  echo "  callsign      - Current callsign"
   echo "  et-audio      - Show state of audio interface"
   echo "  et-audio-card - Display audio card and device: <card>,<device>"
   echo "  et-cat        - Show state of CAT control interface"
   echo "  et-gps        - Show state of GPS interface"
+  echo "  grid          - Current grid square defined by user"
   echo "  ip            - System IP address"
   echo "  release       - EmComm Tools release"
 }
@@ -21,6 +23,8 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
+[ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
 case $1 in
   active-radio)
     if [ -L  "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
@@ -28,6 +32,12 @@ case $1 in
     else
       echo "No radio selected"
     fi 
+    ;;
+  callsign)
+    cat ${ET_USER_CONFIG} | jq -r .callsign
+    ;;
+  grid)
+    cat ${ET_USER_CONFIG} | jq -r .grid
     ;;
   et-audio)
 

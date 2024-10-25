@@ -39,6 +39,8 @@ update-config () {
 
     JS8CALL_CONF_FILE="${HOME}/.config/JS8Call.ini"
     JS8CALL_TEMPLATE_CONF_FILE=${ET_HOME}/conf/template.d/js8call/JS8Call.rigctl.ini
+   
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
     # Special case for the DigiRig Mobile when connected to a radio that does 
     # not support CAT control.
@@ -52,6 +54,15 @@ update-config () {
 
     cp ${JS8CALL_TEMPLATE_CONF_FILE}  ${JS8CALL_CONF_FILE}
     et-log "Replaced JS8Call configuration with template: ${JS8CALL_TEMPLATE_CONF_FILE}"
+
+    # Update configuration with current callsign and grid
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+    GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
+
+    sed -i "s|^MyCall.*|MyCall=${CALLSIGN}|" ${JS8CALL_CONF_FILE} 
+    sed -i "s|^MyGrid.*|MyGrid=${GRID}|" ${JS8CALL_CONF_FILE} 
+
+    et-log "Updated JS8Call configuration with user callsign '${CALLSIGN}' and grid: '${GRID}'"
 
     # 1. Check if the symlink was created by the udev rules
     if [ -e /dev/et-audio ]; then
