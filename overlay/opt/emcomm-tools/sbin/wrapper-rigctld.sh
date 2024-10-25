@@ -29,7 +29,7 @@ do_full_auto() {
 
 start() {
 
-  # Special case for the DigiRig Lite. 
+  # Special cases for the DigiRig Lite and DigiRig Mobile with no CAT. 
   if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
     RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
 
@@ -44,7 +44,15 @@ start() {
       CMD="rigctld -m ${ID} -P ${PTT} "
       et-log "Starting rigctld in VOX mode with: ${CMD}"
       $CMD
+      exit 0
+    fi
 
+    # We can't use rigctld in dummy mode like we did with the DigiRig Lite as the Hamlib dummy
+    # rigs (1 and 6) do not honor the -P flag. Passing -P RTS is ignored. I need to create a custom rig for
+    # the DigiRig Mobile for radios that do not support CAT control, but haver their PTT triggered via 
+    # the RTS signal.
+    if [ "${RIG_ID}" = "6" ]; then
+      et-log "Skipping rigctld startup for DigiRig Mobile since radio does not support CAT control."
       exit 0
     fi
   fi
