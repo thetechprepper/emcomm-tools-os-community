@@ -29,21 +29,20 @@ do_full_auto() {
 
 start() {
 
-  # Special case for VOX devices like the DigiRig Lite and for the DigiRig Mobile
-  # when connected to a radio that does not support CAT control.
+  # Special case for the DigiRig Lite. 
   if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
     RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
 
     # All VOX devices use the dummy mode provided by Hamlib. This helps maintain 
     # a cleaner interface by leveraging rigctl NET in applications.
     if [ "${RIG_ID}" = "1" ]; then
-      et-log "Starting dummy rigctld service for device with no CAT support."
+      et-log "Starting dummy rigctld service for VOX device."
 
       ID=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.id)
       PTT=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.ptt)
 
       CMD="rigctld -m ${ID} -P ${PTT} "
-      et-log "Starting rigctld n VOX mode with: ${CMD}"
+      et-log "Starting rigctld in VOX mode with: ${CMD}"
       $CMD
 
       exit 0

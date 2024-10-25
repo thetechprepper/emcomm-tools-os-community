@@ -1,7 +1,7 @@
 {
   "id": "yaesu-ft897d",
   "vendor": "Yaesu",
-  "model": "FT-897D (Mobile)",
+  "model": "FT-897D (DigiRig)",
   "rigctrl": {
     "id": "1043",
     "baud": "38400",
