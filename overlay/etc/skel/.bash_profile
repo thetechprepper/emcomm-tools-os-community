@@ -1,6 +1,6 @@
 # Author      : Gaston Gonzalez
 # Date        : 23 April 2024
-# Updated     : 20 October 2024
+# Updated     : 25 October 2024
 # Description : bash profile
 
 # All user accounts should be in the 'et-data' group to allow data sharing with
@@ -24,3 +24,5 @@ NC='\x1B[0m'
 echo -e "${YELLOW}"
 cat /etc/motd
 echo -e "${NC}"
+
+export ET_USER_CONFIG=${HOME}/.config/emcomm-tools/user.json

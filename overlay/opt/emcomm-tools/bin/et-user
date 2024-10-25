@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 25 October 2024
+# Purpose  : Set user-specific settings for EmComm Tools.
+
+ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+if [ ! -e ${ET_USER_CONFIG} ]; then
+  cp /etc/skel/.config/emcomm-tools/user.json ${ET_USER_CONFIG}
+fi
+
+CUR_CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+CUR_GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
+
+while true; do
+  read -e -p "Enter your callsign (current: ${CUR_CALLSIGN}): " callsign
+  read -e -p "Enter your maidenhead grid square (current: ${CUR_GRID}): " grid
+
+  callsign=${callsign:-"$CUR_CALLSIGN"}
+  grid=${grid:-"$CUR_GRID"}
+
+  echo
+  echo "Is the following correct?:"
+  echo "Callsign: $callsign"
+  echo "Grid Square: $grid"
+  read -p "(y/n): " confirm
+
+  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+
+cat <<EOF > "${ET_USER_CONFIG}"
+{
+  "callsign": "${callsign}",
+  "grid": "${grid}"
+}
+EOF
+
+      echo "User settings updated..."
+      cat ${ET_USER_CONFIG} | jq .
+      break
+  elif [[ "$confirm" =~ ^[Nn]$ ]]; then
+      echo "Let's try again."
+      echo
+  else
+      echo "Please enter 'y' or 'n'."
+  fi
+done
+
