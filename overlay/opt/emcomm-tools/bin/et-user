@@ -4,7 +4,7 @@
 # Date     : 25 October 2024
 # Purpose  : Set user-specific settings for EmComm Tools.
 
-ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+[ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
 if [ ! -e ${ET_USER_CONFIG} ]; then
   cp /etc/skel/.config/emcomm-tools/user.json ${ET_USER_CONFIG}
