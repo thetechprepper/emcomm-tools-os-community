@@ -34,8 +34,8 @@ start() {
   if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
     RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
 
-    # All devices that have no CAT control must have their ID set to 1. This
-    # a special test mode provided by Hamlib's rigctl NET interface.
+    # All VOX devices use the dummy mode provided by Hamlib. This helps maintain 
+    # a cleaner interface by leveraging rigctl NET in applications.
     if [ "${RIG_ID}" = "1" ]; then
       et-log "Starting dummy rigctld service for device with no CAT support."
 
