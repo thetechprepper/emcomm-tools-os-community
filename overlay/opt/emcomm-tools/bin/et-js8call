@@ -2,13 +2,16 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 24 October 2024
+# Updated : 25 October 2024
 # Purpose : Wrapper script for starting JS8Call with PnP support
 #
 # Preconditions
-# 1. Support radio and audio interface are connected and properly detected
+# 1. Supported radio and audio interface are connected and properly detected
 #
 # Postconditions
-# 1. JS8Call is started with audio settings updated
+# 1. JS8Call audio settings updated
+# 2. JS8Call rig settings updated
+# 3. JS8Call started
 
 usage() {
   echo "usage: $(basename $0) <command>"
@@ -21,6 +24,13 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
+notify_user() {
+  notify-send \
+   -t 10000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
 start() {
   update-config && /usr/bin/js8call &
 }
@@ -28,6 +38,20 @@ start() {
 update-config () {
 
     JS8CALL_CONF_FILE="${HOME}/.config/JS8Call.ini"
+    JS8CALL_TEMPLATE_CONF_FILE=${ET_HOME}/conf/template.d/js8call/JS8Call.rigctl.ini
+
+    # Special case for the DigiRig Mobile when connected to a radio that does 
+    # not support CAT control.
+    if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+      RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
+
+      if [ "${RIG_ID}" = "6" ]; then
+        JS8CALL_TEMPLATE_CONF_FILE=${ET_HOME}/conf/template.d/js8call/JS8Call.no-rigctl.ini
+      fi
+    fi
+
+    cp ${JS8CALL_TEMPLATE_CONF_FILE}  ${JS8CALL_CONF_FILE}
+    et-log "Replaced JS8Call configuration with template: ${JS8CALL_TEMPLATE_CONF_FILE}"
 
     # 1. Check if the symlink was created by the udev rules
     if [ -e /dev/et-audio ]; then
@@ -59,12 +83,15 @@ update-config () {
 
        else
          et-log "No ET_AUDIO device detected."
+         notify_user "Can't start JS8Call. No ET_AUDIO device detected."
          exit 1
        fi
     else
       et-log "No ET_AUDIO device plugged in."
+      notify_user "Can't start JS8Call. No supported audio device plugged in."
       exit 1
     fi
+
 }
 
 case $1 in

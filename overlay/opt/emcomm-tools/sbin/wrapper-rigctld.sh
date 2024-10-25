@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 9 October 2024
-# Updated : 24 October 2024
+# Updated : 25 October 2024
 # Purpose : Wrapper startup/shutdown script around systemd/rigctld
 
 ET_HOME=/opt/emcomm-tools
@@ -29,19 +29,30 @@ do_full_auto() {
 
 start() {
 
-  # Special case for VOX devices like the DigiRig Lite.
+  # Special cases for the DigiRig Lite and DigiRig Mobile with no CAT. 
   if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
-    CUR_RADIO=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .model)
-    if [ "${CUR_RADIO}" = "VOX" ]; then
+    RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
+
+    # All VOX devices use the dummy mode provided by Hamlib. This helps maintain 
+    # a cleaner interface by leveraging rigctl NET in applications.
+    if [ "${RIG_ID}" = "1" ]; then
       et-log "Starting dummy rigctld service for VOX device."
 
       ID=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.id)
       PTT=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.ptt)
 
       CMD="rigctld -m ${ID} -P ${PTT} "
-      et-log "Starting rigctld with: ${CMD}"
+      et-log "Starting rigctld in VOX mode with: ${CMD}"
       $CMD
+      exit 0
+    fi
 
+    # We can't use rigctld in dummy mode like we did with the DigiRig Lite as the Hamlib dummy
+    # rigs (1 and 6) do not honor the -P flag. Passing -P RTS is ignored. I need to create a custom rig for
+    # the DigiRig Mobile for radios that do not support CAT control, but haver their PTT triggered via 
+    # the RTS signal.
+    if [ "${RIG_ID}" = "6" ]; then
+      et-log "Skipping rigctld startup for DigiRig Mobile since radio does not support CAT control."
       exit 0
     fi
   fi

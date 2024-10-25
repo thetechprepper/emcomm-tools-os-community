@@ -1,7 +1,7 @@
 {
   "id": "yaesu-ft818nd",
   "vendor": "Yaesu",
-  "model": "FT-818ND",
+  "model": "FT-818ND (DigiRig)",
   "rigctrl": {
     "id": "1041",
     "baud": "38400",

@@ -101,7 +101,7 @@ case $1 in
           echo "Connected. Can't access VFO"; 
         fi
       else
-        echo "Connected. rigctld not running"
+        echo "Connected. No rig control"
       fi
     else
       echo "Not connected"; 
