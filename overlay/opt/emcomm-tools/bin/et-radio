@@ -2,96 +2,52 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 25 October 2024
+# Updated  : 28 October 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
-function usage() {
-  echo "Usage: $(basename $0) <command>"
-  echo "  active          - show active radio" 
-  echo "  list            - list supported radios by id" 
-  echo "  set             - select active radio"
-}
-
-if [ $# -lt 1 ]; then
-  usage
-  exit 1
-fi
-
 ACTIVE_RADIO="${ET_HOME}/conf/radios.d/active-radio.json"
 
-case $1 in
-  list)
+NO_RADIO_ID="no-radio"
 
-    printf "%-24s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
+options=()
+options+=("${NO_RADIO_ID}" "No radio")
+while IFS= read -r radio; do
+    ID=$(cat $radio | jq -r .id)
+    VENDOR=$(cat $radio | jq -r .vendor)
+    MODEL=$(cat $radio | jq -r .model)
 
-    find ${ET_HOME}/conf/radios.d -type f -name \*.json | sort -n | while read radio; do
-      ID=$(cat $radio | jq -r .id)
-      VENDOR=$(cat $radio | jq -r .vendor)
-      MODEL=$(cat $radio | jq -r .model)
+    options+=("$ID" "$VENDOR $MODEL")
+done < <(find $ET_HOME/conf/radios.d -type f | sort)
 
-      printf "%-24s %-10s %-10s\n" $ID "$VENDOR" "$MODEL"
-    done
+SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
 
-    ;;
-  set)
+tput sgr 0 && clear
 
-    NO_RADIO_ID="no-radio"
+if [ $exit_status -eq 0 ]; then
 
-    options=()
-    options+=("${NO_RADIO_ID}" "No radio")
-    while IFS= read -r radio; do
-        ID=$(cat $radio | jq -r .id)
-        VENDOR=$(cat $radio | jq -r .vendor)
-        MODEL=$(cat $radio | jq -r .model)
+  # Special case to run without a radio configured
+  if [ ${SELECTED_RADIO} == ${NO_RADIO_ID} ]; then
+    [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+    echo "Set active radio to: $SELECTED_RADIO"
+    exit 0
+  fi
 
-        options+=("$ID" "$VENDOR $MODEL")
-    done < <(find $ET_HOME/conf/radios.d -type f | sort)
+  RADIO_CONF="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.json"
+  [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+  ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
+  echo "Set active radio to: $SELECTED_RADIO"
 
-    SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
-    exit_status=$?
+  ID=$(cat ${ACTIVE_RADIO} | jq -r .id)
+  VENDOR=$(cat ${ACTIVE_RADIO} | jq -r .vendor)
+  MODEL=$(cat ${ACTIVE_RADIO} | jq -r .model)
 
-    # Reset terminal to its original state
-    clear && tput sgr0
+  printf "%-20s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
+  printf "%-20s %-10s %-10s\n" $ID "$VENDOR" "$MODEL"
 
-    if [ $exit_status -eq 0 ]; then
-
-      # Special case to run without a radio configured
-      if [ ${SELECTED_RADIO} == ${NO_RADIO_ID} ]; then
-        [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
-        echo "Set active radio to: $SELECTED_RADIO"
-        exit 0
-      fi
-
-      RADIO_CONF="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.json"
-      [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
-      ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
-      echo "Set active radio to: $SELECTED_RADIO"
-    else
-      echo "No radio selected."
-    fi
-
-    ;;
-  active)
-
-    if [ ! -L "${ACTIVE_RADIO}" ]; then
-      echo "No active radio defined. Run: '$(basename $0) set'"
-      exit 1
-    fi
-
-    ID=$(cat ${ACTIVE_RADIO} | jq -r .id)
-    VENDOR=$(cat ${ACTIVE_RADIO} | jq -r .vendor)
-    MODEL=$(cat ${ACTIVE_RADIO} | jq -r .model)
-
-    printf "%-20s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
-    printf "%-20s %-10s %-10s\n" $ID "$VENDOR" "$MODEL"
-
-    printf "\nConfiguration Notes\n"
-    cat ${ACTIVE_RADIO} | jq -r '.notes[] | "* \(.)"'
-    ;;
-  *)
-    echo "Command not supported."
-    usage
-    exit 1
-    ;;
-esac
+  printf "\nConfiguration Notes\n"
+  cat ${ACTIVE_RADIO} | jq -r '.notes[] | "* \(.)"'
+else
+  echo "No radio selected."
+fi
