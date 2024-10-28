@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 24 October 2024
-# Updated : 25 October 2024
+# Updated : 28 October 2024
 # Purpose : Wrapper script for starting JS8Call with PnP support
 #
 # Preconditions
@@ -10,8 +10,7 @@
 #
 # Postconditions
 # 1. JS8Call audio settings updated
-# 2. JS8Call rig settings updated
-# 3. JS8Call started
+# 2. JS8Call started
 
 usage() {
   echo "usage: $(basename $0) <command>"
@@ -26,7 +25,7 @@ fi
 
 notify_user() {
   notify-send \
-   -t 10000 \
+   -t 5000 \
    --app-name="EmComm Tools" \
    "$1"
 }
@@ -41,19 +40,6 @@ update-config () {
     JS8CALL_TEMPLATE_CONF_FILE=${ET_HOME}/conf/template.d/js8call/JS8Call.rigctl.ini
    
     [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
-
-    # Special case for the DigiRig Mobile when connected to a radio that does 
-    # not support CAT control.
-    if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
-      RIG_ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .rigctrl.id)
-
-      if [ "${RIG_ID}" = "6" ]; then
-        JS8CALL_TEMPLATE_CONF_FILE=${ET_HOME}/conf/template.d/js8call/JS8Call.no-rigctl.ini
-      fi
-    fi
-
-    cp ${JS8CALL_TEMPLATE_CONF_FILE}  ${JS8CALL_CONF_FILE}
-    et-log "Replaced JS8Call configuration with template: ${JS8CALL_TEMPLATE_CONF_FILE}"
 
     # Update configuration with current callsign and grid
     CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
