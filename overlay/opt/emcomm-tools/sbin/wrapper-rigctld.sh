@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 9 October 2024
-# Updated : 25 October 2024
+# Updated : 28 October 2024
 # Purpose : Wrapper startup/shutdown script around systemd/rigctld
 
 ET_HOME=/opt/emcomm-tools
@@ -47,14 +47,6 @@ start() {
       exit 0
     fi
 
-    # We can't use rigctld in dummy mode like we did with the DigiRig Lite as the Hamlib dummy
-    # rigs (1 and 6) do not honor the -P flag. Passing -P RTS is ignored. I need to create a custom rig for
-    # the DigiRig Mobile for radios that do not support CAT control, but haver their PTT triggered via 
-    # the RTS signal.
-    if [ "${RIG_ID}" = "6" ]; then
-      et-log "Skipping rigctld startup for DigiRig Mobile since radio does not support CAT control."
-      exit 0
-    fi
   fi
 
   if [ ! -e ${CAT_DEVICE} ]; then
@@ -80,6 +72,17 @@ start() {
   ID=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.id)
   BAUD=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.baud)
   PTT=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.ptt)
+
+  # Special case for DigiRig Mobile for radios with no CAT control.
+  if [ "${ID}" = "6" ]; then
+    et-log "Starting rigctld in RTS PTT only mode with: ${CMD}"
+    PTT=$(cat ${ET_HOME}/conf/radios.d/active-radio.json | jq -r .rigctrl.ptt)
+
+    CMD="rigctld -p ${CAT_DEVICE} -P ${PTT} "
+    et-log "Starting rigctld in RTS PTT only mode with: ${CMD}"
+    $CMD
+    exit 0
+  fi
 
   # Generate command
   CMD="rigctld -m ${ID} -r ${CAT_DEVICE} -s ${BAUD} -P ${PTT} "
