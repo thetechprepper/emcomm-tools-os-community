@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 24 October 2024
-# Updated : 28 October 2024
+# Updated : 31 October 2024
 # Purpose : Wrapper script for starting JS8Call with PnP support
 #
 # Preconditions
@@ -62,7 +62,15 @@ update-config () {
        APLAY_OUT=$(arecord -l | grep ET_AUDIO)
        if [ $? -eq 0 ]; then
          AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
-         JS8_AUDIO_DEVICE="plughw:CARD=ET_AUDIO,DEV=${AUDIO_DEVICE}"
+
+         # JS8Call has an issue decoding the received audio following a 
+         # transmission when the device below is used. 
+         #
+         #JS8_AUDIO_DEVICE="plughw:CARD=ET_AUDIO,DEV=${AUDIO_DEVICE}"
+         #
+         # Instead, the following device solves this issue:
+         JS8_AUDIO_DEVICE="sysdefault:CARD=ET_AUDIO"
+  
          et-log "Using '${JS8_AUDIO_DEVICE}' for JS8Call configuration."
 
          # 3. Check for existing JS8Call sound configuration
@@ -82,6 +90,9 @@ update-config () {
          else
            echo "SoundOutName=\"${JS8_AUDIO_DEVICE}\"" >> ${JS8CALL_CONF_FILE}
          fi
+
+         ## Configure ALSA settings for sound card
+         /opt/emcomm-tools/bin/et-audio update-config
 
        else
          et-log "No ET_AUDIO device detected."
