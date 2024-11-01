@@ -14,15 +14,35 @@
 DIREWOLF_CONF_FILE=${ET_HOME}/conf/template.d/packet/direwolf.conf
 
 usage() {
-  echo "usage: $(basename $0) <command>"
-  echo "  start           - Update config and start Dire Wolf"
-  echo "  update-config   - Update config"
+  echo "usage: $(basename $0) <command> <type>"
+  echo "  <command>"
+  echo "    start           - Start Dire Wolf in selected mode"
+  echo "    update-config   - Update configuration for selected mode"
+  echo ""
+  echo "  <type>"
+  echo "    digipeater-only - Run in RF-only digipeater mode"
+  echo "    simple-packet   - Run in simple packet mode"
 }
 
-if [ $# -ne 1 ]; then
+if [ $# -ne 2 ]; then
   usage
   exit 1
 fi
+
+MODE=$2
+case "${MODE}" in
+  digipeater-only)
+    DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
+  ;;
+  simple-packet)
+    DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
+  ;;
+  *)
+    et-log "Can't started Dire Wolf. Mode '${MODE}' not supported"
+    usage
+    exit 1
+  ;;
+esac
 
 notify_user() {
   notify-send \
@@ -47,8 +67,8 @@ start() {
 
 update-config () {
 
-    DIREWOLF_TEMPLATE_CONF_FILE=${ET_HOME}/conf/template.d/packet/direwolf.simple-packet.conf
-   
+    et-log "Attempting to start Dire Wolf in mode: '${MODE}'"
+
     [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
     CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
