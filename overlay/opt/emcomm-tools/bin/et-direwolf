@@ -1,0 +1,134 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 1 November 2024
+# Purpose : Wrapper script for starting Dire Wolf with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. Audio settings updated
+# 2. Dire Wolf started
+
+DIREWOLF_CONF_FILE=${ET_HOME}/conf/template.d/packet/direwolf.conf
+
+usage() {
+  echo "usage: $(basename $0) <command> <type>"
+  echo "  <command>"
+  echo "    start           - Start Dire Wolf in selected mode"
+  echo "    update-config   - Update configuration for selected mode"
+  echo ""
+  echo "  <type>"
+  echo "    digipeater-only - Run in RF-only digipeater mode"
+  echo "    simple-packet   - Run in simple packet mode"
+}
+
+if [ $# -ne 2 ]; then
+  usage
+  exit 1
+fi
+
+MODE=$2
+case "${MODE}" in
+  digipeater-only)
+    DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
+  ;;
+  simple-packet)
+    DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
+  ;;
+  *)
+    et-log "Can't started Dire Wolf. Mode '${MODE}' not supported"
+    usage
+    exit 1
+  ;;
+esac
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+start() {
+  update-config
+  
+  if [ $? -eq 0 ]; then
+    CMD="direwolf -c ${DIREWOLF_CONF_FILE} -t 0 -p"
+    et-log "Starting Dire Wolf with: '${CMD}'"
+    echo
+    ${CMD}
+  else 
+    et-log "Error updating configuration. Can't start Dire Wolf"
+    exit 1
+  fi
+}
+
+update-config () {
+
+    et-log "Attempting to start Dire Wolf in mode: '${MODE}'"
+
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start Dire Worlf. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [ $? -eq 0 ]; then
+         AUDIO_CARD=$(echo $APLAY_OUT | cut -d":" -f1 | awk '{print $2}')
+         AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+         DIREWOLF_AUDIO_DEVICE="plughw:${AUDIO_CARD},${AUDIO_DEVICE}"
+
+         et-log "Creating '${DIREWOLF_CONF_FILE}' from template '${DIREWOLF_TEMPLATE_CONF_FILE}'"
+         cp ${DIREWOLF_TEMPLATE_CONF_FILE} ${DIREWOLF_CONF_FILE}
+
+         # 3. Update callsign
+         sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${DIREWOLF_CONF_FILE} 
+
+         # 4. Update audio device
+         et-log "Using '${DIREWOLF_AUDIO_DEVICE}' as audio device for Dire Wolf configuration."
+         sed -i "s|{{ET_AUDIO_DEVICE}}|${DIREWOLF_AUDIO_DEVICE}|g" ${DIREWOLF_CONF_FILE} 
+
+         echo "Generated the configuration below..."
+         echo
+         cat ${DIREWOLF_CONF_FILE}
+         echo
+
+         # Configure ALSA settings for sound card
+         /opt/emcomm-tools/bin/et-audio update-config
+
+       else
+         et-log "No ET_AUDIO device detected."
+         notify_user "Can't start Dire Wolf. No ET_AUDIO device detected."
+         exit 1
+       fi
+    else
+      et-log "No ET_AUDIO device plugged in."
+      notify_user "Can't start Dire Wolf. No supported audio device plugged in."
+      exit 1
+    fi
+
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
