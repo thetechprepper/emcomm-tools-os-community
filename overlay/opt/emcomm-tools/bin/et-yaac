@@ -1,0 +1,95 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 3 November 2024
+# Purpose : Wrapper script for starting YAAC with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+# 2. Dire Wolf is started
+#
+# Postconditions:
+# 1. YAAC is started
+# 2. Callsign is updated in YAAC
+
+YAAC_CONF_DIR=${HOME}/.java/.userPrefs/org/ka2ddo/yaac
+YAAC_CONF_FILE_PORTS=${YAAC_CONF_DIR}/Ports/prefs.xml
+YAAC_CONF_FILE_PORTS_TEMPLATE=/etc/skel/.java/.userPrefs/org/ka2ddo/yaac/Ports/prefs.xml
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  <command>"
+  echo "    start           - Start YAAC"
+  echo "    update-config   - Update configuration for selected mode"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+start() {
+  update-config
+  
+  if [ $? -eq 0 ]; then
+
+    RIGCTLD_OUT=$(ps -ef | grep [d]irewolf)
+    if [ $? -ne 0 ]; then
+      et-log "Can't start YAAC. Dire Wolf not running."
+      notify_user "Can't start YAAC. Dire Wolf not running."
+      exit 1
+    fi
+
+    CMD="java -jar /opt/yaac/YAAC.jar"
+    et-log "Starting YAAC with: ${CMD}"
+
+    ${CMD}
+   
+  else 
+    et-log "Error updating configuration. Can't start YAAC"
+    exit 1
+  fi
+}
+
+update-config () {
+
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start YAAC. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    et-log "Updating YAAC ports file: ${YAAC_CONF_FILE_PORTS}..."
+    cp -v ${YAAC_CONF_FILE_PORTS_TEMPLATE} ${YAAC_CONF_FILE_PORTS}
+    sed -i "s|N0CAL|${CALLSIGN}|g" ${YAAC_CONF_FILE_PORTS}
+    
+    echo "Generated the configuration below..."
+    echo
+    cat ${YAAC_CONF_FILE_PORTS}
+    echo
+
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
