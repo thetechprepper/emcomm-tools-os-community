@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 28 October 2024
+# Updated  : 3 November 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -48,6 +48,9 @@ if [ $exit_status -eq 0 ]; then
 
   printf "\nConfiguration Notes\n"
   cat ${ACTIVE_RADIO} | jq -r '.notes[] | "* \(.)"'
+
+  
+  printf "\n** Plug in radio. If already connected, reconnect it.\n"
 else
   echo "No radio selected."
 fi

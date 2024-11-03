@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 30 October 2024
+# Updated : 3 November 2024
 # Purpose : Main installer for EmComm Tools OS Community
 
 . ./env.sh
@@ -35,6 +35,8 @@ exitIfNotRoot
 
 ./install-conky.sh
 
+# Install packet tool chain
 ./install-direwolf.sh
+./install-yaac.sh
 
 ./install-audio-tools.sh

@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 6 October 2024
+# Updated : 11 November 2024
 # Purpose : Install base tools and configuration
 set -e
 
@@ -21,7 +21,7 @@ apt install \
   gpg \
   jq \
   net-tools \
-  openjdk-11-jdk \
+  openjdk-20-jdk \
   openssh-server \
   screen \
   stow \
