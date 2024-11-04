@@ -1,6 +1,6 @@
 {
-  "mycall": "",
-  "secure_login_password": "",
+  "mycall": "{{ET_CALLSIGN}}",
+  "secure_login_password": "{{ET_WINLINK_PASSWD}}",
   "auxiliary_addresses": [],
   "locator": "",
   "service_codes": [

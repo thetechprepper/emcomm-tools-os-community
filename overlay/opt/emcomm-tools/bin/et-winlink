@@ -1,0 +1,95 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 4 November 2024
+# Purpose : Wrapper script for starting YAAC with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+# 2. Appropriate modem is started (Dire Wolf or ARDOP). 
+#
+# Postconditions:
+# 1. Callsign and Winlink password are updated 
+# 2. pat http is started
+
+PAT_CONF_FILE=${HOME}/.config/pat/config.json
+PAT_CONF_FILE_TEMPLATE=/etc/skel/.config/pat/config.json
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  <command>"
+  echo "    start-packet    - Start Pat Winlink in packet mode"
+  echo "    update-config   - Update configuration for selected mode"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+start_packet() {
+  update_config
+  
+  if [ $? -eq 0 ]; then
+
+    RIGCTLD_OUT=$(ps -ef | grep [d]irewolf)
+    if [ $? -ne 0 ]; then
+      et-log "Can't start Pat in packet mode. Dire Wolf not running."
+      notify_user "Can't start Pat. Dire Wolf not running."
+      exit 1
+    fi
+
+    CMD="pat http"
+    et-log "Starting Pat with: ${CMD}"
+
+    ${CMD}
+   
+  else 
+    et-log "Error updating configuration. Can't start Pat"
+    exit 1
+  fi
+}
+
+update_config () {
+
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start Pat. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    et-log "Updating Pat configuration file: ${PAT_CONF_FILE}..."
+    cp -v ${PAT_CONF_FILE_TEMPLATE} ${PAT_CONF_FILE}
+    sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${PAT_CONF_FILE}
+
+
+    #systemctl status gpsd --no-pager > /dev/null
+    #if [ $? -ne 0 ]; then
+    #  et-log "GPS not connected. Removing GPS port from configuration."
+    #  sed -i '/GPSD/d' ${YAAC_CONF_FILE_PORTS}
+    #fi
+}
+
+case $1 in
+  start-packet)
+    start_packet
+    ;;
+  update-config)
+    update_config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac

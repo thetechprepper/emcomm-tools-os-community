@@ -10,8 +10,8 @@
 # 2. Dire Wolf is started
 #
 # Postconditions:
-# 1. YAAC is started
-# 2. Callsign is updated in YAAC
+# 1. Callsign is updated in YAAC
+# 2. YAAC is started
 
 YAAC_CONF_DIR=${HOME}/.java/.userPrefs/org/ka2ddo/yaac
 YAAC_CONF_FILE_PORTS=${YAAC_CONF_DIR}/Ports/prefs.xml
