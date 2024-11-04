@@ -39,6 +39,8 @@ exitIfNotRoot
 ./install-direwolf.sh
 ./install-yaac.sh
 
+./install-winlink.sh
+
 ./install-audio-tools.sh
 
 # Add user-specific data
