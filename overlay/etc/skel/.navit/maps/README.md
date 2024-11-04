@@ -62,6 +62,6 @@ mv arizona-latest.osm.pbf ~/.navit/maps/
 
 2. Navigate to _File_ > _OpenStreetMap_ > _Import RAW OSM Map File_.
 
-3. Select the `.osm.bpf` that you downloaded earlier.
+3. Select the `.osm.pbf` that you downloaded earlier.
 
 4. This will take 5-10 minutes for state-level map files.
