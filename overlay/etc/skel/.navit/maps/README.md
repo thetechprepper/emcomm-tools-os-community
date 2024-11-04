@@ -1,4 +1,6 @@
-# Adding a Map to Navit
+# Adding Maps to Navit (Option 1)
+
+Note: Use this approach if you only need offline maps for Navit.
 
 1. Visit [Navit - Planet Extractor](http://maps3.navit-project.org/)
 
@@ -17,26 +19,49 @@ Note: The current Navit configuration specifies the map directory using
       with a `*.bin` extension will automatically be supported.
 
 
-## Loading Larger Maps (OSM)
+## Building Maps from Source OSM Data (Option 2)
 
-If you have the storage and want larger maps, it is suggested that you 
-use the OpenStreetMap (OSM) extracts from http://download.geofabrik.de/.
+Note: Use this approach if need offline maps for Navit and YAAC. It will
+      can also be used if you plan to run your own OSM tile server in the
+      future.
 
-Here's the approach used for loading a map for the Southwest region in
-the US.
+This approach requires that you download the desired `.pbf` OSM files and
+generate the binary maps for each application. The process can take a 
+considerable amount of time and storage depending on the size of the map.
+
+It is recommended that you limit the source OSM download to your state or
+region. As an example, the state of Arizona will be used.
 
 1. Visit [North America](http://download.geofabrik.de/north-america.html).
 
-2. Download the "US West" [.osm.bz2](http://download.geofabrik.de/north-america/us-west-latest.osm.bz2)
-   file.
+2. Click _United States of America_ under _Sub Regions_.
 
-3. Upload `us-west-latest.osm.bz2` to your `~/.navit/maps` directory.
+3. Download the desired state `.osm.pbf` file (i.e. arizona-latest.osm.pbf)
 
-4. Convert the map to a format that Navit can understand. This will take several hours.
+### Generate Navit Map
+
+1. Generate a `.bin` using `maptool`. This will generate `arizona-lastest.osm.bin`. 
+   This can take 5-10 minutes depending on your machine.
 
 ```
-$ cd ~/.navit/maps
-$ time bzcat us-west-latest.osm.bz2 | maptool -6 us-west-latest-osm.bin
+maptool --protobuf -i arizona-latest.osm.pbf arizona-lastest.osm.bin
 ```
 
+2. Move the generated `.bin` file to your user's navit map directory.
 
+```
+mv arizona-latest.osm.pbf ~/.navit/maps/
+```
+
+3. Keep the source `.osm.pbf` as you will need it for the YAAC map import.
+
+
+### Generate YAAC Map
+
+1. Start YAAC with `et-yaac`.
+
+2. Navigate to _File_ > _OpenStreetMap_ > _Import RAW OSM Map File_.
+
+3. Select the `.osm.bpf` that you downloaded earlier.
+
+4. This will take 5-10 minutes for state-level map files.
