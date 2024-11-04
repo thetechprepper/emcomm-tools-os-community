@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 3 November 2024
+# Updated : 4 November 2024
 # Purpose : Main installer for EmComm Tools OS Community
 
 . ./env.sh
@@ -40,3 +40,6 @@ exitIfNotRoot
 ./install-yaac.sh
 
 ./install-audio-tools.sh
+
+# Add user-specific data
+./download-osm-maps.sh
