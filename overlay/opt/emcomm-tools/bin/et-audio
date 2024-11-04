@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 31 October 2024
+# Updated : 4 November 2024
 # Purpose : Configures ET audio device with sane defaults
 #
 # Preconditions
@@ -73,7 +74,7 @@ update-config () {
            et-log "Applied amixer settings for ${ET_DEVICE_NAME}"
          ;;
          *)
-           el-log "No ALSA configuration specified for this ET_DEVICE."
+           et-log "No ALSA configuration specified for this ET_DEVICE."
          ;;
        esac
 
