@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 3 November 2024
+# Updated : 4 November 2024
 # Purpose : Wrapper script for starting YAAC with PnP support
 #
 # Preconditions:
@@ -73,6 +74,12 @@ update-config () {
     cp -v ${YAAC_CONF_FILE_PORTS_TEMPLATE} ${YAAC_CONF_FILE_PORTS}
     sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${YAAC_CONF_FILE_PORTS}
 
+
+    systemctl status gpsd --no-pager > /dev/null
+    if [ $? -ne 0 ]; then
+      et-log "GPS not connected. Removing GPS port from configuration."
+      sed -i '/GPSD/d' ${YAAC_CONF_FILE_PORTS}
+    fi
     
     echo "Generated the configuration below..."
     echo
