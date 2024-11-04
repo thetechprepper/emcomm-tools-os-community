@@ -71,7 +71,8 @@ update-config () {
 
     et-log "Updating YAAC ports file: ${YAAC_CONF_FILE_PORTS}..."
     cp -v ${YAAC_CONF_FILE_PORTS_TEMPLATE} ${YAAC_CONF_FILE_PORTS}
-    sed -i "s|N0CAL|${CALLSIGN}|g" ${YAAC_CONF_FILE_PORTS}
+    sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${YAAC_CONF_FILE_PORTS}
+
     
     echo "Generated the configuration below..."
     echo
