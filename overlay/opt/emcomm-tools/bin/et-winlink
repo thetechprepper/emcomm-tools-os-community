@@ -11,6 +11,7 @@
 # Postconditions:
 # 1. Callsign and Winlink password are updated 
 # 2. pat http is started
+set -e
 
 PAT_CONF_FILE=${HOME}/.config/pat/config.json
 PAT_CONF_FILE_TEMPLATE=/etc/skel/.config/pat/config.json
@@ -62,6 +63,7 @@ update_config () {
     [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
     CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+    WINLINK_PASSWD=$(cat ${ET_USER_CONFIG} | jq -r .winlinkPasswd)
 
     if [ "${CALLSIGN}" = "N0CALL" ]; then
       notify_user "Can't start Pat. No callsign set. Run: et-user."
@@ -70,14 +72,9 @@ update_config () {
 
     et-log "Updating Pat configuration file: ${PAT_CONF_FILE}..."
     cp -v ${PAT_CONF_FILE_TEMPLATE} ${PAT_CONF_FILE}
+
     sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${PAT_CONF_FILE}
-
-
-    #systemctl status gpsd --no-pager > /dev/null
-    #if [ $? -ne 0 ]; then
-    #  et-log "GPS not connected. Removing GPS port from configuration."
-    #  sed -i '/GPSD/d' ${YAAC_CONF_FILE_PORTS}
-    #fi
+    sed -i "s|{{ET_WINLINK_PASSWD}}|${WINLINK_PASSWD}|g" ${PAT_CONF_FILE}
 }
 
 case $1 in
