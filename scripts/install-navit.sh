@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author   : Gaston Gonzalez
 # Date     : 1 October 2024
-# Updated  : 2 OCtober 2024
+# Updated  : 4 OCtober 2024
 # Purpose  : Navit installer for EmComm Tools
 # Category : Maps
 #
@@ -19,4 +19,5 @@ apt install \
   libcanberra-gtk-dev \
   maptool \
   espeak \
+  osmium-tool \
   -y 
