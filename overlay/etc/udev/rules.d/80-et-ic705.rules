@@ -1,6 +1,6 @@
 # Author   : Gaston Gonzalez
 # Date     : 28 September 2024
-# Updated  : 21 October 2024
+# Updated  : 4 November 2024
 # Purpose  : udev rules for the Icom IC-705
 #
 # Preconditions:
@@ -35,7 +35,8 @@ ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
 
 # This rule generically matches the following Icom radios: 
 # 1. IC-705
-# 2. IC-7200
+# 2. IC-7100
+# 3. IC-7200
 SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="2901", ENV{ET_DEVICE}=="", \
     ACTION=="add", \
     ATTR{id}="ET_AUDIO", \

@@ -1,7 +1,7 @@
 # Author   : Gaston Gonzalez
 # Author   : William McKeehan (https://github.com/mckeehan) 
 # Date     : 30 September 2024
-# Updated  : 14 October 2024
+# Updated  : 4 November 2024
 # Purpose  : udev rules for the Icom IC-7100
 #
 # Preconditions:
@@ -13,6 +13,7 @@
 # 1. /dev/et-cat created
 # 2. /dev/et-gps created
 # 3. rigctld is started
+# 4. /dev/et-audio created
 
 KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7100*", \
     ENV{ET_DEVICE}="IC-7100"
@@ -31,4 +32,11 @@ ENV{ET_DEVICE}=="IC-7100", SUBSYSTEMS=="usb", ATTRS{serial}=="IC-7100*B", \
     ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
     RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
 
-# TODO: Add rules for sound card
+# This rule generically matches the following Icom radios: 
+# 1. IC-705
+# 2. IC-7100
+# 3. IC-7200
+SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="2901", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="Icom generic", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
