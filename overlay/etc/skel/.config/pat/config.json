@@ -14,7 +14,12 @@
     "telnet": "telnet://{mycall}:CMSTelnet@cms.winlink.org:8772/wl2k"
   },
   "listen": [],
-  "hamlib_rigs": {},
+  "hamlib_rigs": {
+    "et-rig": {
+      "address": "localhost:4532", 
+      "network": "tcp"
+    }
+  },
   "ax25": {
     "port": "wl2k",
     "beacon": {
