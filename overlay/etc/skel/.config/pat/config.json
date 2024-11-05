@@ -1,0 +1,83 @@
+{
+  "mycall": "{{ET_CALLSIGN}}",
+  "secure_login_password": "{{ET_WINLINK_PASSWD}}",
+  "auxiliary_addresses": [],
+  "locator": "{{ET_GRID}}",
+  "service_codes": [
+    "PUBLIC"
+  ],
+  "http_addr": "localhost:8080",
+  "motd": [
+    "Open source Winlink client - getpat.io"
+  ],
+  "connect_aliases": {
+    "telnet": "telnet://{mycall}:CMSTelnet@cms.winlink.org:8772/wl2k"
+  },
+  "listen": [],
+  "hamlib_rigs": {
+    "et-rig": {
+      "address": "localhost:4532", 
+      "network": "tcp"
+    }
+  },
+  "ax25": {
+    "engine": "agwpe",
+    "beacon": {
+      "every": 3600,
+      "message": "Winlink P2P",
+      "destination": "IDENT"
+    },
+    "agwpe": {"addr": "localhost:8000", "radio_port": 0}
+  },
+  "serial-tnc": {
+    "path": "/dev/ttyUSB0",
+    "serial_baud": 9600,
+    "hbaud": 1200,
+    "type": "Kenwood"
+  },
+  "ardop": {
+    "addr": "localhost:8515",
+    "arq_bandwidth": {
+      "Forced": false,
+      "Max": 500
+    },
+    "rig": "",
+    "ptt_ctrl": false,
+    "beacon_interval": 0,
+    "cwid_enabled": true
+  },
+  "pactor": {
+    "path": "/dev/ttyUSB0",
+    "baudrate": 57600,
+    "rig": "",
+    "custom_init_script": ""
+  },
+  "telnet": {
+    "listen_addr": ":8774",
+    "password": ""
+  },
+  "varahf": {
+    "host": "localhost",
+    "cmdPort": 8300,
+    "dataPort": 8301,
+    "bandwidth": 2300,
+    "rig": "",
+    "ptt_ctrl": false
+  },
+  "varafm": {
+    "host": "localhost",
+    "cmdPort": 8300,
+    "dataPort": 8301,
+    "bandwidth": 0,
+    "rig": "",
+    "ptt_ctrl": false
+  },
+  "gpsd": {
+    "enable_http": false,
+    "allow_forms": false,
+    "use_server_time": false,
+    "addr": "localhost:2947"
+  },
+  "schedule": {},
+  "version_reporting_disabled": false
+}
