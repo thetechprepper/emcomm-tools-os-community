@@ -63,6 +63,7 @@ update_config () {
     [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
     CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+    GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
     WINLINK_PASSWD=$(cat ${ET_USER_CONFIG} | jq -r .winlinkPasswd)
 
     if [ "${CALLSIGN}" = "N0CALL" ]; then
@@ -75,6 +76,7 @@ update_config () {
 
     sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${PAT_CONF_FILE}
     sed -i "s|{{ET_WINLINK_PASSWD}}|${WINLINK_PASSWD}|g" ${PAT_CONF_FILE}
+    sed -i "s|{{ET_GRID}}|${GRID}|g" ${PAT_CONF_FILE}
 }
 
 case $1 in

@@ -2,7 +2,7 @@
   "mycall": "{{ET_CALLSIGN}}",
   "secure_login_password": "{{ET_WINLINK_PASSWD}}",
   "auxiliary_addresses": [],
-  "locator": "",
+  "locator": "{{ET_GRID}}",
   "service_codes": [
     "PUBLIC"
   ],
