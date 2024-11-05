@@ -21,13 +21,13 @@
     }
   },
   "ax25": {
-    "port": "wl2k",
+    "engine": "agwpe",
     "beacon": {
       "every": 3600,
       "message": "Winlink P2P",
       "destination": "IDENT"
     },
-    "rig": ""
+    "agwpe": {"addr": "localhost:8000", "radio_port": 0}
   },
   "serial-tnc": {
     "path": "/dev/ttyUSB0",
