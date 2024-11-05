@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 4 November 2024
+# Updated : 5 November 2024
 # Purpose : Main installer for EmComm Tools OS Community
 
 . ./env.sh
@@ -38,6 +38,9 @@ exitIfNotRoot
 # Install packet tool chain
 ./install-direwolf.sh
 ./install-yaac.sh
+
+# Install modems
+./install-ardop.sh
 
 ./install-winlink.sh
 

@@ -41,8 +41,8 @@
       "Forced": false,
       "Max": 500
     },
-    "rig": "",
-    "ptt_ctrl": false,
+    "rig": "et-rig",
+    "ptt_ctrl": true,
     "beacon_interval": 0,
     "cwid_enabled": true
   },

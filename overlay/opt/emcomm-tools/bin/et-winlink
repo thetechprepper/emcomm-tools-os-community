@@ -2,16 +2,16 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 4 November 2024
+# Updated : 5 November 2024
 # Purpose : Wrapper script for starting YAAC with PnP support
 #
 # Preconditions:
 # 1. Supported radio and audio interface are connected and properly detected
-# 2. Appropriate modem is started (Dire Wolf or ARDOP). 
+# 2. Appropriate modem is started: Dire Wolf (et-direwolf) or ARDOP (et-ardop). 
 #
 # Postconditions:
-# 1. Callsign and Winlink password are updated 
+# 1. Callsign, Winlink  password, and grid are updated are updated 
 # 2. pat http is started
-set -e
 
 PAT_CONF_FILE=${HOME}/.config/pat/config.json
 PAT_CONF_FILE_TEMPLATE=/etc/skel/.config/pat/config.json
@@ -19,6 +19,7 @@ PAT_CONF_FILE_TEMPLATE=/etc/skel/.config/pat/config.json
 usage() {
   echo "usage: $(basename $0) <command>"
   echo "  <command>"
+  echo "    start-ardop     - Start Pat Winlink in ardop mode"
   echo "    start-packet    - Start Pat Winlink in packet mode"
   echo "    update-config   - Update configuration for selected mode"
 }
@@ -30,32 +31,43 @@ fi
 
 notify_user() {
   notify-send \
-   -t 5000 \
+   -t 10000 \
    --app-name="EmComm Tools" \
    "$1"
 }
 
-start_packet() {
-  update_config
-  
-  if [ $? -eq 0 ]; then
+start_ardop() {
 
-    RIGCTLD_OUT=$(ps -ef | grep [d]irewolf)
-    if [ $? -ne 0 ]; then
-      et-log "Can't start Pat in packet mode. Dire Wolf not running."
-      notify_user "Can't start Pat. Dire Wolf not running."
-      exit 1
-    fi
-
-    CMD="pat http"
-    et-log "Starting Pat with: ${CMD}"
-
-    ${CMD}
-   
-  else 
-    et-log "Error updating configuration. Can't start Pat"
+  ps -ef | grep "[a]rdopcf"
+  if [ $? -ne 0 ]; then
+    et-log "Can't start Pat in ARDOP mode. ARDOP not running. Run: et-ardop"
+    notify_user "ARDOP not running. Run: et-ardop"
     exit 1
   fi
+
+  update_config
+
+  CMD="pat http"
+  et-log "Starting Pat with: ${CMD}"
+
+  ${CMD}
+}
+
+start_packet() {
+  
+  RIGCTLD_OUT=$(ps -ef | grep "[d]irewolf")
+  if [ $? -ne 0 ]; then
+    et-log "Can't start Pat in packet mode. Dire Wolf not running. Run: et-direwolf simple-packet"
+    notify_user "Dire Wolf not running. Run: et-direwolf simple-packet"
+    exit 1
+  fi
+
+  update_config
+
+  CMD="pat http"
+  et-log "Starting Pat with: ${CMD}"
+
+  ${CMD}
 }
 
 update_config () {
@@ -80,6 +92,9 @@ update_config () {
 }
 
 case $1 in
+  start-ardop)
+    start_ardop
+    ;;
   start-packet)
     start_packet
     ;;
