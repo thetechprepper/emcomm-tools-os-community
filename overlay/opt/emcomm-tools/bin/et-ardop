@@ -16,6 +16,9 @@
 
 ARDOP_PORT=8515
 
+[ -z ${ET_LOG_DIR} ] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
+[ ! -e ${ET_LOG_DIR} ] && mkdir -p ${ET_LOG_DIR}
+
 # 1. Check if the symlink was created by the udev rules
 if [ -e /dev/et-audio ]; then
 
@@ -41,6 +44,6 @@ else
   exit 1
 fi
 
-CMD="ardopcf ${ARDOP_PORT} ${ARDOP_AUDIO_DEVICE} ${ARDOP_AUDIO_DEVICE}"
+CMD="ardopcf ${ARDOP_PORT} ${ARDOP_AUDIO_DEVICE} ${ARDOP_AUDIO_DEVICE} --logdir ${ET_LOG_DIR}"
 et-log "Starting ARDOP with: '${CMD}'"
 ${CMD}
