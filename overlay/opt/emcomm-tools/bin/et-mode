@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 6 November 2024
+# Purpose  : Configures the system for a specific mode of operation
+set -e
+
+# TODO check for call, radio, audio
+
+MODE_ID_NONE="none"
+MODE_ID_APRS_DIGIPEATER="aprs-digipeater" 
+MODE_ID_APRS_CLIENT="aprs-client" 
+MODE_ID_WINLINK_ARDOP="winlink-ardop" 
+MODE_ID_WINLINK_PACKET="winlink-packet" 
+
+options=()
+options+=("${MODE_ID_NONE}" "No mode selected")
+options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Client (YAAC)")
+options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
+options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
+options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
+
+SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
+
+tput sgr 0 && clear
+
+if [ $exit_status -eq 0 ]; then
+
+ # TODO Stop all modes before start
+
+  case ${SELECTED_MODE} in
+    *)
+      echo "Mode ${SELECTED_MODE} not ey supported"
+      exit 1
+    ;;
+  esac
+
+else
+  et-log "No mode selected"
+  exit 1
+fi
+
