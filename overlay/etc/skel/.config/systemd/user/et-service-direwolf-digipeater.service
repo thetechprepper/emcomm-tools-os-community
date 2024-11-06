@@ -10,7 +10,7 @@
 #  Reload this config : systemctl --user daemon-reload
 
 [Unit]
-Description=EmComm Tools Dir Wolf simple packet service
+Description=EmComm Tools Dire Wolf simple packet service
 # Disable conditional check for audio device. Allow et-ardop to enforce.
 #ConditionPathExists=/dev/et-audio
 
