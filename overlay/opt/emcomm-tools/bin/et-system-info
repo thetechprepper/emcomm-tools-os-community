@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 30 October 2024
+# Updated  : 6 November 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -13,6 +13,7 @@ function usage() {
   echo "  et-audio-card - Display audio card and device: <card>,<device>"
   echo "  et-cat        - Show state of CAT control interface"
   echo "  et-gps        - Show state of GPS interface"
+  echo "  et-mode       - Show current mode"
   echo "  grid          - Current grid square defined by user"
   echo "  ip            - System IP address"
   echo "  release       - EmComm Tools release"
@@ -168,6 +169,37 @@ case $1 in
     fi
 
     ;; 
+  et-mode)
+    SELECTED_MODE=$(cat "${HOME}/.config/emcomm-tools/et-mode")
+
+    MODE_ID_NONE="none"
+    MODE_ID_APRS_DIGIPEATER="aprs-digipeater"
+    MODE_ID_APRS_CLIENT="aprs-client"
+    MODE_ID_WINLINK_ARDOP="winlink-ardop"
+    MODE_ID_WINLINK_PACKET="winlink-packet"
+
+    case ${SELECTED_MODE} in
+      ${MODE_ID_NONE})
+        echo "Not selected"
+      ;;
+      ${MODE_ID_APRS_DIGIPEATER})
+        echo "Digipeater"
+      ;;
+      ${MODE_ID_APRS_CLIENT})
+        echo "APRS"
+      ;;
+      ${MODE_ID_WINLINK_ARDOP})
+        echo "Winlink ARDOP"
+      ;;
+      ${MODE_ID_WINLINK_PACKET})
+        echo "Winlink Packet"
+      ;;
+      *)
+        echo "Unknown"
+      ;;
+    esac
+
+    ;;
   ip)
     hostname -I | awk '{print $1}'
     ;;

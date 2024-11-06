@@ -6,8 +6,6 @@
 
 MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
 
-# TODO check for call, radio, audio
-# TODO show current mode (delegate to et-system-info to align with Conky)
 # TODO Add better detection between startup services / apps
 
 MODE_ID_NONE="none"
@@ -65,7 +63,7 @@ if [ $exit_status -eq 0 ]; then
       systemctl --user start et-service-direwolf-simple 
       sleep 3
       systemctl --user start et-service-winlink-packet 
-      sleep 3
+      sleep 2
       min http://localhost:8080
     ;;
     *)

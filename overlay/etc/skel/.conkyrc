@@ -36,6 +36,8 @@ CAT  : ${execpi 10 et-system-info et-cat}
 GPS  : ${execpi 10 et-system-info et-gps}
 Audio: ${execpi 10 et-system-info et-audio}
 
+Mode : ${execpi 10 et-system-info et-mode}
+
 ${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}OPERATOR
 ${font DejaVu Sans Mono:size=11}${color yellow}Callsign: ${execpi 10 et-system-info callsign}
 Grid    : ${execpi 10 et-system-info grid} 
