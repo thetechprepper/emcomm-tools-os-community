@@ -4,6 +4,8 @@
 # Date     : 6 November 2024
 # Purpose  : Configures the system for a specific mode of operation
 
+MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
+
 # TODO check for call, radio, audio
 # TODO show current mode (delegate to et-system-info to align with Conky)
 # TODO Add better detection between startup services / apps
@@ -72,7 +74,10 @@ if [ $exit_status -eq 0 ]; then
     ;;
   esac
 
+  echo ${SELECTED_MODE} > ${MODE_STATUS_FILE}
+
 else
   et-log "No mode selected"
+  echo ${MODE_ID_NONE} > ${MODE_STATUS_FILE}
   exit 1
 fi
