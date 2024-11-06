@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Author  : Gaston Gonzalez
-# Date    : 5 November 2024
+# Date    : 6 November 2024
 # Purpose : Wrapper script for starting ARDOP
 #
 # Preconditions:
@@ -15,6 +15,14 @@
 # 1. The application using the ARDOP modem is responsible for keying the PTT.
 
 ARDOP_PORT=8515
+
+notify_user() {
+  notify-send \
+   -t 10000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
 
 [ -z ${ET_LOG_DIR} ] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
 [ ! -e ${ET_LOG_DIR} ] && mkdir -p ${ET_LOG_DIR}
@@ -37,10 +45,12 @@ if [ -e /dev/et-audio ]; then
 
    else
      et-log "Can't start ARDOP modem. No ET_AUDIO device detected."
+     notify_user "Select radio and plug it in"
      exit 1
    fi
 else
-  et-log "No ET_AUDIO device plugged in. No supported audio device plugged it."
+  et-log "No ET_AUDIO device plugged in. No supported audio device plugged in."
+  notify_user "Select radio and plug it in"
   exit 1
 fi
 
