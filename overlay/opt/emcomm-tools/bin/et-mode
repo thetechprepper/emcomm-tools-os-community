@@ -3,9 +3,10 @@
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
 # Purpose  : Configures the system for a specific mode of operation
-set -e
 
 # TODO check for call, radio, audio
+# TODO show current mode (delegate to et-system-info to align with Conky)
+# TODO Add better detection between startup services / apps
 
 MODE_ID_NONE="none"
 MODE_ID_APRS_DIGIPEATER="aprs-digipeater" 
@@ -13,9 +14,19 @@ MODE_ID_APRS_CLIENT="aprs-client"
 MODE_ID_WINLINK_ARDOP="winlink-ardop" 
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 
+# 1. Attempt to stop all EmComm Tools services regardless if they are running.
+# 2. Stop the applications first, then the modems
+stop_all_services() {
+  systemctl --user stop et-service-winlink-ardop
+  systemctl --user stop et-service-winlink-packet
+  systemctl --user stop et-service-ardop
+  systemctl --user stop et-service-direwolf-simple
+  systemctl --user stop et-service-direwolf-digipeater
+}
+
 options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
-options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Client (YAAC)")
+options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
 options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
@@ -27,11 +38,36 @@ tput sgr 0 && clear
 
 if [ $exit_status -eq 0 ]; then
 
- # TODO Stop all modes before start
+  stop_all_services
 
   case ${SELECTED_MODE} in
+    ${MODE_ID_NONE})
+      et-log "No mode selected"
+    ;;
+    ${MODE_ID_APRS_DIGIPEATER})
+      systemctl --user start et-service-direwolf-digipeater
+    ;;
+    ${MODE_ID_APRS_CLIENT})
+      systemctl --user start et-service-direwolf-simple
+      sleep 3
+      et-yaac start
+    ;;
+    ${MODE_ID_WINLINK_ARDOP}) 
+      systemctl --user start et-service-ardop
+      sleep 3
+      systemctl --user start et-service-winlink-ardop
+      sleep 3
+      min http://localhost:8080
+    ;;
+    ${MODE_ID_WINLINK_PACKET})
+      systemctl --user start et-service-direwolf-simple 
+      sleep 3
+      systemctl --user start et-service-winlink-packet 
+      sleep 3
+      min http://localhost:8080
+    ;;
     *)
-      echo "Mode ${SELECTED_MODE} not ey supported"
+      et-log "Mode ${SELECTED_MODE} not yet supported"
       exit 1
     ;;
   esac
@@ -40,4 +76,3 @@ else
   et-log "No mode selected"
   exit 1
 fi
-
