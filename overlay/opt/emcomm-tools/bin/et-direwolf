@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 1 November 2024
-# Updated : 3 November 2024
+# Updated : 6 November 2024
 # Purpose : Wrapper script for starting Dire Wolf with PnP support
 #
 # Preconditions:
@@ -21,8 +21,8 @@ usage() {
   echo "    update-config   - Update configuration for selected mode"
   echo ""
   echo "  <type>"
-  echo "    digipeater-only - Run in RF-only digipeater mode"
-  echo "    simple-packet   - Run in simple packet mode"
+  echo "    digipeater      - Run in RF-only digipeater mode"
+  echo "    simple          - Run in simple packet mode"
 }
 
 if [ $# -ne 2 ]; then
@@ -32,10 +32,10 @@ fi
 
 MODE=$2
 case "${MODE}" in
-  digipeater-only)
+  digipeater)
     DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
   ;;
-  simple-packet)
+  simple)
     DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
   ;;
   *)
@@ -47,7 +47,7 @@ esac
 
 notify_user() {
   notify-send \
-   -t 5000 \
+   -t 10000 \
    --app-name="EmComm Tools" \
    "$1"
 }
