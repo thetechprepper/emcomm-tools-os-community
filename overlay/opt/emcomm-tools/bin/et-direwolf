@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 1 November 2024
-# Updated : 6 November 2024
+# Updated : 7 November 2024
 # Purpose : Wrapper script for starting Dire Wolf with PnP support
 #
 # Preconditions:
@@ -52,19 +52,22 @@ notify_user() {
    "$1"
 }
 
+[ -z ${ET_LOG_DIR} ] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
+[ ! -e ${ET_LOG_DIR} ] && mkdir -p ${ET_LOG_DIR}
+
 start() {
   update-config
   
   if [ $? -eq 0 ]; then
 
-    RIGCTLD_OUT=$(systemctl status rigctld)
+    systemctl is-active --quiet rigctld
     if [ $? -ne 0 ]; then
       et-log "Can't start Dire Wolf. rigctld not running. Ensure radio is selected."
       notify_user "Can't start Dire Wolf. rigctld not running."
       exit 1
     fi
    
-    CMD="direwolf -c ${DIREWOLF_CONF_FILE} -t 0 -p"
+    CMD="direwolf -c ${DIREWOLF_CONF_FILE} -l ${ET_LOG_DIR} -t 0 -p"
     et-log "Starting Dire Wolf with: '${CMD}'"
     echo
     ${CMD}
