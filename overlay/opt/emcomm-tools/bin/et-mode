@@ -73,7 +73,7 @@ options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
 
 # Prompt user for option and save exit status
-SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 30 40 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
 tput sgr 0 && clear
@@ -81,6 +81,8 @@ tput sgr 0 && clear
 if [ $exit_status -eq 0 ]; then
 
   stop_all_services
+
+  echo ${SELECTED_MODE} > ${MODE_STATUS_FILE}
 
   case ${SELECTED_MODE} in
     ${MODE_ID_NONE})
@@ -110,7 +112,6 @@ if [ $exit_status -eq 0 ]; then
     ;;
   esac
 
-  echo ${SELECTED_MODE} > ${MODE_STATUS_FILE}
 
 else
   et-log "No mode selected"

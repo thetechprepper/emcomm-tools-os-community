@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 6 November 2024
+# Updated  : 7 November 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -170,6 +170,7 @@ case $1 in
 
     ;; 
   et-mode)
+
     SELECTED_MODE=$(cat "${HOME}/.config/emcomm-tools/et-mode")
 
     MODE_ID_NONE="none"
@@ -177,6 +178,12 @@ case $1 in
     MODE_ID_APRS_CLIENT="aprs-client"
     MODE_ID_WINLINK_ARDOP="winlink-ardop"
     MODE_ID_WINLINK_PACKET="winlink-packet"
+
+    if [ ! -e /dev/et-audio ]; then 
+      echo "Run 'et-mode' to set"
+      echo ${MODE_ID_NONE} > "${HOME}/.config/emcomm-tools/et-mode"
+      exit 0
+    fi
 
     case ${SELECTED_MODE} in
       ${MODE_ID_NONE})
