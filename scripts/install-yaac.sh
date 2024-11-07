@@ -1,10 +1,8 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 3 November 2024
+# Updated : 7 November 2024
 # Purpose : Install YAAC
-set -e
-trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 VERSION=latest
 ZIP_FILE=YAAC.zip
@@ -13,18 +11,12 @@ LINK_PATH=/opt/yaac
 
 et-log "Installing YAAC..."
 
-if [ ! -e ${ET_DIST_DIR}/${ZIP_FILE} ]; then
+URL=https://www.ka2ddo.org/ka2ddo/${ZIP_FILE}
 
-  URL=https://www.ka2ddo.org/ka2ddo/${ZIP_FILE}
+et-log "Downloading YAAC: ${URL}"
+curl -s -L -o ${ZIP_FILE} --fail ${URL}
 
-  et-log "Downloading YAAC: ${URL}"
-  curl -s -L -o ${ZIP_FILE} --fail ${URL}
-
-  [ ! -e ${ET_DIST_DIR} ] && mkdir ${ET_DIST_DIR}
-  [ ! -e ${ET_SRC_DIR} ] && mkdir ${ET_SRC_DIR}
-  
-  mv -v ${ZIP_FILE} ${ET_DIST_DIR}
-fi
+mv -v ${ZIP_FILE} ${ET_DIST_DIR}
 
 CWD_DIR=$(pwd)
 
