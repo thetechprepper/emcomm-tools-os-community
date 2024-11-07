@@ -1,0 +1,19 @@
+# Author  : Gaston Gonzalez
+# Date    : 6 November 2024
+# Purpose : User systemd unit file for EmComm Tools Winlink over packet
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-winlink-packet
+#  Start service      : systemctl --user start et-service-winlink-packet
+#  Stop service       : systemctl --user stop et-service-winlink-packet
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools Winlink packet service
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-winlink start-packet
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

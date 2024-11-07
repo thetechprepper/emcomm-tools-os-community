@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 6 November 2024
+# Updated  : 7 November 2024
+# Purpose  : Configures the system for a specific mode of operation
+
+# Use a simple text file to save the state of the last mode selected
+MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
+
+# List of supported modes of operation
+MODE_ID_NONE="none"
+MODE_ID_APRS_DIGIPEATER="aprs-digipeater" 
+MODE_ID_APRS_CLIENT="aprs-client" 
+MODE_ID_WINLINK_ARDOP="winlink-ardop" 
+MODE_ID_WINLINK_PACKET="winlink-packet" 
+
+# 1. Attempt to stop all EmComm Tools services regardless if they are running.
+# 2. Stop the applications first, then the modems
+stop_all_services() {
+  systemctl --user stop et-service-winlink-ardop
+  systemctl --user stop et-service-winlink-packet
+  systemctl --user stop et-service-ardop
+  systemctl --user stop et-service-direwolf-simple
+  systemctl --user stop et-service-direwolf-digipeater
+}
+
+exit_on_service_failure() {
+  local systemd_unit_name="$1"
+  systemctl is-active --user --quiet "${systemd_unit_name}"
+  if [ $? -ne 0 ]; then
+    et-log "Can't start mode. ${systemd_unit_name} failed to start."
+    exit 1
+  fi
+}
+
+TIMEOUT=15  # Total time to wait in seconds
+INTERVAL=2  # Interval between checks in seconds
+
+start_and_wait_for_service() {
+  local systemd_unit_name="$1"
+  local elapsed=0
+
+  et-log "Starting ${systemd_unit_name}..."
+  systemctl --user start ${systemd_unit_name}
+
+  et-log "Waiting for ${systemd_unit_name} to become active..."
+
+  while ! systemctl is-active --user --quiet "${systemd_unit_name}"; do
+      sleep "$INTERVAL"
+      elapsed=$((elapsed + INTERVAL))
+      if [ "$elapsed" -ge "$TIMEOUT" ]; then
+          et-log "Timeout reached. ${systemd_unit_name} failed to start."
+          exit 1
+      fi
+      et-log "Waiting for ${systemd_unit_name} to become active..."
+  done
+
+  # Some applications even when started still need a bit of extra time to be available. 
+  # Add a short think time of 2 seconds. The ARDOP modem requies extra time.
+  sleep 2
+
+  # Do one more check to ensure that we are running, otherwise exit.
+  exit_on_service_failure ${systemd_unit_name}
+}
+
+# Build list of options
+options=()
+options+=("${MODE_ID_NONE}" "No mode selected")
+options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
+options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
+options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
+options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
+
+# Prompt user for option and save exit status
+SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
+
+tput sgr 0 && clear
+
+if [ $exit_status -eq 0 ]; then
+
+  stop_all_services
+
+  case ${SELECTED_MODE} in
+    ${MODE_ID_NONE})
+      et-log "No mode selected"
+    ;;
+    ${MODE_ID_APRS_DIGIPEATER})
+      systemctl --user start et-service-direwolf-digipeater
+      et-log "APRS digipeater now running."
+    ;;
+    ${MODE_ID_APRS_CLIENT})
+      start_and_wait_for_service et-service-direwolf-simple
+      et-yaac start
+    ;;
+    ${MODE_ID_WINLINK_ARDOP}) 
+      start_and_wait_for_service et-service-ardop
+      start_and_wait_for_service et-service-winlink-ardop
+      min http://localhost:8080
+    ;;
+    ${MODE_ID_WINLINK_PACKET})
+      start_and_wait_for_service et-service-direwolf-simple 
+      start_and_wait_for_service et-service-winlink-packet
+      min http://localhost:8080
+    ;;
+    *)
+      et-log "Mode ${SELECTED_MODE} not yet supported"
+      exit 1
+    ;;
+  esac
+
+  echo ${SELECTED_MODE} > ${MODE_STATUS_FILE}
+
+else
+  et-log "No mode selected"
+  echo ${MODE_ID_NONE} > ${MODE_STATUS_FILE}
+  exit 1
+fi
