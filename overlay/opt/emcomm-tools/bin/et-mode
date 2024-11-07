@@ -2,12 +2,13 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
+# Updated  : 7 November 2024
 # Purpose  : Configures the system for a specific mode of operation
 
+# Use a simple text file to save the state of the last mode selected
 MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
 
-# TODO Add better detection between startup services / apps
-
+# List of supported modes of operation
 MODE_ID_NONE="none"
 MODE_ID_APRS_DIGIPEATER="aprs-digipeater" 
 MODE_ID_APRS_CLIENT="aprs-client" 
@@ -24,6 +25,34 @@ stop_all_services() {
   systemctl --user stop et-service-direwolf-digipeater
 }
 
+TIMEOUT=15  # Total time to wait in seconds
+INTERVAL=2  # Interval between checks in seconds
+
+start_and_wait_for_service() {
+  local systemd_unit_name="$1"
+  local elapsed=0
+
+  et-log "Starting ${systemd_unit_name}..."
+  systemctl --user start ${systemd_unit_name}
+
+  et-log "Waiting for ${systemd_unit_name} to become active..."
+
+  while ! systemctl is-active --user --quiet "${systemd_unit_name}"; do
+      sleep "$INTERVAL"
+      elapsed=$((elapsed + INTERVAL))
+      if [ "$elapsed" -ge "$TIMEOUT" ]; then
+          et-log "Timeout reached. ${systemd_unit_name} failed to start."
+          exit 1
+      fi
+      et-log "Waiting for ${systemd_unit_name} to become active..."
+  done
+
+  # Some applications even when started still need a bit of extra time to be available. 
+  # Add a short think time of 2 seconds. The ARDOP modem requies extra time.
+  sleep 2
+}
+
+# Build list of options
 options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
 options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
@@ -31,6 +60,7 @@ options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
 
+# Prompt user for option and save exit status
 SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
@@ -46,24 +76,20 @@ if [ $exit_status -eq 0 ]; then
     ;;
     ${MODE_ID_APRS_DIGIPEATER})
       systemctl --user start et-service-direwolf-digipeater
+      et-log "APRS digipeater now running."
     ;;
     ${MODE_ID_APRS_CLIENT})
-      systemctl --user start et-service-direwolf-simple
-      sleep 3
+      start_and_wait_for_service et-service-direwolf-simple
       et-yaac start
     ;;
     ${MODE_ID_WINLINK_ARDOP}) 
-      systemctl --user start et-service-ardop
-      sleep 3
-      systemctl --user start et-service-winlink-ardop
-      sleep 3
+      start_and_wait_for_service et-service-ardop
+      start_and_wait_for_service et-service-winlink-ardop
       min http://localhost:8080
     ;;
     ${MODE_ID_WINLINK_PACKET})
-      systemctl --user start et-service-direwolf-simple 
-      sleep 3
-      systemctl --user start et-service-winlink-packet 
-      sleep 2
+      start_and_wait_for_service et-service-direwolf-simple 
+      start_and_wait_for_service et-service-winlink-packet
       min http://localhost:8080
     ;;
     *)
