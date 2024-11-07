@@ -25,6 +25,15 @@ stop_all_services() {
   systemctl --user stop et-service-direwolf-digipeater
 }
 
+exit_on_service_failure() {
+  local systemd_unit_name="$1"
+  systemctl is-active --user --quiet "${systemd_unit_name}"
+  if [ $? -ne 0 ]; then
+    et-log "Can't start mode. ${systemd_unit_name} failed to start."
+    exit 1
+  fi
+}
+
 TIMEOUT=15  # Total time to wait in seconds
 INTERVAL=2  # Interval between checks in seconds
 
@@ -50,6 +59,9 @@ start_and_wait_for_service() {
   # Some applications even when started still need a bit of extra time to be available. 
   # Add a short think time of 2 seconds. The ARDOP modem requies extra time.
   sleep 2
+
+  # Do one more check to ensure that we are running, otherwise exit.
+  exit_on_service_failure ${systemd_unit_name}
 }
 
 # Build list of options
