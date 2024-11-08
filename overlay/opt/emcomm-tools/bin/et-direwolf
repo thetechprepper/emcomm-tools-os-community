@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 1 November 2024
-# Updated : 7 November 2024
+# Updated : 8 November 2024
 # Purpose : Wrapper script for starting Dire Wolf with PnP support
 #
 # Preconditions:
@@ -17,12 +17,13 @@ DIREWOLF_CONF_FILE=${ET_HOME}/conf/template.d/packet/direwolf.conf
 usage() {
   echo "usage: $(basename $0) <command> <type>"
   echo "  <command>"
-  echo "    start           - Start Dire Wolf in selected mode"
-  echo "    update-config   - Update configuration for selected mode"
+  echo "    start              - Start Dire Wolf in selected mode"
+  echo "    update-config      - Update configuration for selected mode"
   echo ""
   echo "  <type>"
-  echo "    digipeater      - Run in RF-only digipeater mode"
-  echo "    simple          - Run in simple packet mode"
+  echo "    aprs-digipeater    - Run in RF-only APRS digipeater mode"
+  echo "    packet-digipeater  - Run in RF-only packet digipeater mode"
+  echo "    simple             - Run in simple packet mode"
 }
 
 if [ $# -ne 2 ]; then
@@ -32,7 +33,10 @@ fi
 
 MODE=$2
 case "${MODE}" in
-  digipeater)
+  aprs-digipeater)
+    DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
+  ;;
+  packet-digipeater)
     DIREWOLF_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/packet/direwolf.${MODE}.conf"
   ;;
   simple)
