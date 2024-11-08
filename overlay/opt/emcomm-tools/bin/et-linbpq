@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 8 November 2024
+# Purpose : Wrapper script for starting Linbpq
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+# 2. Dire Wolf is running
+#
+# Postconditions:
+# 1. Audio settings updated
+# 2. linbpq started
+#
+
+notify_user() {
+  notify-send \
+   -t 10000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+
+[ -z ${ET_LOG_DIR} ] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
+[ ! -e ${ET_LOG_DIR} ] && mkdir -p ${ET_LOG_DIR}
+
+# TODO: Check that Dire Wolf is running
+# TODO: Rename Linbpq to LINBPQ
+
+# 1. Check if the symlink was created by the udev rules
+if [ -e /dev/et-audio ]; then
+
+   # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+   APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+   if [ $? -eq 0 ]; then
+     AUDIO_CARD=$(echo $APLAY_OUT | cut -d":" -f1 | awk '{print $2}')
+     AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+     Linbpq_AUDIO_DEVICE="plughw:${AUDIO_CARD},${AUDIO_DEVICE}"
+
+     # 3. Update audio device
+     et-log "Using '${Linbpq_AUDIO_DEVICE}' as audio device for Linbpq."
+
+     # 4. Configure ALSA settings for sound card
+     /opt/emcomm-tools/bin/et-audio update-config
+
+   else
+     et-log "Can't start linbpq. No ET_AUDIO device detected."
+     notify_user "Select radio and plug it in"
+     exit 1
+   fi
+else
+  et-log "No ET_AUDIO device plugged in. No supported audio device plugged in."
+  notify_user "Select radio and plug it in"
+  exit 1
+fi
+
+[ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
+
+cp /opt/emcomm-tools/conf/template.d/packet/bpq32.digipeater.cfg bpq32.cfg
+sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" bpq32.cfg
+sed -i "s|{{ET_GRID}}|${GRID}|g" bpq32.cfg
+
+CMD="linbpq"
+et-log "Starting Linbpq with: '${CMD}'"
+${CMD}
