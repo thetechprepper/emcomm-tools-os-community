@@ -63,6 +63,6 @@ cp /opt/emcomm-tools/conf/template.d/packet/bpq32.digipeater.cfg bpq32.cfg
 sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" bpq32.cfg
 sed -i "s|{{ET_GRID}}|${GRID}|g" bpq32.cfg
 
-CMD="linbpq"
+CMD="linbpq logdir=${ET_LOG_DIR}"
 et-log "Starting Linbpq with: '${CMD}'"
 ${CMD}
