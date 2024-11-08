@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 7 November 2024
+# Updated  : 8 November 2024
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -12,17 +12,19 @@ MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
 MODE_ID_NONE="none"
 MODE_ID_APRS_DIGIPEATER="aprs-digipeater" 
 MODE_ID_APRS_CLIENT="aprs-client" 
+MODE_ID_PACKET_DIGIPEATER="packet-digipeater" 
 MODE_ID_WINLINK_ARDOP="winlink-ardop" 
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 
 # 1. Attempt to stop all EmComm Tools services regardless if they are running.
-# 2. Stop the applications first, then the modems
+# 2. Stop the applications first, then the modems.
 stop_all_services() {
   systemctl --user stop et-service-winlink-ardop
   systemctl --user stop et-service-winlink-packet
   systemctl --user stop et-service-ardop
   systemctl --user stop et-service-direwolf-simple
-  systemctl --user stop et-service-direwolf-digipeater
+  systemctl --user stop et-service-direwolf-aprs-digipeater
+  systemctl --user stop et-service-direwolf-packet-digipeater
 }
 
 exit_on_service_failure() {
@@ -69,11 +71,12 @@ options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
 options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
 options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
+options+=("${MODE_ID_PACKET_DIGIPEATER}" "Packet Digipeater")
 options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
 
 # Prompt user for option and save exit status
-SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 30 40 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 15 50 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
 tput sgr 0 && clear
@@ -89,12 +92,16 @@ if [ $exit_status -eq 0 ]; then
       et-log "No mode selected"
     ;;
     ${MODE_ID_APRS_DIGIPEATER})
-      systemctl --user start et-service-direwolf-digipeater
+      systemctl --user start et-service-direwolf-aprs-digipeater
       et-log "APRS digipeater now running."
     ;;
     ${MODE_ID_APRS_CLIENT})
       start_and_wait_for_service et-service-direwolf-simple
       et-yaac start
+    ;;
+    ${MODE_ID_PACKET_DIGIPEATER})
+      systemctl --user start et-service-direwolf-packet-digipeater
+      et-log "Packet digipeater now running."
     ;;
     ${MODE_ID_WINLINK_ARDOP}) 
       start_and_wait_for_service et-service-ardop
@@ -111,7 +118,6 @@ if [ $exit_status -eq 0 ]; then
       exit 1
     ;;
   esac
-
 
 else
   et-log "No mode selected"
