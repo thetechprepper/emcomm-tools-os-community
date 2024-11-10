@@ -8,6 +8,6 @@
     "ptt": "RIG"
   },
   "notes": [
-    "The QMX uses the Kenwood TS-440 CAT control driver"
+    "This is device is purely plug-and-play and requires no changes."
   ]
 }
