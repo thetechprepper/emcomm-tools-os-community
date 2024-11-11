@@ -1,0 +1,16 @@
+{
+  "id": "yaesu-ft891",
+  "vendor": "Yaesu",
+  "model": "FT-891 (DR-891)",
+  "rigctrl": {
+    "id": "1036",
+    "baud": "38400",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "TODO"
+  ],
+  "fieldNotes": [
+    "TODO"
+  ]
+}

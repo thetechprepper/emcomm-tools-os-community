@@ -1,0 +1,36 @@
+# Author   : Gaston Gonzalez
+# Date     : 11 November 2024
+# Purpose  : udev rules for the Yaesu FT-891 via the DigiRig DR-891
+#
+# Preconditions:
+# 1. Yaesu FT-891 is selected via et-radio
+# 2. Yaesu FT-891 is connected via DR-891 USB cable
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 2. /dev/et-audio created
+# 3. rigctld is started
+# 
+
+# Ensure that the FT-891 is set as the current radio configuration.
+# If it is, set ET_DEVICE=FT-891 to allow following rules to match.
+SUBSYSTEM=="tty|sound", PROGRAM="/opt/emcomm-tools/sbin/udev-tester.sh yaesu-ft891", \
+    ENV{ET_DEVICE}="FT-891"
+
+# CAT control device will only match if PROGRAM above matches (exit status=0)
+#SUBSYSTEM=="tty", ENV{ET_DEVICE}=="FT-891", \
+#    ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea70",\
+#    ACTION=="add", \
+#    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+#    RUN+="/usr/bin/systemctl start rigctld"
+
+SUBSYSTEMS=="usb", ENV{ET_DEVICE}=="FT-891", ATTRS{bInterfaceProtocol}=="00", \
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
+
+# Audio device will only match if PROGRAM above matches (exit status=0)
+SUBSYSTEM=="sound", ENV{ET_DEVICE}=="FT-891", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
