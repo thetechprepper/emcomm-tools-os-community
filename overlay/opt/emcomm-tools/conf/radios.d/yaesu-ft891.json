@@ -5,7 +5,7 @@
   "rigctrl": {
     "id": "1036",
     "baud": "38400",
-    "ptt": "RIG"
+    "ptt": "RTS"
   },
   "notes": [
     "05-06 CAT RATE = 38400bps",
