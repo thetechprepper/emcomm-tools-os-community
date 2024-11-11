@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 31 October 2024
-# Updated : 4 November 2024
+# Updated : 11 November 2024
 # Purpose : Configures ET audio device with sane defaults
 #
 # Preconditions
@@ -62,6 +62,18 @@ update-config () {
            et-log "Applied amixer settings for ${ET_DEVICE_NAME}"
          ;;
          "DIGIRIG_LITE")
+           # Unmute Speaker a set volume. Adjust if remote station can't decode you. Your TX controls.
+           amixer -q -c ${AUDIO_CARD} sset Speaker Playback Switch 42% unmute
+           # Unmute Mic
+           amixer -q -c ${AUDIO_CARD} sset Mic Playback Switch 52% unmute
+           # Set "L/R Capture" to 19. Adjust if you can't decode received audio. Your RX controls.
+           amixer -q -c ${AUDIO_CARD} sset Mic Capture Switch 31% unmute
+           # Disable Auto Gain Control
+           amixer -q -c ${AUDIO_CARD} sset 'Auto Gain Control' mute
+
+           et-log "Applied amixer settings for ${ET_DEVICE_NAME}"
+         ;;
+         "FT-891")
            # Unmute Speaker a set volume. Adjust if remote station can't decode you. Your TX controls.
            amixer -q -c ${AUDIO_CARD} sset Speaker Playback Switch 42% unmute
            # Unmute Mic

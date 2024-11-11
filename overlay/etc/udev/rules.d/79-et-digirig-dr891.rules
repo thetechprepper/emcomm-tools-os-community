@@ -17,17 +17,21 @@
 SUBSYSTEM=="tty|sound", PROGRAM="/opt/emcomm-tools/sbin/udev-tester.sh yaesu-ft891", \
     ENV{ET_DEVICE}="FT-891"
 
-# CAT control device will only match if PROGRAM above matches (exit status=0)
-#SUBSYSTEM=="tty", ENV{ET_DEVICE}=="FT-891", \
-#    ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea70",\
-#    ACTION=="add", \
-#    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
-#    RUN+="/usr/bin/systemctl start rigctld"
-
 SUBSYSTEMS=="usb", ENV{ET_DEVICE}=="FT-891", ATTRS{bInterfaceProtocol}=="00", \
+    ACTION=="add", \
+    ENV{ET_FIRST_CAT_DEVICE}="yes"
+
+# CAT control device will only match if PROGRAM above matches (exit status=0)
+SUBSYSTEM=="tty", ENV{ET_DEVICE}=="FT-891", ENV{ET_FIRST_CAT_DEVICE}="yes", \
+    ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea70",\
     ACTION=="add", \
     ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
     RUN+="/usr/bin/systemctl start rigctld"
+
+#SUBSYSTEMS=="usb", SUBSYSTEM=="tty", ENV{ET_DEVICE}=="FT-891", ATTRS{bInterfaceProtocol}=="00", \
+#    ACTION=="add", \
+#    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+#    RUN+="/usr/bin/systemctl start rigctld"
 
 # Audio device will only match if PROGRAM above matches (exit status=0)
 SUBSYSTEM=="sound", ENV{ET_DEVICE}=="FT-891", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", \
