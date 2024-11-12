@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 8 November 2024
+# Updated  : 12 November 2024
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -16,15 +16,9 @@ MODE_ID_PACKET_DIGIPEATER="packet-digipeater"
 MODE_ID_WINLINK_ARDOP="winlink-ardop" 
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 
-# 1. Attempt to stop all EmComm Tools services regardless if they are running.
-# 2. Stop the applications first, then the modems.
+# Attempt to stop all EmComm Tools services regardless if they are running.
 stop_all_services() {
-  systemctl --user stop et-service-winlink-ardop
-  systemctl --user stop et-service-winlink-packet
-  systemctl --user stop et-service-ardop
-  systemctl --user stop et-service-direwolf-simple
-  systemctl --user stop et-service-direwolf-aprs-digipeater
-  systemctl --user stop et-service-direwolf-packet-digipeater
+  et-kill-all 
 }
 
 exit_on_service_failure() {

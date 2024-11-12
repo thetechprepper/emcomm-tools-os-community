@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 12 November 2024
+# Purpose  : Stops all EmComm Tools sound-based services (i.e. modems) and
+#            amatuer radio applications to ensure a clean start for the next mode.
+
+# 1. Attempt to stop all EmComm Tools services regardless if they are running.
+# 2. Stop the applications first, then the modems.
+stop_all_services() {
+  systemctl --user stop et-service-winlink-ardop
+  systemctl --user stop et-service-winlink-packet
+  systemctl --user stop et-service-ardop
+  systemctl --user stop et-service-direwolf-simple
+  systemctl --user stop et-service-direwolf-aprs-digipeater
+  systemctl --user stop et-service-direwolf-packet-digipeater
+}
+
+et-log "Stopping all services"
+stop_all_services
