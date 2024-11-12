@@ -2,15 +2,16 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 24 October 2024
-# Updated : 1 November 2024
+# Updated : 12 November 2024
 # Purpose : Wrapper script for starting JS8Call with PnP support
 #
 # Preconditions
 # 1. Supported radio and audio interface are connected and properly detected
 #
 # Postconditions
-# 1. JS8Call audio settings updated
-# 2. JS8Call started
+# 1. Stop all running EmComm Tools modes and services
+# 2. JS8Call audio settings updated
+# 3. JS8Call started
 
 usage() {
   echo "usage: $(basename $0) <command>"
@@ -31,7 +32,7 @@ notify_user() {
 }
 
 start() {
-  update-config && /usr/bin/js8call &
+  /opt/emcomm-tools/bin/et-kill-all && update-config && /usr/bin/js8call &
 }
 
 update-config () {
