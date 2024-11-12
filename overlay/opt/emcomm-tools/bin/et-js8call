@@ -9,7 +9,7 @@
 # 1. Supported radio and audio interface are connected and properly detected
 #
 # Postconditions
-# 1. Stop all running EmComm Tools modes and services
+# 1. Stop all running EmComm Tools modes
 # 2. JS8Call audio settings updated
 # 3. JS8Call started
 
@@ -52,6 +52,9 @@ update-config () {
 
     sed -i "s|^MyCall.*|MyCall=${CALLSIGN}|" ${JS8CALL_CONF_FILE} 
     sed -i "s|^MyGrid.*|MyGrid=${GRID}|" ${JS8CALL_CONF_FILE} 
+
+    ET_RELEASE=$(et-system-info release)
+    sed -i "s|^MyInfo.*|MyInfo=${ET_RELEASE}|" ${JS8CALL_CONF_FILE} 
 
     et-log "Updated JS8Call configuration with user callsign '${CALLSIGN}' and grid: '${GRID}'"
 
