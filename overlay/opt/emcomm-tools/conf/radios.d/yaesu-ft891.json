@@ -23,7 +23,8 @@
     "08-12 DATA BFO = USB",
     "11-07 SSB BFO = AUTO",
     "For digital operation always set Mode = DATA",
-    "For digital operation always set WDH = 3000"
+    "For digital operation always set WDH = 3000",
+    "For digital operation always set mode to USB"
   ],
   "fieldNotes": [
     "Long press [BAND] and select DATA using the VFO knob",
