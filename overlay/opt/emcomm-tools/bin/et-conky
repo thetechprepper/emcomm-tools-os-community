@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 21 November 2024
+# Purpose : Wrapper script for starting conky as there issues with normal startup
+
+sleep 3 && /usr/bin/conky > /dev/null 2>&1 &
