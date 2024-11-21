@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 11 October 2024
+# Updated : 21 November 2024
 # Purpose : Perform tests that can be used by the udev subsystem to aid
 #           in rule development. This is intended to by used with the PROGRAM
 #           directive inside of a udev rule.
@@ -26,6 +27,37 @@ test_yaesu_ft891() {
   exit 1
 }
 
+# Exit with a 0 exit success if, and only if, the currently selected radio 
+# uses a DigiRig Mobile.
+test_digirig_mobile() {
+  if [ -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+    ID=$(cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .id)
+
+    if [[ "$ID" == "digirig-mobile-no-cat" ]]; then
+      et-log "Old DigiRig Mobile detected for no CAT device"
+      exit 0
+    fi
+
+    if [[ "$ID" == "yaesu-ft818nd" ]]; then
+      et-log "Old DigiRig Mobile detected for FT-818ND"
+      exit 0
+    fi
+
+    if [[ "$ID" == "yaesu-ft857d" ]]; then
+      et-log "Old DigiRig Mobile detected for FT-857D"
+      exit 0
+    fi
+
+    if [[ "$ID" == "yaesu-ft897d" ]]; then
+      et-log "Old DigiRig Mobile detected for FT-897D"
+      exit 0
+    fi
+
+  fi
+  
+  exit 1
+}
+
 usage() {
   echo "usage: $(basename $0) <radio ID>"
 }
@@ -39,6 +71,8 @@ case $1 in
   yaesu-ft891)
     test_yaesu_ft891
   ;;
+  digirig-mobile)
+    test_digirig_mobile
 esac
 
 exit 1
