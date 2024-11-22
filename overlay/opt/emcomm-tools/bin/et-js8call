@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 24 October 2024
-# Updated : 12 November 2024
+# Updated : 20 November 2024
 # Purpose : Wrapper script for starting JS8Call with PnP support
 #
 # Preconditions
@@ -33,6 +33,13 @@ notify_user() {
 
 start() {
   /opt/emcomm-tools/bin/et-kill-all && update-config && /usr/bin/js8call &
+
+  if [ ! -e /dev/et-gps ]; then
+    notify-send -u critical -i \
+      /usr/share/icons/Yaru/48x48/status/dialog-information.png \
+      "No GPS. Ensure your time is accurate when JS8 starts."
+  fi
+
 }
 
 update-config () {

@@ -21,6 +21,7 @@ ${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}DATE/TIME
 ${font DejaVu Sans Mono:size=11}${color yellow}${alignc}${time %A, %B %d %Y}
 Local: ${alignr}${time %H:%M:%S}
 UTC: ${alignr}${tztime UTC %H:%M:%S}
+GPS Time: ${alignr}${execpi 30 et-system-info et-time}
 
 ${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}SYSTEM
 ${font DejaVu Sans Mono:size=11}${color yellow}Uptime   : ${uptime}

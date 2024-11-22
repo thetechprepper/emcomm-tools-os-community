@@ -1,0 +1,20 @@
+#!/bin/bash
+# Author   : Gaston Gonzalez
+# Date     : 21 November 2024
+# Purpose  : Determines if time has been synchronized via GPS
+
+if [ ! -e /dev/et-gps ]; then
+  et-log "No GPS detected. Can't verify time sync"
+  exit 1
+fi
+
+TRACKING_INFO=$(chronyc tracking | grep GPS)
+if [ $? -ne 0 ]; then
+  et-log "GPS plugged in, but not used for time source. There may an internet connection."
+  exit 1
+fi
+
+
+et-log "Time appears to be synched via GPS"
+echo ""
+chronyc tracking | grep time

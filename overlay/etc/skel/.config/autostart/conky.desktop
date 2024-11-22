@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=conky
+Exec=/opt/emcomm-tools/bin/et-conky
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true

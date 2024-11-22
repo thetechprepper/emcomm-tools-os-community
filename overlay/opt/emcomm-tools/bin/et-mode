@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 12 November 2024
+# Updated  : 20 November 2024
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -66,11 +66,11 @@ options+=("${MODE_ID_NONE}" "No mode selected")
 options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
 options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_PACKET_DIGIPEATER}" "Packet Digipeater")
-options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink ARDOP")
-options+=("${MODE_ID_WINLINK_PACKET}" "Winlink Packet")
+options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
+options+=("${MODE_ID_WINLINK_PACKET}" "Winlink over VHF/UHF (AX.25 Packet)")
 
 # Prompt user for option and save exit status
-SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 15 50 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 15 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
 tput sgr 0 && clear
