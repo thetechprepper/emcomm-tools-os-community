@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 8 November 2024
+# Updated  : 21 November 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -13,6 +13,7 @@ function usage() {
   echo "  et-audio-card - Display audio card and device: <card>,<device>"
   echo "  et-cat        - Show state of CAT control interface"
   echo "  et-gps        - Show state of GPS interface"
+  echo "  et-time       - Show if time is synched via GPS"
   echo "  et-mode       - Show current mode"
   echo "  grid          - Current grid square defined by user"
   echo "  ip            - System IP address"
@@ -209,6 +210,15 @@ case $1 in
         echo "Unknown"
       ;;
     esac
+
+    ;;
+  et-time)
+    ET_OUT=$(${ET_HOME}/bin/et-time)
+    if [ $? -eq 0 ]; then
+      echo "Yes"
+    else
+      echo "No"
+    fi
 
     ;;
   ip)
