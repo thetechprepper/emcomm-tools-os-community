@@ -1,0 +1,32 @@
+# Author   : Gaston Gonzalez
+# Date     : 29 September 2024
+# Updated  : 4 November 2024
+# Purpose  : udev rules for the Icom IC-7200
+#
+# Preconditions:
+# 1. IC-7200 connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 2. /dev/et-audio created
+# 3. rigctld started
+
+KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7200*", \
+    ENV{ET_DEVICE}="IC-7200"
+
+# Create consistent device name/path for the CAT serial device
+# Prevent the gpsd system unit from incorrectly flagging this as a GPS device
+ENV{ET_DEVICE}=="IC-7200", SUBSYSTEMS=="usb", ATTRS{idVendor}=="10c4" ATTRS{idProduct}=="ea60", \
+    ACTION=="add", \
+    ENV{SYSTEMD_WANTS}="", \
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
+
+# This rule generically matches the following Icom radios: 
+# 1. IC-705
+# 2. IC-7100
+# 3. IC-7200
+SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="2901", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="Icom generic", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"

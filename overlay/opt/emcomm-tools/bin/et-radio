@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 11 October 2024
+# Updated  : 10 November 2024
+# Purpose  : A script for managaing plug-and-play radios
+set -e
+
+ACTIVE_RADIO="${ET_HOME}/conf/radios.d/active-radio.json"
+
+NO_RADIO_ID="no-radio"
+
+YELLOW="\033[1;33m"
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+options=()
+options+=("${NO_RADIO_ID}" "No radio")
+while IFS= read -r radio; do
+    ID=$(cat $radio | jq -r .id)
+    VENDOR=$(cat $radio | jq -r .vendor)
+    MODEL=$(cat $radio | jq -r .model)
+
+    options+=("$ID" "$VENDOR $MODEL")
+done < <(find $ET_HOME/conf/radios.d -type f | sort)
+
+SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+exit_status=$?
+
+tput sgr 0 && clear
+
+if [ $exit_status -eq 0 ]; then
+
+  # Special case to run without a radio configured
+  if [ ${SELECTED_RADIO} == ${NO_RADIO_ID} ]; then
+    [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+    echo "Set active radio to: $SELECTED_RADIO"
+    exit 0
+  fi
+
+  RADIO_CONF="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.json"
+  [ -e ${ACTIVE_RADIO} ] &&  rm ${ACTIVE_RADIO} 
+  ln -s ${RADIO_CONF} ${ACTIVE_RADIO}
+  echo "Set active radio to: $SELECTED_RADIO"
+
+  ID=$(cat ${ACTIVE_RADIO} | jq -r .id)
+  VENDOR=$(cat ${ACTIVE_RADIO} | jq -r .vendor)
+  MODEL=$(cat ${ACTIVE_RADIO} | jq -r .model)
+
+  printf "%-20s %-10s %-10s\n" "Radio ID" "Vendor" "Model"
+  printf "%-20s %-10s %-10s\n\n" $ID "$VENDOR" "$MODEL"
+
+  printf "${YELLOW}RADIO CONFIGURATION NOTES\n"
+  cat ${ACTIVE_RADIO} | jq -r '.notes[] | "* \(.)"'
+  echo -e "${NC}"
+
+  
+  printf "${GREEN}REQUIRED ACTIONS\n"
+  printf "1. Apply the settings above to your radio.\n"
+  printf "2. Plug in the USB cable for your radio. If it is already connected, reconnect it.\n"
+  printf "3. Run 'et-mode' and select the desired mode of operation.\n\n"
+  printf "   Note: JS8Call does not require a mode to be selected.\n"
+  echo -e "${NC}"
+else
+  echo "No radio selected."
+fi

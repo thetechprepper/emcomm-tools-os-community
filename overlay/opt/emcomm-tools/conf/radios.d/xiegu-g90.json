@@ -1,0 +1,24 @@
+{
+  "id": "xiegu-g90",
+  "vendor": "Xiegu",
+  "model": "G90 (DigiRig)",
+  "rigctrl": {
+    "id": "3088",
+    "baud": "19200",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "AGC = OFF (AGC--)",
+    "MODE = U-D",
+    "RF-GAIN = 50%",
+    "AUX IN = 10",
+    "AUX OUT = 13"
+  ],
+  "fieldNotes": [
+    "Set AGC: Short press [AGC]",
+    "Set Mode: Press Mode arrow keys on top of head unit ",
+    "Set RF Gain: Long press [AGC]. Use VFO knob to change",
+    "Set AUX IN: Long press [FUNC]. Menu 5. Use VFO to change",
+    "Set AUX OUT: Long press [FUNC]. Menu 6. Use VFO to change"
+  ]
+}

@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 30 September 2024
+# Purpose  : Capture device information to aid in plug-and-play development.
+
+echo
+read -p "1. Enter a short name for the radio with no spaces (i.e. ic-7100): " input
+
+RADIO=$(echo $input | sed 's/[ ]*//g')
+DATE_NOW=$(date +%Y%m%d-%H%M%S)
+OUT_DIR_BASE="${RADIO}-${DATE_NOW}"
+[ ! -e $OUT_DIR_BASE ]  && mkdir $OUT_DIR_BASE
+
+echo
+read -p "2. Unplug the USB radio/interface from your computer. Press [enter] when done."
+
+# Capture devices by ID with radio unplugged
+find /dev | grep by-id > "${OUT_DIR_BASE}/dev-by-id.before"
+
+
+echo
+read -p "3. Connect the USB radio/interface to your computer. Press [enter] when done." input
+
+# Capture devices by ID with radio plugged in
+find /dev | grep by-id > "${OUT_DIR_BASE}/dev-by-id.after"
+
+diff "${OUT_DIR_BASE}/dev-by-id.before" "${OUT_DIR_BASE}/dev-by-id.after" > "${OUT_DIR_BASE}/dev-by-id.diff"
+echo -e "\n4. Found the following new devices:\n"
+cat "${OUT_DIR_BASE}/dev-by-id.diff" | grep ">" | sed 's/> //g' | sort | while read device
+do
+  # skip directories
+  if [ ! -d $device ]; then
+    # Grab the short device name"
+    SHORT_DEV_NAME=$(udevadm info $device | grep DEVNAME | cut -d"=" -f2)
+    SHORT_DEV_FILE=$(echo $SHORT_DEV_NAME | sed 's|/|-|g')
+    echo -e "${SHORT_DEV_NAME} = $device\n"
+
+    OUT_FILE="${OUT_DIR_BASE}/udevadm-info${SHORT_DEV_FILE}"
+    udevadm info $SHORT_DEV_NAME  > ${OUT_FILE}
+    udevadm info --attribute-walk --name $SHORT_DEV_NAME >> ${OUT_FILE}
+
+    sleep 1
+  fi
+done
+
+echo -e "\n4. Created a directory called '${OUT_DIR_BASE}' to capture the device info for ${RADIO}"
+find ${OUT_DIR_BASE}
+
+TARBALL="$OUT_DIR_BASE.tar.gz"
+echo -e "\n5. Packaging up device information"
+tar -czf ${TARBALL} ${OUT_DIR_BASE}
+
+echo "There should be a file called '${TARBALL}' in this directory. Please send it to Gaston."
+echo "Thank you for the support!"

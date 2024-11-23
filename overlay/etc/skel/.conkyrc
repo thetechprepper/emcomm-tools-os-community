@@ -1,0 +1,49 @@
+conky.config = {
+    alignment = 'top_right',
+    update_interval = 2.0,
+    double_buffer = true,
+    background = false,
+    use_xft = true,
+    font = 'DejaVu Sans Mono:size=10',
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    draw_borders = false,
+    draw_outline = false,
+    draw_shades = false,
+    default_color = 'yellow',
+    minimum_width = 200,
+};
+
+conky.text = [[
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}DATE/TIME
+${font DejaVu Sans Mono:size=11}${color yellow}${alignc}${time %A, %B %d %Y}
+Local: ${alignr}${time %H:%M:%S}
+UTC: ${alignr}${tztime UTC %H:%M:%S}
+GPS Time: ${alignr}${execpi 30 et-system-info et-time}
+
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}SYSTEM
+${font DejaVu Sans Mono:size=11}${color yellow}Uptime   : ${uptime}
+CPU Util : ${cpu}%
+Disk Free: ${fs_free /}
+
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}NETWORK
+${font DejaVu Sans Mono:size=11}${color yellow}IP: ${execpi 60 /opt/emcomm-tools/bin/et-system-info ip} 
+
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}INTERFACES
+${font DejaVu Sans Mono:size=11}${color yellow}Radio: ${execpi 10 et-system-info active-radio}
+CAT  : ${execpi 10 et-system-info et-cat}
+GPS  : ${execpi 10 et-system-info et-gps}
+Audio: ${execpi 10 et-system-info et-audio}
+
+${font DejaVu Sans:bold:size=10}${color #8d5133}${alignc}OPERATOR
+${font DejaVu Sans Mono:size=11}${color yellow}Callsign: ${execpi 10 et-system-info callsign}
+Grid    : ${execpi 10 et-system-info grid} 
+
+${font DejaVu Sans:bold:size=10}${color white}${alignc}MODE
+${font DejaVu Sans:bold:size=11}${color red}${alignc}${execpi 10 et-system-info et-mode}
+
+${font DejaVu Sans:bold:size=9}${color grey}${alignc}${execp /opt/emcomm-tools/bin/et-system-info release}
+]];
+

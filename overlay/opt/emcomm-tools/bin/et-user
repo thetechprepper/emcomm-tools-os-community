@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Author : Gaston Gonzalez
+# Date   : 25 October 2024
+# Updated: 4 November 2024 
+# Purpose: Set user-specific settings for EmComm Tools.
+
+[ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+if [ ! -e ${ET_USER_CONFIG} ]; then
+  cp /etc/skel/.config/emcomm-tools/user.json ${ET_USER_CONFIG}
+fi
+
+CUR_CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+CUR_GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
+CUR_WINLINK_PASSWD=$(cat ${ET_USER_CONFIG} | jq -r .winlinkPasswd)
+
+while true; do
+  read -e -p "Enter your callsign (current: ${CUR_CALLSIGN}): " callsign
+  read -e -p "Enter your maidenhead grid square (current: ${CUR_GRID}): " grid
+  read -e -p "Enter your Winlink password: " winlink_passwd
+
+  callsign=${callsign:-"$CUR_CALLSIGN"}
+  grid=${grid:-"$CUR_GRID"}
+  winlink_passwd=${winlink_passwd:-"$CUR_WINLINK_PASSWD"}
+
+  echo
+  echo "Is the following correct?:"
+  echo "Callsign: $callsign"
+  echo "Grid Square: $grid"
+  echo "Winlink Password: *******"
+  read -p "(y/n): " confirm
+
+  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+
+cat <<EOF > "${ET_USER_CONFIG}"
+{
+  "callsign": "${callsign}",
+  "grid": "${grid}",
+  "winlinkPasswd": "${winlink_passwd}"
+}
+EOF
+
+      echo "User settings updated..."
+      break
+  elif [[ "$confirm" =~ ^[Nn]$ ]]; then
+      echo "Let's try again."
+      echo
+  else
+      echo "Please enter 'y' or 'n'."
+  fi
+done
+

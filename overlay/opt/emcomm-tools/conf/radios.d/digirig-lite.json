@@ -1,0 +1,11 @@
+{
+  "id": "digirig-lite",
+  "vendor": "DigiRig",
+  "model": "Lite",
+  "rigctrl": {
+    "id": "1",
+    "ptt": "NONE"
+  },
+  "notes": [
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "digirig-mobile-no-cat",
+  "vendor": "DigiRig",
+  "model": "Mobile (No CAT)",
+  "rigctrl": {
+    "id": "6",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "Set your VFO manually",
+    "Adjust your volume, RF gain and squelch manually"
+  ]
+}

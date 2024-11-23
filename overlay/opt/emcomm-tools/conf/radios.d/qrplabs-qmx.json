@@ -1,0 +1,13 @@
+{
+  "id": "qrplabs-qmx",
+  "vendor": "QRP Labs",
+  "model": "QMX",
+  "rigctrl": {
+    "id": "2002",
+    "baud": "38400",
+    "ptt": "RIG"
+  },
+  "notes": [
+    "This is device is purely plug-and-play and requires no changes."
+  ]
+}

@@ -119,3 +119,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# Set xterm colors for the default terminal profile
+/opt/emcomm-tools/bin/et-term

@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 6 November 2024
+# Purpose : Wrapper script for starting ARDOP
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. Audio settings updated
+# 2. ARDOP modem started
+#
+# Assumptions:
+# 1. The application using the ARDOP modem is responsible for keying the PTT.
+
+ARDOP_PORT=8515
+
+notify_user() {
+  notify-send \
+   -t 10000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+
+[ -z ${ET_LOG_DIR} ] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
+[ ! -e ${ET_LOG_DIR} ] && mkdir -p ${ET_LOG_DIR}
+
+# 1. Check if the symlink was created by the udev rules
+if [ -e /dev/et-audio ]; then
+
+   # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+   APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+   if [ $? -eq 0 ]; then
+     AUDIO_CARD=$(echo $APLAY_OUT | cut -d":" -f1 | awk '{print $2}')
+     AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+     ARDOP_AUDIO_DEVICE="plughw:${AUDIO_CARD},${AUDIO_DEVICE}"
+
+     # 3. Update audio device
+     et-log "Using '${ARDOP_AUDIO_DEVICE}' as audio device for ARDOP."
+
+     # 4. Configure ALSA settings for sound card
+     /opt/emcomm-tools/bin/et-audio update-config
+
+   else
+     et-log "Can't start ARDOP modem. No ET_AUDIO device detected."
+     notify_user "Select radio and plug it in"
+     exit 1
+   fi
+else
+  et-log "No ET_AUDIO device plugged in. No supported audio device plugged in."
+  notify_user "Select radio and plug it in"
+  exit 1
+fi
+
+CMD="ardopcf ${ARDOP_PORT} ${ARDOP_AUDIO_DEVICE} ${ARDOP_AUDIO_DEVICE} --logdir ${ET_LOG_DIR}"
+et-log "Starting ARDOP with: '${CMD}'"
+${CMD}

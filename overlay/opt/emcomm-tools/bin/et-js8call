@@ -1,0 +1,132 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 24 October 2024
+# Updated : 20 November 2024
+# Purpose : Wrapper script for starting JS8Call with PnP support
+#
+# Preconditions
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions
+# 1. Stop all running EmComm Tools modes
+# 2. JS8Call audio settings updated
+# 3. JS8Call started
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  start           - Update config and start JS8Call"
+  echo "  update-config   - Update config"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+start() {
+  /opt/emcomm-tools/bin/et-kill-all && update-config && /usr/bin/js8call &
+
+  if [ ! -e /dev/et-gps ]; then
+    notify-send -u critical -i \
+      /usr/share/icons/Yaru/48x48/status/dialog-information.png \
+      "No GPS. Ensure your time is accurate when JS8 starts."
+  fi
+
+}
+
+update-config () {
+
+    JS8CALL_CONF_FILE="${HOME}/.config/JS8Call.ini"
+   
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    # Update configuration with current callsign and grid
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+    GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start JS8Call. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    sed -i "s|^MyCall.*|MyCall=${CALLSIGN}|" ${JS8CALL_CONF_FILE} 
+    sed -i "s|^MyGrid.*|MyGrid=${GRID}|" ${JS8CALL_CONF_FILE} 
+
+    ET_RELEASE=$(et-system-info release)
+    sed -i "s|^MyInfo.*|MyInfo=${ET_RELEASE}|" ${JS8CALL_CONF_FILE} 
+
+    et-log "Updated JS8Call configuration with user callsign '${CALLSIGN}' and grid: '${GRID}'"
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [ $? -eq 0 ]; then
+         AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+
+         # JS8Call has an issue decoding the received audio following a 
+         # transmission when the device below is used. 
+         #
+         #JS8_AUDIO_DEVICE="plughw:CARD=ET_AUDIO,DEV=${AUDIO_DEVICE}"
+         #
+         # Instead, the following device solves this issue:
+         JS8_AUDIO_DEVICE="sysdefault:CARD=ET_AUDIO"
+  
+         et-log "Using '${JS8_AUDIO_DEVICE}' for JS8Call configuration."
+
+         # 3. Check for existing JS8Call sound configuration
+
+         ## Update input
+         grep "^SoundInName" ${JS8CALL_CONF_FILE}
+         if [ $? -eq 0 ]; then
+           sed -i "s|^SoundInName.*|SoundInName=\"${JS8_AUDIO_DEVICE}\"|" ${JS8CALL_CONF_FILE} 
+         else
+           echo "SoundInName=\"${JS8_AUDIO_DEVICE}\"" >> ${JS8CALL_CONF_FILE}
+         fi
+
+         ## Update output
+         grep "^SoundOutName" ${JS8CALL_CONF_FILE}
+         if [ $? -eq 0 ]; then
+           sed -i "s|^SoundOutName.*|SoundOutName=\"${JS8_AUDIO_DEVICE}\"|" ${JS8CALL_CONF_FILE} 
+         else
+           echo "SoundOutName=\"${JS8_AUDIO_DEVICE}\"" >> ${JS8CALL_CONF_FILE}
+         fi
+
+         ## Configure ALSA settings for sound card
+         /opt/emcomm-tools/bin/et-audio update-config
+
+       else
+         et-log "No ET_AUDIO device detected."
+         notify_user "Can't start JS8Call. No ET_AUDIO device detected."
+         exit 1
+       fi
+    else
+      et-log "No ET_AUDIO device plugged in."
+      notify_user "Can't start JS8Call. No supported audio device plugged in."
+      exit 1
+    fi
+
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac

@@ -1,0 +1,23 @@
+{
+  "id": "yaesu-ft897d",
+  "vendor": "Yaesu",
+  "model": "FT-897D (DigiRig)",
+  "rigctrl": {
+    "id": "1043",
+    "baud": "38400",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "Menu 019 CAT RATE = 38400bps",
+    "Menu 020 CAT/LIN/TUN = CAT",
+    "Menu 036 DIG DISP = 0Hz",
+    "Menu 037 DIG GAIN = 50",
+    "Menu 038 DIG MODE = USER-U",
+    "Menu 039 DIG SHIFT = 0Hz",
+    "Menu 040 DIG VOX = 0",
+    "Menu 071 PKT 1200 = 10",
+    "Menu 073 1200 RATE = 1200bps",
+    "For VHF/UHF packet, set mode = PKT; Menu 080 = SQL",
+    "For HF, set mode = DIGI; Menu 080 = RF GAIN"
+  ]
+}

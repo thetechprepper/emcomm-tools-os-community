@@ -1,0 +1,14 @@
+[Unit]
+Description=GPS (Global Positioning System) Daemon
+Requires=gpsd.socket
+After=chronyd.service
+ConditionPathExists=/dev/et-gps
+
+[Service]
+Type=forking
+EnvironmentFile=/etc/default/gpsd
+ExecStart=/usr/sbin/gpsd $GPSD_OPTIONS $OPTIONS $DEVICES
+
+[Install]
+WantedBy=multi-user.target
+Also=gpsd.socket

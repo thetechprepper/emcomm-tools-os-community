@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 6 April 2023
-# Updated : 19 May 2024
+# Updated : 24 October 2024
 # Purpose : Install JS8Call
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -52,3 +52,6 @@ else
 fi
 
 dpkg -i $ET_DIST_DIR/$FILE
+
+et-log "Updating JS8Call launcher icon to support PNP..."
+cp -v ../overlay/usr/share/applications/js8call.desktop /usr/share/applications/

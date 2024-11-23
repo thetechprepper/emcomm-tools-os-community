@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE map SYSTEM "http://java.sun.com/dtd/preferences.dtd">
+<map MAP_XML_VERSION="1.0">
+  <entry key="ambiguity" value="1.6666666E-4"/>
+  <entry key="beaconName" value="MYCALL"/>
+  <entry key="ctcss" value="TOFF"/>
+  <entry key="decayRatio" value="2"/>
+  <entry key="digipeaters" value="WIDE1-1;WIDE1-1,WIDE2-1"/>
+  <entry key="directionality" value="0"/>
+  <entry key="enabled" value="true"/>
+  <entry key="fixedAltitudeM" value="NaN"/>
+  <entry key="freeText" value="ETC R3 APMAIL WINLINK"/>
+  <entry key="gain" value="0"/>
+  <entry key="height" value="0"/>
+  <entry key="initialRateSecs" value="60"/>
+  <entry key="latitude" value="33.0"/>
+  <entry key="longitude" value="-112.0"/>
+  <entry key="monitorFreq" value="0.0"/>
+  <entry key="offset" value="0"/>
+  <entry key="positionType" value="NO_TIME_W_MESSAGING"/>
+  <entry key="power" value="0"/>
+  <entry key="reportAltitude" value="false"/>
+  <entry key="reportSpeed" value="false"/>
+  <entry key="showDFS" value="false"/>
+  <entry key="showPHG" value="false"/>
+  <entry key="slowRateSecs" value="1800"/>
+  <entry key="status" value="7"/>
+  <entry key="symTableId" value="/"/>
+  <entry key="symbolCode" value="["/>
+  <entry key="type" value="POSITION"/>
+  <entry key="useGpsForPosition" value="true"/>
+  <entry key="useWeather" value="false"/>
+</map>

@@ -1,0 +1,35 @@
+# Author   : Gaston Gonzalez
+# Date     : 30 September 2024
+# Updated  : 21 November 2024
+# Purpose  : udev rules for the DigiRig Mobile v1.9 
+#
+# Preconditions:
+# 1. DigiRig Mobile connected via USB cable
+# 2. This rule is processed after the IC-7200
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 2. rigctld is started
+# 3. /dev/et-audio created
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ENV{SYSTEMD_WANTS}="", \
+    ENV{ET_DEVICE}="DIGIRIG_MOBILE", ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
+
+# The audio chipset changed for DigiRig v1.9. This rule handles the original revision.
+# Audio device will only match if PROGRAM above matches (exit status=0)
+SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", \
+    PROGRAM="/opt/emcomm-tools/sbin/udev-tester.sh digirig-mobile", \
+    ACTION=="add", \
+    ENV{ET_DEVICE}="DIGIRIG_MOBILE", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
+
+
+SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="013c", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="DIGIRIG_MOBILE", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
+

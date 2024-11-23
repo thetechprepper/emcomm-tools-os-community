@@ -1,0 +1,12 @@
+#!/bin/bash
+# Author   : Gaston Gonzalez
+# Date     : 20 November 2024
+# Purpose  : Set terminal colors to xterm colors
+
+DEFAULT_PROFILE=$(gsettings get org.gnome.Terminal.ProfilesList default)
+if [ $? -eq 0 ]; then
+  # strip single quotes from profile's UUID
+  PROFILE_UUID=$(echo ${DEFAULT_PROFILE} | sed "s|'||g")
+
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${PROFILE_UUID}/ palette "['#000000', '#cd0000', '#00cd00', '#cdcd00', '#0000ee', '#cd00cd', '#00cdcd', '#e5e5e5',  '#7f7f7f', '#ff0000', '#00ff00', '#ffff00', '#5c5cff', '#ff00ff', '#00ffff', '#ffffff']"
+fi

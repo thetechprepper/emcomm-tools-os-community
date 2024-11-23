@@ -1,0 +1,25 @@
+# Author  : Gaston Gonzalez
+# Date    : 4 October
+# Updated : 6 October
+# Purpose : GPS configuration for EmComm Tools
+#
+# Note: The 3.22 version of gpsd shipped with Ubuntu 22.04 has an issue
+# obtaining subsequent positions after the initial fix. 
+# 
+# See https://bugs.launchpad.net/ubuntu/+source/gpsd/+bug/2011721 
+#
+# Workaround: Use -b option or upgrade to gpsd 3.25
+
+# Prevent starting automatically by systemd 
+START_DAEMON="false"
+
+# Prevent the default udev rules from starting gpsd.
+# Custom ET udev rules trigger gpsd
+USBAUTO="false"
+
+# Always use
+DEVICES="/dev/et-gps"
+
+# -n should be used when using GPS as a reference clock
+# -b user read-only mode to prevent u-blox protocol from being used
+GPSD_OPTIONS="-n -b"

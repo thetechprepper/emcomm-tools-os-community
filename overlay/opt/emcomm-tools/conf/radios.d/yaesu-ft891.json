@@ -1,0 +1,37 @@
+{
+  "id": "yaesu-ft891",
+  "vendor": "Yaesu",
+  "model": "FT-891 (DR-891)",
+  "rigctrl": {
+    "id": "1036",
+    "baud": "38400",
+    "ptt": "RIG"
+  },
+  "notes": [
+    "05-06 CAT RATE = 38400bps",
+    "05-07 CAT TOT = 100ms",
+    "05-08 CAT RTS = DISABLE",
+    "08-01 DATA MODE = OTHERS",
+    "08-02 PSK TONE = 1500Hz",
+    "08-03 OTHER DISP = 1500Hz",
+    "08-04 OTHER SHIFT = 1500Hz",
+    "08-05 DATA LCUT FREQ = OFF",
+    "08-07 DATA HCUT FREQ = OFF",
+    "08-09 DATA IN SELECT = REAR",
+    "08-10 DATA PTT SELECT = DAKY",
+    "08-11 DATA OUT LEVEL = 50",
+    "08-12 DATA BFO = USB",
+    "11-07 SSB BFO = AUTO",
+    "For digital operation always set Mode = DATA",
+    "For digital operation always set WDH = 3000",
+    "For digital operation always set mode to USB"
+  ],
+  "fieldNotes": [
+    "Long press [BAND] and select DATA using the VFO knob",
+    "Short press [F] multiple times and stop at FUNCTION-1 screen",
+    "Use the MFK to select WDH",
+    "Short press the MFK, then rotate to set the WDH value to 3000",
+    "Long press [F] to exit",
+    "Set digital output power via menu 16-03."
+  ]
+}
