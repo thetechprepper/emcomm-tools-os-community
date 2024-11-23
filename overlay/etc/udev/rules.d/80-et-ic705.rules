@@ -1,0 +1,43 @@
+# Author   : Gaston Gonzalez
+# Date     : 28 September 2024
+# Updated  : 4 November 2024
+# Purpose  : udev rules for the Icom IC-705
+#
+# Preconditions:
+# 1. IC-705 connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 2. /dev/et-gps created
+# 3. /dev/et-audio created
+# 3. rigctld is started
+# 4. gpsd is started
+# 
+# Resources
+# - https://www.florian-wolters.de/posts/ic705-serial-device-symlinks/
+
+# Set "IC-705" as an environment variable. This workaround is needed for the IC-705. 
+# Refer to the document under the Resources above for the background details.
+KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{product}=="IC-705", \
+    ENV{ET_DEVICE}="IC-705"
+
+# Create consistent device name/path for the CAT serial device
+ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="00", \
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
+
+# Create consistent device name/path for the GPS serial device
+ENV{ET_DEVICE}=="IC-705", SUBSYSTEMS=="usb", ATTRS{bInterfaceNumber}=="02", \
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="GPS", GROUP="dialout", MODE="0660", SYMLINK+="et-gps", \
+    RUN+="/opt/emcomm-tools/sbin/wrapper-gpsd.sh start"
+
+# This rule generically matches the following Icom radios: 
+# 1. IC-705
+# 2. IC-7100
+# 3. IC-7200
+SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="2901", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="Icom generic", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"

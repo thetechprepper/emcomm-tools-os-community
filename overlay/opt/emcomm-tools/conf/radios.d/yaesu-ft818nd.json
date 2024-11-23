@@ -1,0 +1,23 @@
+{
+  "id": "yaesu-ft818nd",
+  "vendor": "Yaesu",
+  "model": "FT-818ND (DigiRig)",
+  "rigctrl": {
+    "id": "1041",
+    "baud": "38400",
+    "ptt": "RTS"
+  },
+  "notes": [
+    "Menu 007 ANTENNA = REAR",
+    "Menu 014 CAT RATE = 38400",
+    "Menu 024 DIG DISP = 0 Hz",
+    "Menu 025 DIG MIC = 75",
+    "Menu 026 DIG MODE = USER-U",
+    "Menu 027 DIG SHIFT = 0 Hz",
+    "Menu 039 PKT MIC = 50",
+    "Menu 040 PKT RATE = 1200",
+    "Set AGCfast",
+    "For VHF/UHF packet, set mode = PKT; Menu 045 = SQL",
+    "For HF, set mode = DIGI; Menu 045 = RF GAIN"
+  ]
+}

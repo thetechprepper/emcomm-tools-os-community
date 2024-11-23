@@ -1,0 +1,13 @@
+{
+  "id": "icom-ic7100",
+  "vendor": "Icom",
+  "model": "IC-7100",
+  "rigctrl": {
+    "id": "3070",
+    "baud": "9600",
+    "ptt": "RIG"
+  },
+  "notes": [
+    "TODO: Add notes"
+  ]
+}

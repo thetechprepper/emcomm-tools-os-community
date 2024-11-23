@@ -1,0 +1,21 @@
+# Author  : Gaston Gonzalez
+# Date    : 17 October 2024
+# Updated : 24 October 2024 
+# Purpose : udev rules for the DigiRig Lite
+#
+# Preconditions:
+# 1. The radio is set to 'generic-vox' using et-radio.
+# 2. DigiRig Lite connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-audio created
+# 2. rigctld is started
+
+# The DigiRig Lite has no CAT control, but rigctld is started to minimize the configuration needed
+# by the various amateur radio applications. EmComm Tools treats rigctl NET as its abstraction layer.
+# A dummy rig control configuration is specifed in the 'generic-vox' radio configuration.
+SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0012", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="DIGIRIG_LITE", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio" \
+    RUN+="/usr/bin/systemctl start rigctld"

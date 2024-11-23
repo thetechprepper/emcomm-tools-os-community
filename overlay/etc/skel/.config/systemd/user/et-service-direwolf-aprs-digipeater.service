@@ -1,0 +1,23 @@
+# Author  : Gaston Gonzalez
+# Date    : 6 November 2024
+# Updated : 8 November
+# Purpose : User systemd unit file for EmComm Tools Dire Wolf APRS digipeater packet
+#         : service.
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-direwolf-aprs-digipeater
+#  Start service      : systemctl --user start et-service-direwolf-aprs-digipeater
+#  Stop service       : systemctl --user stop et-service-direwolf-aprs-digipeater
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools Dire Wolf APRS digipeater service
+# Disable conditional check for audio device. Allow et-ardop to enforce.
+#ConditionPathExists=/dev/et-audio
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-direwolf start aprs-digipeater
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,235 @@
+#!/bin/bash
+#
+# Author   : Gaston Gonzalez
+# Date     : 6 October 2024
+# Updated  : 21 November 2024
+# Purpose  : Utility script for dumping system information
+
+function usage() {
+  echo "Usage: $(basename $0) <command>"
+  echo "  active-radio  - Display model of active radio" 
+  echo "  callsign      - Current callsign"
+  echo "  et-audio      - Show state of audio interface"
+  echo "  et-audio-card - Display audio card and device: <card>,<device>"
+  echo "  et-cat        - Show state of CAT control interface"
+  echo "  et-gps        - Show state of GPS interface"
+  echo "  et-time       - Show if time is synched via GPS"
+  echo "  et-mode       - Show current mode"
+  echo "  grid          - Current grid square defined by user"
+  echo "  ip            - System IP address"
+  echo "  release       - EmComm Tools release"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+[ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+case $1 in
+  active-radio)
+    if [ -L  "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+      cat "${ET_HOME}/conf/radios.d/active-radio.json" | jq -r .model
+    else
+      echo "No radio selected"
+    fi 
+    ;;
+  callsign)
+    cat ${ET_USER_CONFIG} | jq -r .callsign
+    ;;
+  grid)
+    cat ${ET_USER_CONFIG} | jq -r .grid
+    ;;
+  et-audio)
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then 
+
+      UDEV_OUT=$(udevadm info /dev/et-audio | grep ET_DEVICE)
+      if [ $? -eq 0 ]; then
+
+        # Display friendly audio device name
+        ET_DEVICE=$(udevadm info /dev/et-audio | grep ET_DEVICE | cut -d"=" -f2)
+        case $ET_DEVICE in
+          "DIGIRIG_LITE")
+            echo "DigiRig Lite"
+          ;;
+          "DIGIRIG_MOBILE")
+            echo "DigiRig Mobile"
+          ;;
+          *)
+            echo $ET_DEVICE
+          ;;
+        esac
+
+      else
+        echo "Connected" 
+      fi
+
+    else
+      echo "Not connected" 
+    fi
+
+    ;;
+  et-audio-card)
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then 
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [ $? -eq 0 ]; then
+         AUDIO_CARD=$(echo $APLAY_OUT | cut -d":" -f1 | awk '{print $2}')
+         AUDIO_DEVICE=$(echo $APLAY_OUT | cut -d"," -f2 | cut -d":" -f1 | awk '{print $2}')
+         echo $AUDIO_CARD,$AUDIO_DEVICE
+       else
+         exit 1
+       fi
+    else
+      exit 1
+    fi
+
+    ;;
+  et-cat)
+
+    if [ ! -L "${ET_HOME}/conf/radios.d/active-radio.json" ]; then
+      echo "N/A"
+      exit 0
+    fi
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-cat ]; then 
+
+      # 2. Check if the rigctl systemd unit is running properly
+      systemctl status rigctld --no-pager > /dev/null 
+      if [ $? -eq 0 ]; then
+    
+        # Note: I am disabling the VFO read as it causes issues with serval Icom 
+        # radios and results in the VFO changing momentarily during this client
+        # request. It causes issues during TX and RX. If it is not bulletproof,
+        # features like this will be turned off. This is a problem given that 
+        # Conky calls this method every 10 seconds.
+        #
+        # 3. Grab and format frequency 
+        #FREQ=$(timeout 1 rigctl -m 2 f)
+        #if [ $? -eq 0 ]; then
+        #  printf "%'d MHz\n" "$FREQ" | sed 's|,|.|g'
+        #else
+        #  echo "Connected. Can't access VFO"; 
+        #fi
+        echo "Connected"; 
+      else
+        echo "Connected. No rig control"
+      fi
+    else
+      echo "Not connected"; 
+    fi
+
+    ;; 
+  et-gps)
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-gps ]; then 
+
+      # 2. Check if the gpsd systemd unit is running properly
+      systemctl status gpsd --no-pager > /dev/null 
+      if [ $? -eq 0 ]; then
+
+        # 3. Obtain the current GPS mode
+        GPS_JSON=$(gpspipe -w -n 10 | grep -m 1 TPV)
+        if [ $? -eq 0 ]; then
+          GPS_MODE=$(echo $GPS_JSON | jq --exit-status -r .mode)
+
+          case $GPS_MODE in
+            1)
+              echo "No fix"
+            ;;
+            2)
+              echo "2D fix"
+            ;;
+            3)
+              LAT=$(echo $GPS_JSON | jq -r .lat)
+              LON=$(echo $GPS_JSON | jq -r .lon)
+              printf "%.5f,%.5f\n" $LAT $LON
+            ;;
+            *)
+              echo "Unknown mode"
+            ;;
+          esac 
+
+        else
+          echo "Connected. Can't decode"
+        fi
+
+      else
+        echo "Connected. gpsd not running"
+      fi
+    else 
+      echo "Not connected" 
+    fi
+
+    ;; 
+  et-mode)
+
+    SELECTED_MODE=$(cat "${HOME}/.config/emcomm-tools/et-mode")
+
+    MODE_ID_NONE="none"
+    MODE_ID_APRS_DIGIPEATER="aprs-digipeater"
+    MODE_ID_PACKET_DIGIPEATER="packet-digipeater"
+    MODE_ID_APRS_CLIENT="aprs-client"
+    MODE_ID_WINLINK_ARDOP="winlink-ardop"
+    MODE_ID_WINLINK_PACKET="winlink-packet"
+
+    if [ ! -e /dev/et-audio ]; then 
+      echo "Run 'et-mode' to set"
+      echo ${MODE_ID_NONE} > "${HOME}/.config/emcomm-tools/et-mode"
+      exit 0
+    fi
+
+    case ${SELECTED_MODE} in
+      ${MODE_ID_NONE})
+        echo "Run 'et-mode' to set"
+      ;;
+      ${MODE_ID_APRS_DIGIPEATER})
+        echo "APRS Digipeater"
+      ;;
+      ${MODE_ID_APRS_CLIENT})
+        echo "APRS"
+      ;;
+      ${MODE_ID_PACKET_DIGIPEATER})
+        echo "Packet Digipeater"
+      ;;
+      ${MODE_ID_WINLINK_ARDOP})
+        echo "Winlink ARDOP"
+      ;;
+      ${MODE_ID_WINLINK_PACKET})
+        echo "Winlink Packet"
+      ;;
+      *)
+        echo "Unknown"
+      ;;
+    esac
+
+    ;;
+  et-time)
+    ET_OUT=$(${ET_HOME}/bin/et-time)
+    if [ $? -eq 0 ]; then
+      echo "Yes"
+    else
+      echo "No"
+    fi
+
+    ;;
+  ip)
+    hostname -I | awk '{print $1}'
+    ;;
+  release)
+    grep DISTRIB_DESCRIPTION /etc/lsb-release | sed 's|"||g' | awk '{print $1}' | cut -d"=" -f2
+    ;;  
+  *)
+    echo "Command not supported."
+    usage
+    exit 1
+    ;;
+esac

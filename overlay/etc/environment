@@ -1,0 +1,7 @@
+ET_HOME=/opt/emcomm-tools
+ET_GROUP=et-data
+ET_TEMP_DIR=/tmp/et
+ET_LOG_FILE=$ET_TEMP_DIR/et.log
+ET_DIST_DIR=/opt/dist
+ET_SRC_DIR=/opt/src
+PATH="/opt/emcomm-tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"

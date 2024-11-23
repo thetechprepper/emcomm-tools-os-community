@@ -1,0 +1,19 @@
+# Author   : Gaston Gonzalez
+# Date     : 14 October 2024
+# Updated  : 24 October 2024
+# Purpose  : udev rules for generic remove events
+#
+# Preconditions:
+# 1. CAT control device (or DigiRig Lite) is unplugged
+#
+# Postconditions:
+# 1. rigctld is stopped
+
+SUBSYSTEM=="tty", ENV{ET_SUBDEVICE}=="CAT", \
+  ACTION=="remove", \
+  RUN+="/opt/emcomm-tools/sbin/wrapper-rigctld.sh stop"
+
+
+SUBSYSTEM=="sound",ENV{ET_SUBDEVICE}=="AUDIO", \
+  ACTION=="remove", \
+  RUN+="/opt/emcomm-tools/sbin/wrapper-rigctld.sh stop"
