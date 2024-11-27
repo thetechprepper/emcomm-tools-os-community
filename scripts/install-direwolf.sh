@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 27 March 2023
-# Updated : 13 October 2024
+# Updated : 27 November 2024
 # Purpose : Install Dire Wolf
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -10,7 +10,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
 
-VERSION=1.6
+VERSION=1.7
 TARBALL=direwolf-$VERSION.tar.gz
 INSTALL_DIR=/opt/direwolf-$VERSION
 LINK_PATH=/opt/direwolf
