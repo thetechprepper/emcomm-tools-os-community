@@ -1,6 +1,6 @@
 # EmComm Tools OS Community Release
 
-# 2024.11.23.R3 (3.0.0)
+# 2024.11.27.R3 (3.0.0)
 
 * Plug-and-Play (PnP) support for CAT control, sound card, and GPS
 * Tier 1 radio PnP support
@@ -71,6 +71,7 @@
 * Use old-releases for apt repositories
 * Basic post-installation test/validation suite
 * Set terminal to high visibility color palette
+* Upgraded DireWolf from 1.6 to 1.7
 
 # 2024.05.19.R2
 
