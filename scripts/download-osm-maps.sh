@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author   : Gaston Gonzalez
 # Date     : 4 November 2024
+# Updated  : 3 December 2024
 # Purpose  : Downloads OSM .pbf file selected by user
 
 HTML=page.html
@@ -25,12 +26,11 @@ et-log "Extracting state-level .pbf file list..."
 
 options=()
 while IFS= read -r state_html; do
-    state_file_suffix=$(echo $state_html | sed -n 's/.*href="\([^"]*\)".*/\1/p')
-    pbf_file=$(echo $state_file_suffix | sed 's|bz2|pbf|')
-    state_url="http://download.geofabrik.de/north-america/${pbf_file}"
+    state_file=$(echo $state_html | sed -n 's|.*href="\([^"]*\.osm\.pbf\)".*|\1|p')
+    state_url="http://download.geofabrik.de/north-america/${state_file}"
 
     # Extract a display friendly name for the state
-    state_name=$(echo $state_file_suffix | sed 's|us/||' | sed 's|-latest.osm.bz2||')
+    state_name=$(echo $state_file | sed 's|us/||' | sed 's|-latest.osm.pbf||')
 
     options+=("$state_name" "$state_url")
 done < <(grep "[.]pbf" page.html | grep 'href="us/' | sort)
