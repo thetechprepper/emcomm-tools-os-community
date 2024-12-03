@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 3 December 2024
+# Purpose : Wrapper script for starting Paracon with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+# 2. Dire Wolf is started
+#
+# Postconditions:
+# 1. Callsign and AGWPE host updated in Paracon
+# 2. Paracon is started
+
+PARACON_CONF_DIR=${HOME}/.local/share/emcomm-tools/bbs-client
+PARACON_CONF_FILE=${PARACON_CONF_DIR}/paracon.cfg
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  <command>"
+  echo "    start           - Start Paracon"
+  echo "    update-config   - Update configuration for selected mode"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+start() {
+  update-config
+  
+  if [ $? -eq 0 ]; then
+
+    RIGCTLD_OUT=$(ps -ef | grep [d]irewolf)
+    if [ $? -ne 0 ]; then
+      et-log "Can't start Paracon. Dire Wolf not running."
+      notify_user "Can't start Paracon. Dire Wolf not running."
+      exit 1
+    fi
+
+    CWD_DIR=$(pwd)
+
+    cd ${PARACON_CONF_DIR}
+    CMD="paracon"
+    et-log "Starting Paracon in ${PARACON_CONF_DIR} with: ${CMD}"
+
+    ${CMD}
+
+    cd ${CWD_DIR}
+   
+  else 
+    et-log "Error updating configuration. Can't start Paracon"
+    exit 1
+  fi
+}
+
+update-config () {
+
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start Paracon. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    et-log "Updating Paracon configuration file: ${PARACON_CONF_FILE}..."
+    sed -i "s|^host.*|host = localhost|" ${PARACON_CONF_FILE}
+    sed -i "s|^callsign.*|callsign = ${CALLSIGN}|" ${PARACON_CONF_FILE}
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
