@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 3 December 2024
+# Updated  : 5 December 2024
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -13,6 +13,7 @@ MODE_ID_NONE="none"
 MODE_ID_APRS_DIGIPEATER="aprs-digipeater" 
 MODE_ID_APRS_CLIENT="aprs-client" 
 MODE_ID_BBS_CLIENT="bbs-client" 
+MODE_ID_CHAT_CLIENT="chat-chattervox" 
 MODE_ID_PACKET_DIGIPEATER="packet-digipeater" 
 MODE_ID_WINLINK_ARDOP="winlink-ardop" 
 MODE_ID_WINLINK_PACKET="winlink-packet" 
@@ -66,13 +67,14 @@ options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
 options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
 options+=("${MODE_ID_BBS_CLIENT}" "BBS Client (Paracon)")
+options+=("${MODE_ID_CHAT_CLIENT}" "Chat (chattervox)")
 options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_PACKET_DIGIPEATER}" "Packet Digipeater")
 options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink over VHF/UHF (AX.25 Packet)")
 
 # Prompt user for option and save exit status
-SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 15 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 16 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
 tput sgr 0 && clear
@@ -99,6 +101,11 @@ if [ $exit_status -eq 0 ]; then
       start_and_wait_for_service et-service-direwolf-simple
       et-log "Starting Paracon."
       et-paracon start
+    ;;
+    ${MODE_ID_CHAT_CLIENT})
+      start_and_wait_for_service et-service-direwolf-simple
+      et-log "Starting chattervox"
+      chattervox chat
     ;;
     ${MODE_ID_PACKET_DIGIPEATER})
       systemctl --user start et-service-direwolf-packet-digipeater
