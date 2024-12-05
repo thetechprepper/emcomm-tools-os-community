@@ -105,7 +105,7 @@ if [ $exit_status -eq 0 ]; then
     ${MODE_ID_CHAT_CLIENT})
       start_and_wait_for_service et-service-direwolf-simple
       et-log "Starting chattervox"
-      chattervox chat
+      et-chattervox start
     ;;
     ${MODE_ID_PACKET_DIGIPEATER})
       systemctl --user start et-service-direwolf-packet-digipeater
