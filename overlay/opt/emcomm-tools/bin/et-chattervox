@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 5 December 2024
+# Updated : 6 December 2024
 # Purpose : Wrapper script for starting chattervox with PnP support
 #
 # Preconditions:
@@ -9,11 +10,12 @@
 # 2. Dire Wolf is started
 #
 # Postconditions:
-# 1. Callsign and KISS host updated
+# 1. On first start, configuration is created and signing key is generated.
 # 2. chattervox is started
 
 CHATTERVOX_CONF_DIR=${HOME}/.chattervox
 CHATTERVOX_CONF_FILE=${CHATTERVOX_CONF_DIR}/config.json
+CHATTERVOX_KEYSTORE_FILE=${CHATTERVOX_CONF_DIR}/keystore.json
 
 usage() {
   echo "usage: $(basename $0) <command>"
@@ -87,6 +89,26 @@ cat <<EOF > "${CHATTERVOX_CONF_FILE}"
 }
 EOF
 
+      et-log "Generating signing key..."
+      chattervox genkey
+
+      SIGNING_KEY=$(cat ${CHATTERVOX_KEYSTORE_FILE} | jq -e -r .${CALLSIGN}[0].public)
+      if [ $? -eq 0 ]; then
+        et-log "Adding signing key configuration..."
+
+cat <<EOF > "${CHATTERVOX_CONF_FILE}"
+{
+  "version": 3,
+  "callsign": "${CALLSIGN}",
+  "ssid": 0,
+  "keystoreFile": "${HOME}/.chattervox/keystore.json",
+  "kissPort": "kiss://localhost:8001",
+  "kissBaud": 9600,
+  "feedbackDebounce": 20000,
+  "signingKey": "${SIGNING_KEY}"
+}
+EOF
+      fi
     fi
 }
 
