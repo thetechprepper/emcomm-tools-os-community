@@ -1,0 +1,153 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 5 December 2024
+# Updated : 6 December 2024
+# Purpose : Wrapper script for starting chattervox with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+# 2. Dire Wolf is started
+#
+# Postconditions:
+# 1. On first start, configuration is created and signing key is generated.
+# 2. chattervox is started in chat mode
+
+CHATTERVOX_CONF_DIR=${HOME}/.chattervox
+CHATTERVOX_CONF_FILE=${CHATTERVOX_CONF_DIR}/config.json
+CHATTERVOX_KEYSTORE_FILE=${CHATTERVOX_CONF_DIR}/keystore.json
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  <command>"
+  echo "    start           - Start chat"
+  echo "    update-config   - Update configuration for selected mode"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+generate_config() {
+
+  CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+cat <<EOF > "${CHATTERVOX_CONF_FILE}"
+{
+  "version": 3,
+  "callsign": "${CALLSIGN}",
+  "ssid": 0,
+  "keystoreFile": "${HOME}/.chattervox/keystore.json",
+  "kissPort": "kiss://localhost:8001",
+  "kissBaud": 9600,
+  "feedbackDebounce": 20000
+}
+EOF
+
+  # Generate keystore file if it does not exist
+  if [ ! -e ${CHATTERVOX_KEYSTORE_FILE} ]; then
+    chattervox genkey
+  fi
+
+  # Grab existing or newly generated signing key if available
+  SIGNING_KEY=$(cat ${CHATTERVOX_KEYSTORE_FILE} | jq -e -r .${CALLSIGN}[0].public)
+  if [ $? -ne 0 ]; then
+    et-log "Generating signing key for ${CALLSIGN}..."
+    chattervox genkey
+    SIGNING_KEY=$(cat ${CHATTERVOX_KEYSTORE_FILE} | jq -e -r .${CALLSIGN}[0].public)
+  else
+    et-log "Signing key already exits for ${CALLSIGN}."
+  fi
+  
+
+cat <<EOF > "${CHATTERVOX_CONF_FILE}"
+{
+  "version": 3,
+  "callsign": "${CALLSIGN}",
+  "ssid": 0,
+  "keystoreFile": "${HOME}/.chattervox/keystore.json",
+  "kissPort": "kiss://localhost:8001",
+  "kissBaud": 9600,
+  "feedbackDebounce": 20000,
+  "signingKey": "${SIGNING_KEY}"
+}
+EOF
+}
+
+start() {
+  update-config
+  
+  if [ $? -eq 0 ]; then
+
+    RIGCTLD_OUT=$(ps -ef | grep [d]irewolf)
+    if [ $? -ne 0 ]; then
+      et-log "Can't start chattervox. Dire Wolf not running."
+      notify_user "Can't start chattervox. Dire Wolf not running."
+      exit 1
+    fi
+
+    CWD_DIR=$(pwd)
+
+    CMD="chattervox chat"
+    et-log "Starting chattervox with: ${CMD}"
+
+    ${CMD}
+
+  else 
+    et-log "Error updating configuration. Can't start chattervox"
+    exit 1
+  fi
+}
+
+update-config () {
+
+    [ -z "${ET_USER_CONFIG}" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start chattervox. No callsign set. Run: et-user."
+      exit 1
+    fi
+ 
+    [ ! -e ${CHATTERVOX_CONF_DIR} ] && mkdir ${CHATTERVOX_CONF_DIR}
+
+    if [ ! -e ${CHATTERVOX_CONF_FILE} ]; then
+      et-log "chattervox configuration does not exist creating: ${CHATTERVOX_CONF_FILE}..."
+      generate_config
+
+    else
+      et-log "Chattervox configuration already exists, checking for change in et-user..."
+
+      CUR_CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+      CONFIGURED_CALLSIGN=$(cat ${CHATTERVOX_CONF_FILE} | jq -r .callsign)
+      
+      if [ "${CUR_CALLSIGN}" != "${CONFIGURED_CALLSIGN}" ]; then
+        et-log "User callsign has changed from ${CUR_CALLSIGN} to ${CONFIGURED_CALLSIGN}"
+        generate_config
+      fi
+     
+    fi
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
