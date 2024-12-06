@@ -109,6 +109,17 @@ cat <<EOF > "${CHATTERVOX_CONF_FILE}"
 }
 EOF
       fi
+
+    else
+      et-log "Chattervox configuration already exists, checking for change in et-user..."
+
+      CUR_CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+      CONFIGURED_CALLSIGN=$(cat ${CHATTERVOX_CONF_FILE} | jq -r .callsign)
+      
+      if [ "${CUR_CALLSIGN}" != "${CONFIGURED_CALLSIGN}" ]; then
+        et-log "User callsign has changed from ${CUR_CALLSIGN} to ${CONFIGURED_CALLSIGN}"
+      fi
+     
     fi
 }
 
