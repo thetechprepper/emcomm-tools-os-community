@@ -25,7 +25,8 @@
     "078 FM PKT TX GAIN = 50",
     "079 FM PKT MODE = 1200",
     "For HF digital operation always set Mode = DATA-USB",
-    "For HF digital operation always set WDH = 3000Hz"
+    "For HF digital operation always set WDH = 3000Hz",
+    "For FM packet operation always set Mode = DATA-FM"
   ],
   "fieldNotes": [
   ]
