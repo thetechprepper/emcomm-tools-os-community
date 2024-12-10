@@ -1,0 +1,37 @@
+# Author   : Gaston Gonzalez
+# Date     : 8 December 2024
+# Purpose  : udev rules for the Yaesu FT-991A via native USB
+#
+# Preconditions:
+# 1. Yaesu FT-991A is selected via et-radio
+# 2. Yaesu FT-991A is powered on and connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 2. /dev/et-audio created
+# 3. rigctld is started
+# 
+# CAUTION: The FT-991A is an experimental device that may impact the stability of the platform and may
+#          not work 100% of the time. This device support is best effort only.
+
+# Special rule to ensure that the first serial interface (/dev/ttyUSB4) is tagged as ET_DEVICE=FT-891 so
+# that it can be used in the next CAT control rule. The second serial device will not work (/dev/ttyUSB5)
+# if it is incorrectly detected as the /dev/et-cat device.
+KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", PROGRAM="/opt/emcomm-tools/sbin/udev-tester.sh yaesu-ft991a", \
+    ATTRS{bInterfaceNumber}=="00", \
+    ENV{ET_DEVICE}="FT-991A"
+
+# CAT control device will only match if PROGRAM above matches (exit status=0)
+SUBSYSTEM=="tty", ENV{ET_DEVICE}=="FT-991A", \
+    ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea70",\
+    ACTION=="add", \
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
+
+# Audio device will only match if PROGRAM above matches (exit status=0)
+SUBSYSTEM=="sound", ATTRS{idVendor}=="08bb", ATTRS{idProduct}=="29b3", \
+    PROGRAM="/opt/emcomm-tools/sbin/udev-tester.sh yaesu-ft991a", \
+    ACTION=="add", \
+    ENV{ET_DEVICE}="FT-991A", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"

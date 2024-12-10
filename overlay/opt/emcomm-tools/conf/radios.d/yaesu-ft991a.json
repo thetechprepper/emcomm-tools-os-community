@@ -1,0 +1,33 @@
+{
+  "id": "yaesu-ft991a",
+  "vendor": "Yaesu",
+  "model": "FT-991A",
+  "rigctrl": {
+    "id": "1035",
+    "baud": "38400",
+    "ptt": "RIG"
+  },
+  "notes": [
+    "031 CAT RATE = 38400bps",
+    "032 CAT TOT = 100ms",
+    "033 CAT RTS = DISABLE",
+    "062 DATA MODE = OTHERS",
+    "064 OTHER DISP (SSB) = 1500Hz",
+    "065 OTHER SHIFT (SSB) = 1500Hz",
+    "066 DATA LCUT FREQ = OFF",
+    "068 DATA HCUT FREQ = OFF",
+    "070 DATA IN SELECT = REAR",
+    "071 DATA PTT SELECT = DAKY",
+    "072 DATA PORT SELECT = USB",
+    "073 DATA OUT LEVEL = 50",
+    "076 FM PKT PTT SELECT = DAKY",
+    "077 FM PKT PORT SELECT = USB",
+    "078 FM PKT TX GAIN = 50",
+    "079 FM PKT MODE = 1200",
+    "For HF digital operation always set Mode = DATA-USB",
+    "For HF digital operation always set WDH = 3000Hz",
+    "For FM packet operation always set Mode = DATA-FM"
+  ],
+  "fieldNotes": [
+  ]
+}
