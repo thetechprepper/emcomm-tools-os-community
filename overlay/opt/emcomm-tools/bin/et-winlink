@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 4 November 2024
-# Updated : 5 November 2024
+# Updated : 12 December 2024
 # Purpose : Wrapper script for starting YAAC with PnP support
 #
 # Preconditions:
@@ -21,7 +21,6 @@ usage() {
   echo "  <command>"
   echo "    start-ardop     - Start Pat Winlink in ardop mode"
   echo "    start-packet    - Start Pat Winlink in packet mode"
-  echo "    update-config   - Update configuration for selected mode"
 }
 
 if [ $# -ne 1 ]; then
@@ -45,7 +44,7 @@ start_ardop() {
     exit 1
   fi
 
-  update_config
+  update_config ardop
 
   CMD="pat http"
   et-log "Starting Pat with: ${CMD}"
@@ -62,7 +61,7 @@ start_packet() {
     exit 1
   fi
 
-  update_config
+  update_config packet
 
   CMD="pat http"
   et-log "Starting Pat with: ${CMD}"
@@ -72,23 +71,33 @@ start_packet() {
 
 update_config () {
 
-    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+  [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
-    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
-    GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
-    WINLINK_PASSWD=$(cat ${ET_USER_CONFIG} | jq -r .winlinkPasswd)
+  CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+  GRID=$(cat ${ET_USER_CONFIG} | jq -r .grid)
+  WINLINK_PASSWD=$(cat ${ET_USER_CONFIG} | jq -r .winlinkPasswd)
 
-    if [ "${CALLSIGN}" = "N0CALL" ]; then
-      notify_user "Can't start Pat. No callsign set. Run: et-user."
-      exit 1
-    fi
+  if [ "${CALLSIGN}" = "N0CALL" ]; then
+    notify_user "Can't start Pat. No callsign set. Run: et-user."
+    exit 1
+  fi
 
-    et-log "Updating Pat configuration file: ${PAT_CONF_FILE}..."
-    cp -v ${PAT_CONF_FILE_TEMPLATE} ${PAT_CONF_FILE}
+  et-log "Updating Pat configuration file: ${PAT_CONF_FILE}..."
+  cp -v ${PAT_CONF_FILE_TEMPLATE} ${PAT_CONF_FILE}
 
-    sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${PAT_CONF_FILE}
-    sed -i "s|{{ET_WINLINK_PASSWD}}|${WINLINK_PASSWD}|g" ${PAT_CONF_FILE}
-    sed -i "s|{{ET_GRID}}|${GRID}|g" ${PAT_CONF_FILE}
+  sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${PAT_CONF_FILE}
+  sed -i "s|{{ET_WINLINK_PASSWD}}|${WINLINK_PASSWD}|g" ${PAT_CONF_FILE}
+  sed -i "s|{{ET_GRID}}|${GRID}|g" ${PAT_CONF_FILE}
+
+  # Enable the P2P listener for the current mode selected (ARDOP or AX.25)
+  case $1 in
+    ardop)
+      sed -i "s|{{ET_WINLINK_LISTEN}}|ardop|g" ${PAT_CONF_FILE}
+      ;;
+    packet)
+      sed -i "s|{{ET_WINLINK_LISTEN}}|ax25|g" ${PAT_CONF_FILE}
+      ;;
+  esac
 }
 
 case $1 in
@@ -97,9 +106,6 @@ case $1 in
     ;;
   start-packet)
     start_packet
-    ;;
-  update-config)
-    update_config
     ;;
   *)
     echo "Invalid command."

@@ -13,7 +13,7 @@
   "connect_aliases": {
     "telnet": "telnet://{mycall}:CMSTelnet@cms.winlink.org:8772/wl2k"
   },
-  "listen": [],
+  "listen": [ "{{ET_WINLINK_LISTEN}}" ],
   "hamlib_rigs": {
     "et-rig": {
       "address": "localhost:4532", 
