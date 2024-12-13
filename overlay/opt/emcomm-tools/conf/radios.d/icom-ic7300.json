@@ -4,9 +4,10 @@
   "model": "IC-7300",
   "rigctrl": {
     "id": "3073",
-    "baud": "9600",
+    "baud": "19200",
     "ptt": "RIG"
   },
   "notes": [
+    "Set baud rate to 19200"
   ]
 }
