@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 10 November 2024
+# Updated  : 13 December 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -25,7 +25,7 @@ while IFS= read -r radio; do
     options+=("$ID" "$VENDOR $MODEL")
 done < <(find $ET_HOME/conf/radios.d -type f | sort)
 
-SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 21 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
 tput sgr 0 && clear
