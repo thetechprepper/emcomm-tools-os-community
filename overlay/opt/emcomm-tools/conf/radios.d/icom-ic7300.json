@@ -8,6 +8,6 @@
     "ptt": "RIG"
   },
   "notes": [
-    "Set baud rate to 19200"
+     "[MENU] > [SET] > [Connectors] > [CI-V] > CI-V USB Baud Rate = 19200"
   ]
 }
