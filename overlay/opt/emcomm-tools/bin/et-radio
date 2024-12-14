@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 13 December 2024
+# Updated  : 14 December 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -58,7 +58,8 @@ if [ $exit_status -eq 0 ]; then
   
   printf "${GREEN}REQUIRED ACTIONS\n"
   printf "1. Apply the settings above to your radio.\n"
-  printf "2. Plug in the USB cable for your radio. If it is already connected, reconnect it.\n"
+  printf "2. Plug in the USB cable for your radio. If it is already\n"
+  printf "   connected, reconnect it.\n"
   printf "3. Run 'et-mode' and select the desired mode of operation.\n\n"
   printf "   Note: JS8Call does not require a mode to be selected.\n"
   echo -e "${NC}"
