@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 10 November 2024
+# Updated  : 14 December 2024
 # Purpose  : A script for managaing plug-and-play radios
 set -e
 
@@ -25,7 +25,7 @@ while IFS= read -r radio; do
     options+=("$ID" "$VENDOR $MODEL")
 done < <(find $ET_HOME/conf/radios.d -type f | sort)
 
-SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 21 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
 exit_status=$?
 
 tput sgr 0 && clear
@@ -58,7 +58,8 @@ if [ $exit_status -eq 0 ]; then
   
   printf "${GREEN}REQUIRED ACTIONS\n"
   printf "1. Apply the settings above to your radio.\n"
-  printf "2. Plug in the USB cable for your radio. If it is already connected, reconnect it.\n"
+  printf "2. Plug in the USB cable for your radio. If it is already\n"
+  printf "   connected, reconnect it.\n"
   printf "3. Run 'et-mode' and select the desired mode of operation.\n\n"
   printf "   Note: JS8Call does not require a mode to be selected.\n"
   echo -e "${NC}"

@@ -1,0 +1,13 @@
+{
+  "id": "icom-ic7300",
+  "vendor": "Icom",
+  "model": "IC-7300",
+  "rigctrl": {
+    "id": "3073",
+    "baud": "19200",
+    "ptt": "RIG"
+  },
+  "notes": [
+     "[MENU] > [SET] > [Connectors] > [CI-V] > CI-V USB Baud Rate = 19200"
+  ]
+}
