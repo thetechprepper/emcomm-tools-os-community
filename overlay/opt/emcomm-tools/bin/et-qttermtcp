@@ -6,6 +6,7 @@
 #
 # Preconditions
 # 1. Supported radio and audio interface are connected and properly detected
+# 2. The BBS Client (QtTermTCP) mode is started via et-mode.
 #
 # Postconditions
 # 1. Stop all running EmComm Tools modes
@@ -38,7 +39,7 @@ start() {
 
   cd ${CONF_DIR}
 
-  /opt/emcomm-tools/bin/et-kill-all && update-config && /usr/local/bin/QtTermTCP
+  update-config && /usr/local/bin/QtTermTCP
 
   cd ${CWD_DIR}
 }
