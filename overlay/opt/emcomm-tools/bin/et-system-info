@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 October 2024
-# Updated  : 5 December 2024
+# Updated  : 17 December 2024
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -177,6 +177,7 @@ case $1 in
     MODE_ID_NONE="none"
     MODE_ID_APRS_DIGIPEATER="aprs-digipeater"
     MODE_ID_BBS_CLIENT="bbs-client"
+    MODE_ID_BBS_CLIENT2="bbs-client2"
     MODE_ID_CHAT_CLIENT="chat-chattervox"
     MODE_ID_PACKET_DIGIPEATER="packet-digipeater"
     MODE_ID_APRS_CLIENT="aprs-client"
@@ -200,6 +201,9 @@ case $1 in
         echo "APRS"
       ;;
       ${MODE_ID_BBS_CLIENT})
+        echo "BBS Client"
+      ;;
+      ${MODE_ID_BBS_CLIENT2})
         echo "BBS Client"
       ;;
       ${MODE_ID_CHAT_CLIENT})

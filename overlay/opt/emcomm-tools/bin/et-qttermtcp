@@ -1,0 +1,98 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 17 December 2024
+# Purpose : Wrapper script for starting JS8Call with PnP support
+#
+# Preconditions
+# 1. Supported radio and audio interface are connected and properly detected
+# 2. The BBS Client (QtTermTCP) mode is started via et-mode.
+#
+# Postconditions
+# 1. Stop all running EmComm Tools modes
+# 2. QtTermTCP audio settings updated
+# 3. QtTermTCP started
+
+CONF_DIR="${HOME}/.config"
+CONF_FILE="${CONF_DIR}/QtTermTCP.ini"
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  start           - Update config and start JS8Call"
+  echo "  update-config   - Update config"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+notify_user() {
+  notify-send \
+   -t 5000 \
+   --app-name="EmComm Tools" \
+   "$1"
+}
+
+start() {
+  CWD_DIR=$(pwd)
+
+  cd ${CONF_DIR}
+
+  update-config && /usr/local/bin/QtTermTCP
+
+  cd ${CWD_DIR}
+}
+
+update-config () {
+
+   
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    # Update configuration with current callsign and grid
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [ "${CALLSIGN}" = "N0CALL" ]; then
+      notify_user "Can't start QtTermTCP. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    sed -i "s|^AGWTermCall.*|AGWTermCall=${CALLSIGN}|" ${CONF_FILE} 
+    sed -i "s|^YAPPPath.*|YAPPPath=${HOME}/Downloads|" ${CONF_FILE} 
+
+    et-log "Updated QtTermTCP configuration with user callsign '${CALLSIGN}'"
+
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-audio ]; then
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [ $? -eq 0 ]; then
+         ## Configure ALSA settings for sound card
+         /opt/emcomm-tools/bin/et-audio update-config
+       else
+         et-log "No ET_AUDIO device detected."
+         notify_user "Can't start QtTermInfo. No ET_AUDIO device detected."
+         exit 1
+       fi
+    else
+      et-log "No ET_AUDIO device plugged in."
+      notify_user "Can't start QtTermInfo. No supported audio device plugged in."
+      exit 1
+    fi
+
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
