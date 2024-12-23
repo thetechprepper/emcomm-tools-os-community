@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 17 December 2024
+# Updated : 23 December 2024
 # Purpose : Main installer for EmComm Tools OS Community
 
 . ./env.sh
@@ -49,6 +49,9 @@ exitIfNotRoot
 ./install-winlink.sh
 
 ./install-audio-tools.sh
+
+# Offline KBs (Cyberdeck)
+./install-wikipedia.sh
 
 # Add user-specific data
 ./download-osm-maps.sh
