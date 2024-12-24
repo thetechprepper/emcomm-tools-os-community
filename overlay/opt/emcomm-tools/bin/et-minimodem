@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 24 December 2024
+# Purpose : Wrapper script for minimodem
+#
+# Preconditions:
+# 1. DigiRig Lite is set in et-radio and connected
+
+usage() {
+  echo "usage: $(basename $0) <command> <file>"
+  echo "  <command>"
+  echo "    tx-file   - File to transmit"
+  echo "    rx-file   - Save incoming transmition to file"
+  echo ""
+  echo "The baud rate can be set with the BAUD_RATE environment variable"
+  echo "It defaults to 1200 if not specified."
+  echo "BAUD_RATE=300 /et-minimodem tx-file /etc/motd"
+}
+
+if [ $# -ne 2 ]; then
+  usage
+  exit 1
+fi
+
+FILE=$2
+
+# Allow users to override baud rate via an environment variable.
+# For example: BAUD_RATE=300 /et-minimodem tx-file /etc/motd
+if [ -z ${BAUD_RATE} ]; then
+  BAUD_RATE=1200
+fi
+
+case $1 in
+  tx-file)
+
+    AUDIO_DEV=$(et-system-info et-audio)
+    if [ "${AUDIO_DEV}" != "DigiRig Lite" ]; then
+      et-log "Minimodem only supports the DigiRig Lite. You have a '$AUDIO_DEV'"
+      exit 1
+    fi
+
+    AUDIO_CARD=$(et-system-info et-audio-card)
+    if [ $? -ne 0 ]; then
+      et-log "No audio device detected."
+      exit 1
+    fi
+
+    ALSA_DEV="plughw:${AUDIO_CARD}"
+
+    if [ ! -e ${FILE} ]; then
+      et-log "File ${FILE} does not exist."
+      exit
+    fi
+
+    cat ${FILE} | minimodem --tx --alsa=${ALSA_DEV} ${BAUD_RATE}
+    ;;
+
+  rx-file)
+    echo "Not yet implemented"
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
