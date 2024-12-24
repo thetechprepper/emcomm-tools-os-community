@@ -45,6 +45,7 @@ exitIfNotRoot
 
 # Install modems
 ./install-ardop.sh
+./install-minimodem.sh
 
 ./install-winlink.sh
 
