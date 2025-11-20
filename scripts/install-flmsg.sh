@@ -24,6 +24,7 @@ CWD_DIR=`pwd`
 cd ${ET_SRC_DIR}
 [[ ! -e ${GIT_WORKSPACE} ]] && git clone ${GIT_URL} ${GIT_WORKSPACE}
 
+# Fixing a bug in this build of flmsg
 sed -i '46 i#include "pthread.h"' /opt/src/flmsg/src/widgets/font_browser.cxx
 
 cd ${GIT_WORKSPACE}
@@ -43,5 +44,5 @@ ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 
 stow -v -d /opt ${APP} -t /usr/local
 
-cd ${CWD}
-
+# Use wrapper script as launcher executable
+sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-flmsg start|' /opt/flmsg/share/applications/flmsg.desktop
