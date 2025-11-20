@@ -3,7 +3,6 @@
 # Author  : William McKeehan
 # Date    : 3 September 2025
 # Purpose : Install SDR++
-set -e
 
 et-log "Installing SDR++ ..."
 
