@@ -40,9 +40,3 @@ make install
 ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 
 stow -v -d /opt ${APP} -t /usr/local
-
-cd ${CWD}
-
-# Use wrapper script as launcher executable
-sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-fldigi start|' /opt/fldigi/share/applications/fldigi.desktop
-
