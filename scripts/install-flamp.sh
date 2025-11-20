@@ -1,20 +1,19 @@
 #!/bin/bash
-# Author  : Gaston Gonzalez
-# Date    : 17 September 2025
-# Updated : 2 October 2025
-# Purpose : Builds and installs fldigi
+# Author  : William McKeehan
+# Date    : 18 November 2025
+# Purpose : Builds and installs flamp
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
 
-APP="fldigi"
-VERSION="4.2.10"
+APP="flamp"
+VERSION="2.2.14"
 APP_AND_VERSION="${APP}-${VERSION}"
 GIT_TAG="v${VERSION}"
-GIT_URL="https://git.code.sf.net/p/fldigi/fldigi"
-GIT_WORKSPACE="fldigi"
+GIT_URL="https://git.code.sf.net/p/fldigi/flamp"
+GIT_WORKSPACE="flamp"
 INSTALL_DIR="/opt/${APP_AND_VERSION}"
 LINK_PATH="/opt/${APP}"
 

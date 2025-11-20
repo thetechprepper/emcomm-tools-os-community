@@ -1,20 +1,19 @@
 #!/bin/bash
-# Author  : Gaston Gonzalez
-# Date    : 17 September 2025
-# Updated : 2 October 2025
-# Purpose : Builds and installs fldigi
+# Author  : William McKeehan
+# Date    : 18 November 2025
+# Purpose : Builds and installs flmsg
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
 
-APP="fldigi"
-VERSION="4.2.10"
+APP="flmsg"
+VERSION="4.0.24"
 APP_AND_VERSION="${APP}-${VERSION}"
 GIT_TAG="v${VERSION}"
-GIT_URL="https://git.code.sf.net/p/fldigi/fldigi"
-GIT_WORKSPACE="fldigi"
+GIT_URL="https://git.code.sf.net/p/fldigi/flmsg"
+GIT_WORKSPACE="flmsg"
 INSTALL_DIR="/opt/${APP_AND_VERSION}"
 LINK_PATH="/opt/${APP}"
 
@@ -24,6 +23,8 @@ CWD_DIR=`pwd`
 
 cd ${ET_SRC_DIR}
 [[ ! -e ${GIT_WORKSPACE} ]] && git clone ${GIT_URL} ${GIT_WORKSPACE}
+
+sed -i '46 i#include "pthread.h"' /opt/src/flmsg/src/widgets/font_browser.cxx
 
 cd ${GIT_WORKSPACE}
 git checkout ${GIT_TAG}
@@ -43,7 +44,4 @@ ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 stow -v -d /opt ${APP} -t /usr/local
 
 cd ${CWD}
-
-# Use wrapper script as launcher executable
-sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-fldigi start|' /opt/fldigi/share/applications/fldigi.desktop
 

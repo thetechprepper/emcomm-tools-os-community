@@ -91,6 +91,8 @@ exitIfNotRoot
 
 # Install fldigi suite
 ./install-fldigi.sh
+./install-flmsg.sh
+./install-flamp.sh
 ./install-et-portaudio.sh
 
-# TODO: add installers for flmsg and flamp
+./install-spp.sh
