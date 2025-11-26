@@ -1,6 +1,47 @@
 # EmComm Tools OS Community Release
 
-# 2025.04.01.R4 (4.0.0)
+## 2025.11.28.R5 (5.0.0) Release Notes
+
+* Tier 1 radio PnP support
+  * Lab599 TX-500MP via DigiRig Mobile
+  * FX-4CR
+  * Xiegu X6200
+* Tier 2 radio PnP support
+  * FTX-1 Field (CAT control only)
+* SDR
+  * rtl-sdr tools
+  * dump1090 - ADS-B server
+  * et-aircraft-app 1.1.0 - Offline aircraft tracking
+  * SDR PnP support  - RTL-SDR v2, v3 and v4, ADS-B SDR
+* Offline Raseter Map Engine
+  * mbtileserver 0.11.0 - Map tile server
+  * mbutil 0.3.0 - Tool for creating raster tilesets in `.mbtiles` format
+  * Open Street Maps tileset for US (zoom level 0 through 11)
+  * Open Street Maps tileset for Canada (zoom level 0 through 10)
+  * Open Street Maps tileset for World (zoom level 0 through 7)
+* RF Prediction
+  * voacap
+  * splat!  
+  * et-voacap - Offline command line HF prediction script
+  * et-predict-app 1.2.0 - Offline graphical HF prediction application
+* et-api - Java-based API used for various ETC services such as geo location and offline lookup services
+* fldigi
+* Misc
+  * JS8Call - Update maidenhead grid based on et-api (GPS if available) or et-user
+  * Mapping tools: QGIS, GPSBabel
+  * Database: SQLite
+* Data Sets
+  * Offline FCC data set updated on 11/12/25
+  * Offline SSN data set updated on 11/12/25
+  * Offline Winlink RMS data set updated on 11/12/25  
+* Bug fixes
+  * LinBPQ - Changed PACKLEN and MAXFRAMES stability settings
+  * udev - Disabled brltty service due to udev device hijacking
+  * Winlink - Fixed position reports via GPS 
+  * YAAC - Added larger heap to allow for larger OSM map imports
+  * Updated various installer scripts to use a more robust download function (download_with_retries)
+
+## 2025.04.01.R4 (4.0.0)
 
 * Tier 1 radio PnP support
   * Yaesu FT-991A
@@ -37,7 +78,7 @@
   * Fixed formatting of et-radio text output
   * Resolved inconsistent Conky startup behavior
 
-# 2024.11.27.R3 (3.0.0)
+## 2024.11.27.R3 (3.0.0)
 
 * Plug-and-Play (PnP) support for CAT control, sound card, and GPS
 * Tier 1 radio PnP support
