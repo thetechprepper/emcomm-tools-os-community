@@ -1,0 +1,187 @@
+#!/bin/bash
+#
+# Author  : Gaston
+# Date    : 30 November 2025
+# Purpose : Finds Winlink RMS stations by channel near a given location
+set -e
+set -o pipefail
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+trap 'echo -e "${RED}\"${last_command}\" command failed with exit code $?.${NC}"' ERR
+
+source /opt/emcomm-tools/bin/et-common
+
+# Temporary file to hold location for all supported location types
+LOCATION_FILE=/tmp/location.json
+
+[[ -e ${TMP_FILE} ]] && rm ${TMP_FILE}
+
+usage() {
+  echo "Usage: $(basename $0) [OPTIONS]"
+  echo
+  echo "Location options (choose one):"
+  echo "  --call CALLSIGN        Search near callsign"
+  echo "  --grid GRID            Search near Maidenhead grid"
+  echo "  --latlon LAT,LON       Search near coordinates (use decimal degrees)"
+  echo
+  echo "If no location option is specified, your position will be pulled from a supported"
+  echo "ETC GPS unit or fallback to the grid square configured by 'et-user'."
+  echo
+  echo "Other options (optional):"
+  echo "  -b BAND                Band [70cm|2m|6m|10m|12m|15m|17m|20m|30m|40m|80m|160m]"
+  echo "  -m MODE                Mode [ardop|vara|packet]"
+  echo
+
+  exit 1
+}
+
+loc_type=""
+loc_value=""
+band=""
+mode=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --call)   loc_type="call";   loc_value="$2"; shift 2 ;;
+    --grid)   loc_type="grid";   loc_value="$2"; shift 2 ;;
+    --latlon) loc_type="latlon"; loc_value="$2"; shift 2 ;;
+    -b)          band="$2"; shift 2 ;;
+    -m)          mode="$2";  shift 2 ;;
+    -*|--*)      echo "Unknown option: $1"; usage ;;
+    -h|--help)   usage ;;
+    *)           echo "Unexpected argument: $1"; usage ;;
+  esac
+done
+
+# Use local ETC user position if location is not defined
+if [[ -z $loc_type ]]; then
+   loc_type="gps"
+fi
+
+#echo "$loc_type = $loc_value"
+
+case "$loc_type" in
+  gps)
+    curl -f -s "http://localhost:1981/api/geo/position" | jq .position > ${LOCATION_FILE}
+    if [[ $? -ne 0 ]]; then
+      echo -e "${RED}Can't determine your position for use as the transmitting station.${NC}" >&2
+      echo "Try specifying your callsign, grid or lat,lon." >&2
+      echo "  --call CALLSIGN        Search near callsign" >&2
+      echo "  --grid GRID            Search near Maidenhead grid" >&2
+      echo "  --latlon LAT,LON       Search near coordinates (use decimal degrees)" >&2
+      exit 1
+    fi
+    ;;
+  call)
+    curl -f -s "http://localhost:1981/api/license?callsign=${loc_value}" > ${LOCATION_FILE}
+    if [[ $? -ne 0 ]]; then
+      echo -e "${RED}Location not found for callsign: ${loc_value}.${NC}" >&2
+      exit 1
+    fi
+    ;;
+  grid)
+    curl -f -s "http://localhost:1981/api/geo/grid?gridSquare=${loc_value}"  | jq '{lat: .position.lat, lon: .position.lon}' > ${LOCATION_FILE}
+    if [[ $? -ne 0 ]]; then
+      echo -e "${RED}Error converting grid to lat/lon using value: ${loc_value}.${NC}" >&2
+      exit 1
+    fi
+    ;;
+  latlon)
+    # Write directly to JSON for consistency
+    IFS=',' read -r tmpLat tmpLon <<< "$loc_value"
+    if [[ -z $tmpLat || -z $tmpLon ]]; then
+      echo -e "${RED}Invalid lat,lon format: $value. Expected 'lat,lon'.${NC}" >&2
+      exit 1
+    fi
+    jq -n --arg lat "$tmpLat" --arg lon "$tmpLon" '{lat: ($lat|tonumber), lon: ($lon|tonumber)}' > ${LOCATION_FILE}
+    ;;
+  *)
+    echo -e "${RED}Invalid location type: $loc_type${NC}" >&2
+    exit 1 
+    ;;
+esac
+
+validate_latitude() {
+  local lat="$1"
+
+  if [[ -z "$lat" ]]; then
+    echo -e "${RED}Latitude can't be an empty value${NC}" >&2
+    return 1
+  fi
+
+  if ! [[ "$lat" =~ ^-?[0-9]+([.][0-9]+)?$ ]]; then
+    echo -e "${RED}Latitude must be a number${NC}" >&2
+    return 1
+  fi
+
+  local latf
+  latf=$(printf "%.10f" "$lat" 2>/dev/null) || {
+    echo -e "${RED}Error converting latitude${NC}" >&2
+    return 1
+  }
+
+  # Check range: -90 <= lat <= 90
+  if (( $(echo "$latf < -90" | bc -l) )) || (( $(echo "$latf > 90" | bc -l) )); then
+    echo -e "${RED}Latitude must be in range between -90 and 90 degrees${NC}" >&2
+    return 1
+  fi
+}
+
+validate_longitude() {
+  local lon="$1"
+
+  if [[ -z "$lon" ]]; then
+    echo -e "${RED}Longitude can't be an empty value${NC}" >&2
+    return 1
+  fi
+
+  if ! [[ "$lon" =~ ^-?[0-9]+([.][0-9]+)?$ ]]; then
+    echo -e "${RED}Longitude must be a number${NC}" >&2
+    return 1
+  fi
+
+  local lonf
+  lonf=$(printf "%.10f" "$lon" 2>/dev/null) || {
+    echo -e "${RED}Error converting longitude ${NC}" >&2
+    return 1
+  }
+
+  # Check range: -180 <= lat <= 1800
+  if (( $(echo "$lon < -180" | bc -l) )) || (( $(echo "$lon > 180" | bc -l) )); then
+    echo -e "${RED}Longitude must be in range between -180 and 180 degrees${NC}" >&2
+    return 1
+  fi
+}
+
+LAT=$(jq .lat $LOCATION_FILE)
+LON=$(jq .lon $LOCATION_FILE)
+
+validate_latitude "$LAT" || exit 1
+validate_longitude "$LON" || exit 1
+
+QUERY="http://localhost:1981/api/winlink/near?lat=${LAT}&lon=${LON}"
+[[ -n "${band}" ]] && QUERY="${QUERY}&band=${band}"
+[[ -n "${mode}" ]] && QUERY="${QUERY}&mode=${mode}"
+
+OUT=$(curl -s "${QUERY}")
+
+if [[ -z "${OUT}" ]] || [[ "${OUT}" = "[]" ]]; then
+    echo "No Winlink RMS channels found."
+    exit 1
+fi
+
+echo
+echo "Nearby Winlink RMS Channels:"
+echo "----------------------------"
+
+echo "${OUT}" | jq -r '
+    (["Station","Callsign","Lat","Lon","Mode","Freq","Band"] | @tsv),
+    (.[] | [
+        .callsign,
+        .base_callsign,
+        (.lat | tostring),
+        (.lon | tostring),
+        .mode,
+        (.freq | tostring),
+        .band
+    ] | @tsv)
+' | column -t -s $'\t'
