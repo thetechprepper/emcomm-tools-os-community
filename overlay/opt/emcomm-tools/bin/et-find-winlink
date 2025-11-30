@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Author  : Gaston
+# Date    : 30 November 2025
+# Purpose : Finds Winlink RMS stations by channel near a given location
+set -e
+set -o pipefail
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+trap 'echo -e "${RED}\"${last_command}\" command failed with exit code $?.${NC}"' ERR
+
+source /opt/emcomm-tools/bin/et-common
+
+read -p "Enter latitude: " LAT
+read -p "Enter longitude: " LON
+read -p "Enter band (optional): " BAND
+read -p "Enter mode (optional): " MODE
+
+QUERY="http://localhost:1981/api/winlink/near?lat=${LAT}&lon=${LON}"
+[[ -n "${BAND}" ]] && QUERY="${QUERY}&band=${BAND}"
+[[ -n "${MODE}" ]] && QUERY="${QUERY}&mode=${MODE}"
+
+OUT=$(curl -s "${QUERY}")
+
+if [[ -z "${OUT}" ]] || [[ "${OUT}" = "[]" ]]; then
+    echo "No Winlink RMS channels found."
+    exit 1
+fi
+
+echo
+echo "Nearby Winlink RMS Channels:"
+echo "----------------------------"
+
+echo "${OUT}" | jq -r '
+    (["Station","Callsign","Lat","Lon","Mode","Freq","Band"] | @tsv),
+    (.[] | [
+        .callsign,
+        .base_callsign,
+        (.lat | tostring),
+        (.lon | tostring),
+        .mode,
+        (.freq | tostring),
+        .band
+    ] | @tsv)
+' | column -t -s $'\t'
