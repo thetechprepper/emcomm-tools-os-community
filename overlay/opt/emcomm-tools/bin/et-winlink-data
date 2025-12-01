@@ -10,6 +10,7 @@ source /opt/emcomm-tools/bin/et-common
 
 RMS_SRC_JSON_FILE=~/.local/share/pat/rmslist.json
 RMS_DATA_OUT_FILE=/opt/emcomm-tools-api/data/rmslist.csv
+RMS_INDEX_DIR=/opt/emcomm-tools-api/index/rmslist
 
 # Return a denormalized list of RMS stations filtered by the supported
 # Winlink modes in EmComm Tools Community.
@@ -42,11 +43,13 @@ cat ${RMS_SRC_JSON_FILE} | jq -r '
 
 LINES=$(wc -l $RMS_DATA_OUT_FILE | awk '{print $1}')
 echo "Created RMS dataset: ${RMS_DATA_OUT_FILE} with ${LINES} records."
-echo
-echo -e "${YELLOW}To update the Winlink index, perform the following as your normal user:${NC}"
-echo
-echo -e "${RED}DO NOT RUN THESE AS ROOT!${NC}"
-echo
-echo -e "${YELLOW}1. Stop the ETC API:  ${WHITE}systemctl --user stop et-service-et-api${NC}"
-echo -e "${YELLOW}2. Remove the old index: ${WHITE}rm -rf /opt/emcomm-tools-api/index/rmslist${NC}"
-echo -e "${YELLOW}3. Start the ETC API: ${WHITE}systemctl --user start et-service-et-api${NC}"
+
+echo "Stopping ET API..."
+systemctl --user stop et-service-et-api 
+
+sleep 3
+echo "Removing old Winlink index..."
+[[ -e ${RMS_INDEX_DIR} ]] && rm -rf /opt/emcomm-tools-api/index/rmslist
+
+# ET API will rebuild the Winlink index on startup. It takes a few seconds.
+start_and_wait_for_service et-service-et-api 
