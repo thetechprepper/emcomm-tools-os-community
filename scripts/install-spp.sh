@@ -1,8 +1,10 @@
 #!/bin/bash
+#
+# Author  : William McKeehan
 # Author  : Gaston Gonzalez
-# Date    : 20 November 2025
+# Date    : 3 September 2025
 # Updated : 1 December 2025
-# Purpose : Install et-predict-app
+# Purpose : Install SDR++
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
@@ -10,18 +12,20 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 . ../overlay/opt/emcomm-tools/bin/et-common
 
-APP=et-predict-app
-VERSION=1.3.0
-DOWNLOAD_FILE="${APP}_${VERSION}_amd64.deb"
+APP=sdrpp
+VERSION=nightly
+DOWNLOAD_FILE=sdrpp_ubuntu_jammy_amd64.deb
 
 et-log "Installing ${APP} ${VERSION}..."
 
 if [[ ! -e ${ET_DIST_DIR}/${DOWNLOAD_FILE} ]]; then
 
-  URL="https://github.com/thetechprepper/${APP}/releases/download/${VERSION}/${DOWNLOAD_FILE}"
+  URL="https://github.com/AlexandreRouma/SDRPlusPlus/releases/download/${VERSION}/${DOWNLOAD_FILE}"
 
   download_with_retries ${URL} ${DOWNLOAD_FILE}
   mv ${DOWNLOAD_FILE} ${ET_DIST_DIR}
 fi
 
-DEBIAN_FRONTEND=noninteractive dpkg -i "${ET_DIST_DIR}/${DOWNLOAD_FILE}" 
+DEBIAN_FRONTEND=noninteractive dpkg -i "${ET_DIST_DIR}/${DOWNLOAD_FILE}"
+
+apt install -f -y
