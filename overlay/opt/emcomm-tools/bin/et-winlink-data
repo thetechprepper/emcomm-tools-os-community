@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 29 November 2025
-# Updated : 30 November 2025
+# Updated : 1 December 2025
 # Purpose : Generates a denormalized Winlink RMS channel data set from
 #           Pat Winlink's JSON definition. Each line represents a single
 #           Winlink RMS channel. This generated file is the source for
@@ -17,16 +17,17 @@ RMS_DATA_OUT_FILE=/opt/emcomm-tools-api/data/rmslist.csv
 #  0 Packet 1200
 # 41 ARDOP 500
 # 43 ARDOP 2000
-# 50 VARA HF
+# 50 VARA 2300 (HF standard)
 # 51 VARA FM
-# 52 VARA FM Wide
-# 54 VARA HF 2750
+# 52 VARA FM  WIDE
+# 53 VARA 500 (HF narrow)
+# 54 VARA 2750 (HF tactical)
 
 cat ${RMS_SRC_JSON_FILE} | jq -r '
   .Gateways[]
   | . as $gw
   | $gw.GatewayChannels[]
-  | select(.Mode | IN(0, 41, 43, 50, 51, 52, 54))
+  | select(.Mode | IN(0, 41, 43, 50, 51, 52, 53, 54))
   | [
       $gw.BaseCallsign,
       $gw.Callsign,
