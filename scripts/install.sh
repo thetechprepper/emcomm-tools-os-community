@@ -73,7 +73,6 @@ exitIfNotRoot
 # Install SDR tools
 ./install-sdr-tools.sh
 ./install-dump1090.sh
-./install-spp.sh
 
 # Install ETC custom maps
 ./download-et-maps.sh
@@ -93,5 +92,8 @@ exitIfNotRoot
 # Install fldigi suite
 ./install-fldigi.sh
 ./install-et-portaudio.sh
+
+# SDR++ installer breaks VOACAP installer if it is first.
+./install-spp.sh
 
 # TODO: add installers for flmsg and flamp
