@@ -7,6 +7,9 @@
     "baud": "19200",
     "ptt": "RIG"
   },
+  "audio": {
+    "script": "/opt/emcomm-tools/conf/radios.d/audio/icom-ic7200.sh"
+  },
   "notes": [
     "Set SSB to USB",
     "Set filter to wide",
