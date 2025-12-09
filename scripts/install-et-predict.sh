@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 20 November 2025
-# Updated : 1 December 2025
+# Updated : 8 December 2025
 # Purpose : Install et-predict-app
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -11,7 +11,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ../overlay/opt/emcomm-tools/bin/et-common
 
 APP=et-predict-app
-VERSION=1.3.0
+VERSION=1.4.0
 DOWNLOAD_FILE="${APP}_${VERSION}_amd64.deb"
 
 et-log "Installing ${APP} ${VERSION}..."
