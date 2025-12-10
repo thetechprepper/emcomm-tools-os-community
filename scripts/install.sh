@@ -91,9 +91,6 @@ exitIfNotRoot
 
 # Install fldigi suite
 ./install-fldigi.sh
+./install-flmsg.sh
+./install-flamp.sh
 ./install-et-portaudio.sh
-
-# SDR++ installer breaks VOACAP installer if it is first.
-./install-spp.sh
-
-# TODO: add installers for flmsg and flamp
