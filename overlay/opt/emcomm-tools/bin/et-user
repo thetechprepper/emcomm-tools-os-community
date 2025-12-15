@@ -6,6 +6,11 @@
 # Purpose: Set user-specific settings for EmComm Tools.
 
 [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+[ -z "$ET_USER_CONFIG_DIR" ] && ET_USER_CONFIG_DIR="$(dirname ${ET_USER_CONFIG})"
+
+if [ ! -d ${ET_USER_CONFIG_DIR} ]; then
+  cp -r /etc/skel/.config/emcomm-tools ${ET_USER_CONFIG_DIR}
+fi
 
 if [ ! -e ${ET_USER_CONFIG} ]; then
   cp /etc/skel/.config/emcomm-tools/user.json ${ET_USER_CONFIG}
