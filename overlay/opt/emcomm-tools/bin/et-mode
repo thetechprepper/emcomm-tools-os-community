@@ -160,6 +160,11 @@ if [ $exit_status -eq 0 ]; then
 
   stop_all_services
 
+  [ -z "$MODE_STATUS_FILE_DIR" ] && MODE_STATUS_FILE_DIR="$(dirname ${MODE_STATUS_FILE})"
+  if [ ! -d ${MODE_STATUS_FILE_DIR} ]; then
+    cp -r /etc/skel/.config/emcomm-tools ${MODE_STATUS_FILE_DIR}
+  fi
+
   echo ${SELECTED_MODE} > ${MODE_STATUS_FILE}
 
   case ${SELECTED_MODE} in
