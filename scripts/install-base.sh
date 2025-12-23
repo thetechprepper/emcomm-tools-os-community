@@ -8,6 +8,7 @@ set -e
 
 et-log "Installing environment variables..."
 cp -v ../overlay/etc/environment /etc/
+cp -v ../overlay/etc/profile.d/emcomm-tools.sh /etc/profile.d/
 
 et-log "Installing message of the day..."
 cp -v ../overlay/etc/motd /etc/
