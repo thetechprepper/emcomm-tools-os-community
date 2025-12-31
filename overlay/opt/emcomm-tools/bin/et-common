@@ -33,6 +33,21 @@ notify-user() {
   notify-send -t 5000 --app-name="EmComm Tools" "$1"
 }
 
+# Opens a URL in the default browser
+#
+# TODO Prevent script to exit when browser is already running.
+# Opening a URL is blocking if browser needs to start up first.
+# It is non blocking when browser is already running.
+#
+# Some scripts, use traps to clean up when the script exits.
+# The non-blocking case causes those scripts to exit prematurely.
+# This is known to be the case for `et-vr-n76`, `et-uv-pro` and `et-th-d74`.
+open-url() {
+  # `xdg-open` is the prefered and most standard way to open an URL on Linux.
+  # It will always be non-blocking and thus is not suitable in this context.
+  x-www-browser "$1" >/dev/null 2>&1
+}
+
 exit_if_no_sdr() {
   if [[ ! -e ${ET_DEVICE_SDR} ]]; then
     et-log "No ${ET_DEVICE_SDR} detected."

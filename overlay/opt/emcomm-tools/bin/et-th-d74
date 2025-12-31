@@ -300,7 +300,7 @@ EOF
         "Winlink")
           do_kiss_attach
           start_and_wait_for_service et-service-winlink-native-packet
-          min http://localhost:8080 1>/dev/null 2>&1
+          open-url http://localhost:8080
           break
           ;;
         "YAAC")
