@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/bin/bash -c '$HOME/enable-systemd-services.sh'
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Enable EmComm Tools Systemd Services
+Comment=Enable systemd user services on first login
