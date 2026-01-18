@@ -49,3 +49,6 @@ else
   et-log "Brave already installed: $INSTALL_PATH. Skipping."
 fi
 
+et-log "Configuring Min as default web browser..."
+# The default browser for `xdg-open` is configured in `/etc/skel/.config/mimeapps.list`
+update-alternatives --set x-www-browser $(realpath $(command -v min))
