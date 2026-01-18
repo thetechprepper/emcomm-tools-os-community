@@ -22,6 +22,11 @@ export WHITE="${ESC}[97m"
 export YELLOW="${ESC}[1;33m"
 export NC="${ESC}[0m"
 
+# Display an interactive dialog
+show-dialog() {
+  dialog --erase-on-exit --stdout "$@"
+}
+
 # Display an error message in the terminal
 show-err-dialog() {
   local message="$1"
