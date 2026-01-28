@@ -60,11 +60,6 @@ fi
 # Kill all Bluetooth TNC services on exit
 trap cleanup EXIT
 
-stop_all_services() {
-  et-kill-all
-}
-
-
 get_mac_or_exit () {
   MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
   if [ $? -ne 0 ]; then
@@ -237,7 +232,7 @@ case $1 in
       exit 1
     fi
 
-    stop_all_services
+    et-kill-all
 
     echo -e "\nSelect a packet application to start:"
     options=("axcall" "QtTermTCP" "Winlink" "YAAC" "Exit")
