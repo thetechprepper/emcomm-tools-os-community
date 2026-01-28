@@ -3,6 +3,7 @@
   "vendor": "VGC",
   "model": "VR-N76 (BT)",
   "bluetooth": {
+    "deviceName" : "VR-N76",
     "mac": ""
   },
   "notes": [

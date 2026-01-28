@@ -20,7 +20,8 @@ cleanup() {
 trap cleanup EXIT
 
 ACTIVE_RADIO="${ET_HOME}/conf/radios.d/btech-uvpro.bt.json"
-DEVICE_NAME="UV-PRO"
+DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' ${ACTIVE_RADIO})
+BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' ${ACTIVE_RADIO})
 BT_DEVICE="/dev/rfcomm0"
 AX25_PORT="wl2k"
 AX25_CONF_FILE="/etc/ax25/axports"
@@ -245,7 +246,7 @@ EOF
 
     update_ax25_conf 
 
-    sudo rfcomm connect /dev/rfcomm0 ${MAC} 1>/dev/null 2>&1 &
+    sudo rfcomm connect ${BT_DEVICE} ${MAC} ${BLUETOOTH_CHANNEL} 1>/dev/null 2>&1 &
 
     sleep 10 && reset
 

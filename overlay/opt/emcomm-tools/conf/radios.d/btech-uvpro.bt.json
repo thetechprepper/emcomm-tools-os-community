@@ -3,6 +3,7 @@
   "vendor": "BTECH",
   "model": "UV PRO (BT)",
   "bluetooth": {
+    "deviceName" : "UV-PRO",
     "mac": ""
   },
   "notes": [
