@@ -208,7 +208,7 @@ case $1 in
 
     is_paired=$(bluetoothctl info ${MAC} | grep "Paired" | awk '{print $2}')
     if [ "${is_paired}" != "yes" ]; then
-      echo -e "${RED}${DEVICE_NAME} is not paired. Run: '${WHITE}$(basename $0) pair${RED}'"
+      echo -e "${RED}${DEVICE_NAME} is not paired. Run: '${WHITE}${0##*/} pair${RED}'"
       echo -e "${NC}"
       exit 1
     fi  
@@ -228,7 +228,7 @@ case $1 in
       echo -e "2. Check your radio and ensure that ${BLUE}$(hostname)${YELLOW} is listed under:"
       echo -e "   Menu > General Settings> Connection > Paired Devices: $(hostname)."
       echo -e ""
-      echo -e "   If it is not listed, re-run: ${WHITE}$(basename $0) pair${NC}\n"
+      echo -e "   If it is not listed, re-run: ${WHITE}${0##*/} pair${NC}\n"
       exit 1
     fi
 
