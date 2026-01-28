@@ -32,6 +32,11 @@ if [ $? -neq 0 ]; then
 fi
 
 ACTIVE_RADIO="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.bt.json"
+if [ ! -e ${ACTIVE_RADIO} ]; then
+  echo "${ACTIVE_RADIO} file not found"
+  exit 1
+fi
+
 DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' ${ACTIVE_RADIO})
 BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' ${ACTIVE_RADIO})
 BT_DEVICE="/dev/rfcomm0"
@@ -59,12 +64,6 @@ stop_all_services() {
   et-kill-all
 }
 
-exit_if_no_active_radio () {
-  if [ ! -e ${ACTIVE_RADIO} ]; then
-    echo "${ACTIVE_RADIO} file not found"    
-    exit 1
-  fi
-}
 
 get_mac_or_exit () {
   MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
@@ -147,9 +146,6 @@ start_and_wait_for_service() {
   # Do one more check to ensure that we are running, otherwise exit.
   exit_on_service_failure ${systemd_unit_name}
 }
-
-
-exit_if_no_active_radio
 
 case $1 in
   p|pair)
