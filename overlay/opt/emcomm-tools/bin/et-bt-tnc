@@ -61,7 +61,7 @@ fi
 trap cleanup EXIT
 
 get_mac_or_exit () {
-  MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
+  MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}")
   if [ $? -ne 0 ]; then
     echo "No MAC address found in ${ACTIVE_RADIO}."
     exit 1
@@ -72,7 +72,7 @@ update_ax25_conf() {
 
   [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
-  CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+  CALLSIGN=$(jq --raw-output '.callsign // "N0CALL"' "${ET_USER_CONFIG}")
 
   if [ "${CALLSIGN}" = "N0CALL" ]; then
     et-log "No callsign set. Run et-user first."
@@ -145,7 +145,7 @@ start_and_wait_for_service() {
 case $1 in
   p|pair)
 
-    MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
+    MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}")
     if [ $? -eq 0 ]; then
       PAIR_STATUS=$(bluetoothctl info "${MAC}" | grep "Paired:" | awk '{print $2}')
       if [ "${PAIR_STATUS}" == "yes" ]; then
@@ -177,7 +177,7 @@ case $1 in
 
     ;;
   u|unpair)
-    MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
+    MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}")
     if [ $? -ne 0 ]; then
       echo "No MAC found in radio configuration file."
       exit 1
