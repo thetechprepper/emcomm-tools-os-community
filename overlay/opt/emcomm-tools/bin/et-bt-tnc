@@ -16,7 +16,22 @@ if [[ $# -ne 1 ]]; then
   usage
 fi
 
-ACTIVE_RADIO="${ET_HOME}/conf/radios.d/vgc-vrn76.bt.json"
+options=()
+while IFS= read -r radio; do
+  ID=$(jq --raw-output '.id' "${radio}")
+  VENDOR=$(jq --raw-output '.vendor' "${radio}")
+  MODEL=$(jq --raw-output '.model' "${radio}")
+
+  options+=("$ID" "$VENDOR $MODEL")
+done < <(find "${ET_HOME}/conf/radios.d" -name '*.bt.json' | sort)
+
+SELECTED_RADIO=$(dialog --erase-on-exit --stdout --menu "Select a radio:" 21 60 10 "${options[@]}")
+if [ $? -neq 0 ]; then
+  echo "No radio selected."
+  exit 1
+fi
+
+ACTIVE_RADIO="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.bt.json"
 DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' ${ACTIVE_RADIO})
 BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' ${ACTIVE_RADIO})
 BT_DEVICE="/dev/rfcomm0"
