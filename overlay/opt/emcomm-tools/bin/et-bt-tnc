@@ -1,11 +1,20 @@
 #!/bin/bash
 #
-# Author   : Gaston Gonzalez
-#          : Cliff Jones
-# Date     : 1 January 2025
-# Updated  : 17 March 2025
-# Purpose  : Utility for accessing the Bluetooth TNC on the Vero VGC VR-N76.           
+# Utility for accessing the TNC of Bluetooth enabled radios
+
 source /opt/emcomm-tools/bin/et-common
+
+usage() {
+  echo "Usage: ${0##*/} <command>"
+  echo "  c, connect - Connect to radio via Bluetooth"
+  echo "  p, pair    - Pair radio (one-time operation)"
+  echo "  u, unpair  - Unpair radio"
+  exit 1
+}
+
+if [[ $# -ne 1 ]]; then
+  usage
+fi
 
 CLEAN_UP=1
 
@@ -27,19 +36,6 @@ BT_DEVICE="/dev/rfcomm0"
 AX25_PORT="wl2k"
 AX25_CONF_FILE="/etc/ax25/axports"
 
-function usage() {
-  echo "Usage: $(basename $0) <command>"
-  echo "  c, connect - Connect to radio via Bluetooth" 
-  echo "  p, pair    - Pair radio (one-time operation)" 
-  echo "  u, unpair  - Unpair radio" 
-
-  CLEAN_UP=0
-}
-
-if [[ $# -ne 1 ]]; then
-  usage
-  exit 1
-fi
 
 if [[ -e ${BT_DEVICE} ]]; then
   echo -e "${YELLOW}Your ${BLUE}${DEVICE_NAME}${YELLOW} may have a connection that needs to be cleaned up."
@@ -284,6 +280,5 @@ case $1 in
   *)
     et-log "Invalid command."
     usage
-    exit 1
   ;;
 esac
