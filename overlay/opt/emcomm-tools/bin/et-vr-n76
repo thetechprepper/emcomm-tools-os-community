@@ -158,10 +158,8 @@ case $1 in
     fi 
 
     echo -e "${YELLOW}"
-    echo -e "1. Turn off your ${DEVICE_NAME}"
-    echo -e "2. Turn on your ${DEVICE_NAME}"
-    echo -e "3. Goto Menu > Pairing and press OK"
-    echo -e "4. Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
+    jq --exit-status --raw-output '.bluetooth.instructions.pairing | join("\n")' ${ACTIVE_RADIO} | envsubst
+    echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
     read -p ""
 
     echo "Searching for ${DEVICE_NAME}..."
@@ -172,35 +170,13 @@ case $1 in
       exit 1
     fi
 
-	MAC=$(echo ${HCI_OUT} | awk '{print $1}')
+    MAC=$(echo ${HCI_OUT} | awk '{print $1}')
+    export MAC
 
     # Update configuration file detected MAC address
     sed -i "s|.*mac.*|    \"mac\": \"${MAC}\"|g" ${ACTIVE_RADIO}
 
-    # Generate an expect script to automatically pair our device.
-    PAIR_SCRIPT="${HOME}/pair"
-
-cat <<EOF > ${PAIR_SCRIPT}
-#!/usr/bin/expect -f
-
-set device "${MAC}"
-set timeout 60
-
-spawn bluetoothctl
-expect "Agent registered"
-send "power on\r"
-expect "Changing power on succeeded"
-send "scan on\r"
-expect "${MAC}"
-send "pair ${MAC}\r"
-expect "Pairing successful"
-send "trust ${MAC}\r"
-expect "trust succeeded"
-send "exit\r"
-expect eof
-EOF
-
-    sleep 1 && chmod 755 ${PAIR_SCRIPT} && expect ${PAIR_SCRIPT}
+    jq --exit-status --raw-output '.bluetooth.expect.pairing | join("\n")' ${ACTIVE_RADIO} | envsubst | expect
 
     ;;
   u|unpair)
@@ -221,19 +197,16 @@ EOF
     bluetoothctl remove ${MAC}
 
     echo -e "${YELLOW}"
-    echo -e "You may also want to remove this device from your ${DEVICE_NAME}"
-    echo -e "under Menu > General Settings > Connection > Paired Devices." 
-    echo -e "${NC}"
+    jq --exit-status --raw-output '.bluetooth.instructions.unpairing | join("\n")' ${ACTIVE_RADIO} | envsubst
+    echo -e ".${NC}"
 
     ;;
   c|connect)
     get_mac_or_exit
 
     echo -e "${YELLOW}"
-    echo -e "1. Turn off your ${DEVICE_NAME}"
-    echo -e "2. Turn on your ${DEVICE_NAME}"
-    echo -e "3. Goto Menu > General Settings > KISS TNC > Enable KISS TNC"
-    echo -e "4. Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
+    jq --exit-status --raw-output '.bluetooth.instructions.connect | join("\n")' ${ACTIVE_RADIO} | envsubst
+    echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
     read -p ""
 
     is_paired=$(bluetoothctl info ${MAC} | grep "Paired" | awk '{print $2}')
