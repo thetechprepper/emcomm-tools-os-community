@@ -77,7 +77,7 @@ update_ax25_conf() {
     #
     # We can't use `sed` here since we do not have permission to create a
     # temporary file with inline replacement. `ed` modifies the file directly.
-    printf "g/^${AX25_PORT}/d\nw\nq\n" | ed "${AX25_CONF_FILE}" > /dev/null 2>&1
+    printf "g/^%s/d\nw\nq\n" ${AX25_PORT} | ed "${AX25_CONF_FILE}" > /dev/null 2>&1
   fi
 
   echo "${AX25_PORT} ${CALLSIGN} 1200 255	2 1200 Packet" >> "${AX25_CONF_FILE}"
