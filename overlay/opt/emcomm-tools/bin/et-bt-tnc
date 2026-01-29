@@ -51,7 +51,7 @@ cleanup() {
 if [[ -e "${BT_DEVICE}" ]]; then
   echo -e "${YELLOW}Your ${BLUE}${DEVICE_NAME}${YELLOW} may have a connection that needs to be cleaned up."
   echo -e "Press ${WHITE}[ENTER]${YELLOW} to clean-up.${NC}"
-  read -p ""
+  read -rp ""
   
   cleanup
 fi
@@ -135,7 +135,7 @@ case $1 in
     echo -e "${YELLOW}"
     jq --exit-status --raw-output '.bluetooth.instructions.pairing | join("\n")' "${ACTIVE_RADIO}" | envsubst
     echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
-    read -p ""
+    read -rp ""
 
     echo "Searching for ${DEVICE_NAME}..."
 
@@ -177,7 +177,7 @@ case $1 in
     echo -e "${YELLOW}"
     jq --exit-status --raw-output '.bluetooth.instructions.connect | join("\n")' "${ACTIVE_RADIO}" | envsubst
     echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
-    read -p ""
+    read -rp ""
 
     is_paired=$(bluetoothctl info "${MAC}" | grep "Paired" | awk '{print $2}')
     if [ "${is_paired}" != "yes" ]; then
