@@ -188,9 +188,9 @@ case $1 in
 
     update_ax25_conf 
 
-    sudo rfcomm connect "${BT_DEVICE}" "${MAC}" "${BLUETOOTH_CHANNEL}" 1>/dev/null 2>&1 &
+    sudo -b rfcomm connect "${BT_DEVICE}" "${MAC}" "${BLUETOOTH_CHANNEL}" </dev/null &>/dev/null &
 
-    sleep 10 && reset
+    sleep 10
 
     if [[ ! -e "${BT_DEVICE}" ]]; then
       echo -e "${RED}Failed to connect via Bluetooth${NC}"
