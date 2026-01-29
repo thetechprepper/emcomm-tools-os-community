@@ -32,13 +32,13 @@ if [ $? -neq 0 ]; then
 fi
 
 ACTIVE_RADIO="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.bt.json"
-if [ ! -e ${ACTIVE_RADIO} ]; then
+if [ ! -e "${ACTIVE_RADIO}" ]; then
   echo "${ACTIVE_RADIO} file not found"
   exit 1
 fi
 
-DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' ${ACTIVE_RADIO})
-BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' ${ACTIVE_RADIO})
+DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' "${ACTIVE_RADIO}")
+BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' "${ACTIVE_RADIO}")
 BT_DEVICE="/dev/rfcomm0"
 AX25_PORT="wl2k"
 AX25_CONF_FILE="/etc/ax25/axports"
@@ -49,7 +49,7 @@ cleanup() {
   sudo /opt/emcomm-tools/bin/et-kill-bt
 }
 
-if [[ -e ${BT_DEVICE} ]]; then
+if [[ -e "${BT_DEVICE}" ]]; then
   echo -e "${YELLOW}Your ${BLUE}${DEVICE_NAME}${YELLOW} may have a connection that needs to be cleaned up."
   echo -e "Press ${WHITE}[ENTER]${YELLOW} to clean-up.${NC}"
   read -p ""
@@ -84,23 +84,23 @@ update_ax25_conf() {
     # Delete all existing AX.25 port  entries. Note: we can't use sed here
     # since we do not have permission to create a temporary file with
     # inline replacement. ed modifies the file directly.
-    printf "g/^${AX25_PORT}/d\nw\nq\n" | ed ${AX25_CONF_FILE} > /dev/null 2>&1
+    printf "g/^${AX25_PORT}/d\nw\nq\n" | ed "${AX25_CONF_FILE}" > /dev/null 2>&1
 
   fi
 
-  echo "${AX25_PORT} ${CALLSIGN} 1200 255	2 1200 Packet" >> ${AX25_CONF_FILE}
+  echo "${AX25_PORT} ${CALLSIGN} 1200 255	2 1200 Packet" >> "${AX25_CONF_FILE}"
 }
 
 do_kiss_attach() {
   echo -e "${BLUE}Connecting KISS interface using ${BT_DEVICE} and AX.25 port: ${AX25_PORT}${NC}"
-  KISS_OUT=$(sudo kissattach ${BT_DEVICE} ${AX25_PORT})
+  KISS_OUT=$(sudo kissattach "${BT_DEVICE}" "${AX25_PORT}")
     
   if [[ $? -ne 0 ]]; then
     echo -e "${RED}Failed to attach KISS port.${NC}"
     exit 1
   fi
 
-  KISS_OUT=$(sudo kissparms -c 1 -p ${AX25_PORT})
+  KISS_OUT=$(sudo kissparms -c 1 -p "${AX25_PORT}")
 }
 
 exit_on_service_failure() {
@@ -120,7 +120,7 @@ start_and_wait_for_service() {
   local elapsed=0
 
   et-log "Starting ${systemd_unit_name}..."
-  systemctl --user start ${systemd_unit_name}
+  systemctl --user start "${systemd_unit_name}"
 
   et-log "Waiting for ${systemd_unit_name} to become active..."
 
@@ -139,7 +139,7 @@ start_and_wait_for_service() {
   sleep 2
 
   # Do one more check to ensure that we are running, otherwise exit.
-  exit_on_service_failure ${systemd_unit_name}
+  exit_on_service_failure "${systemd_unit_name}"
 }
 
 case $1 in
@@ -155,7 +155,7 @@ case $1 in
     fi 
 
     echo -e "${YELLOW}"
-    jq --exit-status --raw-output '.bluetooth.instructions.pairing | join("\n")' ${ACTIVE_RADIO} | envsubst
+    jq --exit-status --raw-output '.bluetooth.instructions.pairing | join("\n")' "${ACTIVE_RADIO}" | envsubst
     echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
     read -p ""
 
@@ -167,13 +167,13 @@ case $1 in
       exit 1
     fi
 
-    MAC=$(echo ${HCI_OUT} | awk '{print $1}')
+    MAC=$(echo "${HCI_OUT}" | awk '{print $1}')
     export MAC
 
     # Update configuration file detected MAC address
-    sed -i "s|.*mac.*|    \"mac\": \"${MAC}\"|g" ${ACTIVE_RADIO}
+    sed -i "s|.*mac.*|    \"mac\": \"${MAC}\"|g" "${ACTIVE_RADIO}"
 
-    jq --exit-status --raw-output '.bluetooth.expect.pairing | join("\n")' ${ACTIVE_RADIO} | envsubst | expect
+    jq --exit-status --raw-output '.bluetooth.expect.pairing | join("\n")' "${ACTIVE_RADIO}" | envsubst | expect
 
     ;;
   u|unpair)
@@ -190,23 +190,23 @@ case $1 in
     fi
 
     echo "Unpairing ${DEVICE_NAME}..."
-    bluetoothctl untrust ${MAC}
-    bluetoothctl remove ${MAC}
+    bluetoothctl untrust "${MAC}"
+    bluetoothctl remove "${MAC}"
 
     echo -e "${YELLOW}"
-    jq --exit-status --raw-output '.bluetooth.instructions.unpairing | join("\n")' ${ACTIVE_RADIO} | envsubst
-    echo -e ".${NC}"
+    jq --exit-status --raw-output '.bluetooth.instructions.unpairing | join("\n")' "${ACTIVE_RADIO}" | envsubst
+    echo -e "${NC}"
 
     ;;
   c|connect)
     get_mac_or_exit
 
     echo -e "${YELLOW}"
-    jq --exit-status --raw-output '.bluetooth.instructions.connect | join("\n")' ${ACTIVE_RADIO} | envsubst
+    jq --exit-status --raw-output '.bluetooth.instructions.connect | join("\n")' "${ACTIVE_RADIO}" | envsubst
     echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
     read -p ""
 
-    is_paired=$(bluetoothctl info ${MAC} | grep "Paired" | awk '{print $2}')
+    is_paired=$(bluetoothctl info "${MAC}" | grep "Paired" | awk '{print $2}')
     if [ "${is_paired}" != "yes" ]; then
       echo -e "${RED}${DEVICE_NAME} is not paired. Run: '${WHITE}${0##*/} pair${RED}'"
       echo -e "${NC}"
@@ -217,7 +217,7 @@ case $1 in
 
     update_ax25_conf 
 
-    sudo rfcomm connect ${BT_DEVICE} ${MAC} ${BLUETOOTH_CHANNEL} 1>/dev/null 2>&1 &
+    sudo rfcomm connect "${BT_DEVICE}" "${MAC}" "${BLUETOOTH_CHANNEL}" 1>/dev/null 2>&1 &
 
     sleep 10 && reset
 
