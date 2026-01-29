@@ -88,7 +88,7 @@ do_kiss_attach() {
   sudo kissattach "${BT_DEVICE}" "${AX25_PORT}" 1>/dev/null 2>&1 \
     || error_exit "${RED}Failed to attach KISS port.${NC}"
 
-  KISS_OUT=$(sudo kissparms -c 1 -p "${AX25_PORT}")
+  sudo kissparms -c 1 -p "${AX25_PORT}" 1>/dev/null 2>&1
 }
 
 exit_on_service_failure() {
