@@ -16,6 +16,11 @@ if [[ $# -ne 1 ]]; then
   usage
 fi
 
+error_exit() {
+  echo -e "$1" 1>&2
+  exit 1
+}
+
 options=()
 while IFS= read -r radio; do
   ID=$(jq --raw-output '.id' "${radio}")
@@ -25,17 +30,11 @@ while IFS= read -r radio; do
   options+=("$ID" "$VENDOR $MODEL")
 done < <(find "${ET_HOME}/conf/radios.d" -name '*.bt.json' | sort)
 
-SELECTED_RADIO=$(dialog --erase-on-exit --stdout --menu "Select a radio:" 21 60 10 "${options[@]}")
-if [ $? -neq 0 ]; then
-  echo "No radio selected."
-  exit 1
-fi
+SELECTED_RADIO=$(dialog --erase-on-exit --stdout --menu "Select a radio:" 21 60 10 "${options[@]}") \
+  || error_exit "No radio selected."
 
 ACTIVE_RADIO="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.bt.json"
-if [ ! -e "${ACTIVE_RADIO}" ]; then
-  echo "${ACTIVE_RADIO} file not found"
-  exit 1
-fi
+[ ! -e "${ACTIVE_RADIO}" ] && error_exit "${ACTIVE_RADIO} file not found"
 
 DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' "${ACTIVE_RADIO}")
 BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' "${ACTIVE_RADIO}")
@@ -61,11 +60,8 @@ fi
 trap cleanup EXIT
 
 get_mac_or_exit () {
-  MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}")
-  if [ $? -ne 0 ]; then
-    echo "No MAC address found in ${ACTIVE_RADIO}."
-    exit 1
-  fi
+  MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}") \
+    || error_exit "No MAC address found in ${ACTIVE_RADIO}."
 }
 
 update_ax25_conf() {
@@ -74,18 +70,14 @@ update_ax25_conf() {
 
   CALLSIGN=$(jq --raw-output '.callsign // "N0CALL"' "${ET_USER_CONFIG}")
 
-  if [ "${CALLSIGN}" = "N0CALL" ]; then
-    et-log "No callsign set. Run et-user first."
-    exit 1
-  fi
+  [ "${CALLSIGN}" = "N0CALL" ] && error_exit "No callsign set. Run et-user first."
 
-  GREP_OUT=$(grep ${AX25_PORT} ${AX25_CONF_FILE})
-  if [ $? -eq 0 ]; then
-    # Delete all existing AX.25 port  entries. Note: we can't use sed here
-    # since we do not have permission to create a temporary file with
-    # inline replacement. ed modifies the file directly.
+  if grep --quiet "${AX25_PORT}" "${AX25_CONF_FILE}"; then
+    # Delete all existing AX.25 port  entries.
+    #
+    # We can't use `sed` here since we do not have permission to create a
+    # temporary file with inline replacement. `ed` modifies the file directly.
     printf "g/^${AX25_PORT}/d\nw\nq\n" | ed "${AX25_CONF_FILE}" > /dev/null 2>&1
-
   fi
 
   echo "${AX25_PORT} ${CALLSIGN} 1200 255	2 1200 Packet" >> "${AX25_CONF_FILE}"
@@ -93,23 +85,16 @@ update_ax25_conf() {
 
 do_kiss_attach() {
   echo -e "${BLUE}Connecting KISS interface using ${BT_DEVICE} and AX.25 port: ${AX25_PORT}${NC}"
-  KISS_OUT=$(sudo kissattach "${BT_DEVICE}" "${AX25_PORT}")
-    
-  if [[ $? -ne 0 ]]; then
-    echo -e "${RED}Failed to attach KISS port.${NC}"
-    exit 1
-  fi
+  sudo kissattach "${BT_DEVICE}" "${AX25_PORT}" 1>/dev/null 2>&1 \
+    || error_exit "${RED}Failed to attach KISS port.${NC}"
 
   KISS_OUT=$(sudo kissparms -c 1 -p "${AX25_PORT}")
 }
 
 exit_on_service_failure() {
   local systemd_unit_name="$1"
-  systemctl is-active --user --quiet "${systemd_unit_name}"
-  if [ $? -ne 0 ]; then
-    et-log "Can't start mode. ${systemd_unit_name} failed to start."
-    exit 1
-  fi
+  systemctl is-active --user --quiet "${systemd_unit_name}" \
+    || error_exit "Can't start mode. ${systemd_unit_name} failed to start."
 }
 
 TIMEOUT=15  # Total time to wait in seconds
@@ -127,10 +112,7 @@ start_and_wait_for_service() {
   while ! systemctl is-active --user --quiet "${systemd_unit_name}"; do
       sleep "$INTERVAL"
       elapsed=$((elapsed + INTERVAL))
-      if [ "$elapsed" -ge "$TIMEOUT" ]; then
-          et-log "Timeout reached. ${systemd_unit_name} failed to start."
-          exit 1
-      fi
+      [ "$elapsed" -ge "$TIMEOUT" ] && error_exit "Timeout reached. ${systemd_unit_name} failed to start."
       et-log "Waiting for ${systemd_unit_name} to become active..."
   done
 
@@ -145,13 +127,9 @@ start_and_wait_for_service() {
 case $1 in
   p|pair)
 
-    MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}")
-    if [ $? -eq 0 ]; then
+    if MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}"); then
       PAIR_STATUS=$(bluetoothctl info "${MAC}" | grep "Paired:" | awk '{print $2}')
-      if [ "${PAIR_STATUS}" == "yes" ]; then
-         echo "Device with MAC ${MAC} is already paired."
-         exit 1
-      fi
+      [ "${PAIR_STATUS}" == "yes" ] && error_exit "Device with MAC ${MAC} is already paired."
     fi 
 
     echo -e "${YELLOW}"
@@ -161,10 +139,8 @@ case $1 in
 
     echo "Searching for ${DEVICE_NAME}..."
 
-    HCI_OUT=$(hcitool scan | grep "${DEVICE_NAME}")
-    if [ $? -ne 0 ]; then
-      echo "Can't find ${DEVICE_NAME}. Make sure that the radio is on and in pairing mode."
-      exit 1
+    if ! HCI_OUT=$(hcitool scan | grep "${DEVICE_NAME}"); then
+      error_exit "Can't find ${DEVICE_NAME}. Make sure that the radio is on and in pairing mode."
     fi
 
     MAC=$(echo "${HCI_OUT}" | awk '{print $1}')
@@ -177,16 +153,13 @@ case $1 in
 
     ;;
   u|unpair)
-    MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}")
-    if [ $? -ne 0 ]; then
-      echo "No MAC found in radio configuration file."
-      exit 1
-    fi 
+    if ! MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}"); then
+      error_exit "No MAC found in radio configuration file."
+    fi
 
-    PAIR_STATUS=$(bluetoothctl info "${MAC}")
-    if [ $? -ne 0 ]; then
-       echo "No device with ${MAC} found. Can't unpair."
-       exit 1
+    PAIR_STATUS=$()
+    if ! bluetoothctl info "${MAC}" 1>/dev/null 2>&1; then
+       error_exit "No device with ${MAC} found. Can't unpair."
     fi
 
     echo "Unpairing ${DEVICE_NAME}..."
@@ -208,10 +181,8 @@ case $1 in
 
     is_paired=$(bluetoothctl info "${MAC}" | grep "Paired" | awk '{print $2}')
     if [ "${is_paired}" != "yes" ]; then
-      echo -e "${RED}${DEVICE_NAME} is not paired. Run: '${WHITE}${0##*/} pair${RED}'"
-      echo -e "${NC}"
-      exit 1
-    fi  
+      error_exit "${RED}${DEVICE_NAME} is not paired. Run: '${WHITE}${0##*/} pair${RED}'${NC}"
+    fi
  
     echo -e "Found ${DEVICE_NAME} with MAC address: ${MAC}" 
 
