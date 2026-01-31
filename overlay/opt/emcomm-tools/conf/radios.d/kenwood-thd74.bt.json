@@ -5,6 +5,49 @@
   "bluetooth": {
     "deviceName" : "TH-D74",
     "channel": "2",
+    "expect" : {
+      "pairing" : [
+        "set device \"${MAC}\"",
+        "set timeout 60",
+        "spawn bluetoothctl",
+        "expect \"Agent registered\"",
+        "send \"power on\\r\"",
+        "expect \"Changing power on succeeded\"",
+        "send \"scan on\\r\"",
+        "expect \"${MAC}\"",
+        "send \"pair ${MAC}\\r\"",
+        "expect {",
+        "    \"Enter PIN code\" {",
+        "        send \"0000\\r\"",
+        "    }",
+        "    \"Confirm passkey\" {",
+        "        send \"yes\\r\"",
+        "    }",
+        "}",
+        "expect \"Pairing successful\"",
+        "send \"trust ${MAC}\\r\"",
+        "expect \"trust succeeded\"",
+        "send \"exit\\r\"",
+        "expect eof"
+      ]
+    },
+    "instructions" : {
+      "pairing" : [
+        "1. Turn off your TH-D74",
+        "2. Turn on your TH-D74",
+        "3. Goto Menu > Configuration > Bluetooth > Pairing Mode"
+      ],
+      "connect" : [
+        "1. Turn off your TH-D74",
+        "2. Turn on your TH-D74",
+        "3. Menu > Configuration > Bluetooth > On",
+        "4. Menu > Configuration > Interface > KISS > Bluetooth"
+      ],
+      "unpairing" : [
+        "You may also want to remove this device from your TH-D74",
+        "under Menu > Configuration > Bluetooth > Connect > <select device> > Menu > Clear"
+      ]
+    },
     "mac": ""
   },
   "notes": [

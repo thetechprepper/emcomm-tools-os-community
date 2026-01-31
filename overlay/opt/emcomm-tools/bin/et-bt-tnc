@@ -1,0 +1,256 @@
+#!/bin/bash
+#
+# Utility for accessing the TNC of Bluetooth enabled radios
+
+source /opt/emcomm-tools/bin/et-common
+
+usage() {
+  echo "Usage: ${0##*/} <command>"
+  echo "  c, connect - Connect to radio via Bluetooth"
+  echo "  p, pair    - Pair radio (one-time operation)"
+  echo "  u, unpair  - Unpair radio"
+  exit 1
+}
+
+if [[ $# -ne 1 ]]; then
+  usage
+fi
+
+error_exit() {
+  echo -e "$1" 1>&2
+  exit 1
+}
+
+options=()
+while IFS= read -r radio; do
+  ID=$(jq --raw-output '.id' "${radio}")
+  VENDOR=$(jq --raw-output '.vendor' "${radio}")
+  MODEL=$(jq --raw-output '.model' "${radio}")
+
+  options+=("$ID" "$VENDOR $MODEL")
+done < <(find "${ET_HOME}/conf/radios.d" -name '*.bt.json' | sort)
+
+SELECTED_RADIO=$(dialog --erase-on-exit --stdout --menu "Select a radio:" 21 60 10 "${options[@]}") \
+  || error_exit "No radio selected."
+
+ACTIVE_RADIO="${ET_HOME}/conf/radios.d/$SELECTED_RADIO.bt.json"
+[ ! -e "${ACTIVE_RADIO}" ] && error_exit "${ACTIVE_RADIO} file not found"
+
+DEVICE_NAME=$(jq --exit-status --raw-output '.bluetooth.deviceName' "${ACTIVE_RADIO}")
+BLUETOOTH_CHANNEL=$(jq --exit-status --raw-output '.bluetooth.channel // 1' "${ACTIVE_RADIO}")
+BT_DEVICE="/dev/rfcomm0"
+AX25_PORT="wl2k"
+AX25_CONF_FILE="/etc/ax25/axports"
+
+cleanup() {
+  # We need to reconnect to the Bluetooth device on every mode change.
+  # As such, we need kill all the rfcomm and kiss process on exit.
+  sudo /opt/emcomm-tools/bin/et-kill-bt
+}
+
+if [[ -e "${BT_DEVICE}" ]]; then
+  echo -e "${YELLOW}Your ${BLUE}${DEVICE_NAME}${YELLOW} may have a connection that needs to be cleaned up."
+  echo -e "Press ${WHITE}[ENTER]${YELLOW} to clean-up.${NC}"
+  read -rp ""
+  
+  cleanup
+fi
+
+# Kill all Bluetooth TNC services on exit
+trap cleanup EXIT
+
+get_mac_or_exit () {
+  MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}") \
+    || error_exit "No MAC address found in ${ACTIVE_RADIO}."
+}
+
+update_ax25_conf() {
+
+  [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+  CALLSIGN=$(jq --raw-output '.callsign // "N0CALL"' "${ET_USER_CONFIG}")
+
+  [ "${CALLSIGN}" = "N0CALL" ] && error_exit "No callsign set. Run et-user first."
+
+  if grep --quiet "${AX25_PORT}" "${AX25_CONF_FILE}"; then
+    # Delete all existing AX.25 port  entries.
+    #
+    # We can't use `sed` here since we do not have permission to create a
+    # temporary file with inline replacement. `ed` modifies the file directly.
+    printf "g/^%s/d\nw\nq\n" ${AX25_PORT} | ed "${AX25_CONF_FILE}" > /dev/null 2>&1
+  fi
+
+  echo "${AX25_PORT} ${CALLSIGN} 1200 255	2 1200 Packet" >> "${AX25_CONF_FILE}"
+}
+
+do_kiss_attach() {
+  echo -e "${BLUE}Connecting KISS interface using ${BT_DEVICE} and AX.25 port: ${AX25_PORT}${NC}"
+  sudo kissattach "${BT_DEVICE}" "${AX25_PORT}" 1>/dev/null 2>&1 \
+    || error_exit "${RED}Failed to attach KISS port.${NC}"
+
+  sudo kissparms -c 1 -p "${AX25_PORT}" 1>/dev/null 2>&1
+}
+
+exit_on_service_failure() {
+  local systemd_unit_name="$1"
+  systemctl is-active --user --quiet "${systemd_unit_name}" \
+    || error_exit "Can't start mode. ${systemd_unit_name} failed to start."
+}
+
+TIMEOUT=15  # Total time to wait in seconds
+INTERVAL=2  # Interval between checks in seconds
+
+start_and_wait_for_service() {
+  local systemd_unit_name="$1"
+  local elapsed=0
+
+  et-log "Starting ${systemd_unit_name}..."
+  systemctl --user start "${systemd_unit_name}"
+
+  et-log "Waiting for ${systemd_unit_name} to become active..."
+
+  while ! systemctl is-active --user --quiet "${systemd_unit_name}"; do
+      sleep "$INTERVAL"
+      elapsed=$((elapsed + INTERVAL))
+      [ "$elapsed" -ge "$TIMEOUT" ] && error_exit "Timeout reached. ${systemd_unit_name} failed to start."
+      et-log "Waiting for ${systemd_unit_name} to become active..."
+  done
+
+  # Some applications even when started still need a bit of extra time to be available. 
+  # Add a short think time of 2 seconds. The ARDOP modem requies extra time.
+  sleep 2
+
+  # Do one more check to ensure that we are running, otherwise exit.
+  exit_on_service_failure "${systemd_unit_name}"
+}
+
+case $1 in
+  p|pair)
+
+    if MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}"); then
+      PAIR_STATUS=$(bluetoothctl info "${MAC}" | grep "Paired:" | awk '{print $2}')
+      [ "${PAIR_STATUS}" == "yes" ] && error_exit "Device with MAC ${MAC} is already paired."
+    fi 
+
+    echo -e "${YELLOW}"
+    jq --exit-status --raw-output '.bluetooth.instructions.pairing | join("\n")' "${ACTIVE_RADIO}" | envsubst
+    echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
+    read -rp ""
+
+    echo "Searching for ${DEVICE_NAME}..."
+
+    if ! HCI_OUT=$(hcitool scan | grep "${DEVICE_NAME}"); then
+      error_exit "Can't find ${DEVICE_NAME}. Make sure that the radio is on and in pairing mode."
+    fi
+
+    MAC=$(echo "${HCI_OUT}" | awk '{print $1}')
+    export MAC
+
+    # Update configuration file detected MAC address
+    sed -i "s|.*mac.*|    \"mac\": \"${MAC}\"|g" "${ACTIVE_RADIO}"
+
+    jq --exit-status --raw-output '.bluetooth.expect.pairing | join("\n")' "${ACTIVE_RADIO}" | envsubst | expect
+
+    ;;
+  u|unpair)
+    if ! MAC=$(jq --exit-status --raw-output '.bluetooth.mac' "${ACTIVE_RADIO}"); then
+      error_exit "No MAC found in radio configuration file."
+    fi
+
+    PAIR_STATUS=$()
+    if ! bluetoothctl info "${MAC}" 1>/dev/null 2>&1; then
+       error_exit "No device with ${MAC} found. Can't unpair."
+    fi
+
+    echo "Unpairing ${DEVICE_NAME}..."
+    bluetoothctl untrust "${MAC}"
+    bluetoothctl remove "${MAC}"
+
+    echo -e "${YELLOW}"
+    jq --exit-status --raw-output '.bluetooth.instructions.unpairing | join("\n")' "${ACTIVE_RADIO}" | envsubst
+    echo -e "${NC}"
+
+    ;;
+  c|connect)
+    get_mac_or_exit
+
+    echo -e "${YELLOW}"
+    jq --exit-status --raw-output '.bluetooth.instructions.connect | join("\n")' "${ACTIVE_RADIO}" | envsubst
+    echo -e "Press ${WHITE}[ENTER]${YELLOW} when done.${NC}"
+    read -rp ""
+
+    is_paired=$(bluetoothctl info "${MAC}" | grep "Paired" | awk '{print $2}')
+    if [ "${is_paired}" != "yes" ]; then
+      error_exit "${RED}${DEVICE_NAME} is not paired. Run: '${WHITE}${0##*/} pair${RED}'${NC}"
+    fi
+ 
+    echo -e "Found ${DEVICE_NAME} with MAC address: ${MAC}" 
+
+    update_ax25_conf 
+
+    sudo -b rfcomm connect "${BT_DEVICE}" "${MAC}" "${BLUETOOTH_CHANNEL}" </dev/null &>/dev/null &
+
+    sleep 10
+
+    if [[ ! -e "${BT_DEVICE}" ]]; then
+      echo -e "${RED}Failed to connect via Bluetooth${NC}"
+      echo -e "${YELLOW}"
+      echo -e "1. Try turning off and back on your radio."
+      echo -e "2. Check your radio and ensure that ${BLUE}$(hostname)${YELLOW} is listed under:"
+      echo -e "   Menu > General Settings> Connection > Paired Devices: $(hostname)."
+      echo -e ""
+      echo -e "   If it is not listed, re-run: ${WHITE}${0##*/} pair${NC}\n"
+      exit 1
+    fi
+
+    et-kill-all
+
+    echo -e "\nSelect a packet application to start:"
+    options=("axcall" "QtTermTCP" "Winlink" "YAAC" "Exit")
+
+    select opt in "${options[@]}"
+    do
+      case $opt in
+        "axcall")
+          do_kiss_attach
+          echo -e "${YELLOW}"
+          echo -e "SAMPLE COMMANDS               DESCRIPTION                     "
+          echo -e "----------------------------- --------------------------------"
+          echo -e "axcall wl2k <STATION>         Connect directly to a node      "
+          echo -e "axcall wl2k <STATION> <DIGI>  Connect to node via a digipeater"
+          echo -e "sudo axlisten -a -tttt -c     Monitor inbound and outbound traffic"
+          echo -e "${NC}"
+
+          # We can't have the rfcomm and kiss processes killed.
+          trap - EXIT
+          break
+          ;;
+        "QtTermTCP")
+          et-qttermtcp start 1>/dev/null 2>&1
+          break
+          ;;
+        "Winlink")
+          do_kiss_attach
+          start_and_wait_for_service et-service-winlink-native-packet
+          min http://localhost:8080 1>/dev/null 2>&1
+          break
+          ;;
+        "YAAC")
+          et-yaac start
+          break
+          ;;
+        "Exit")
+          break
+          ;;
+        *)
+          echo "Invalid option, please select a number from the list."
+          ;;
+       esac
+    done
+
+    ;;
+  *)
+    et-log "Invalid command."
+    usage
+  ;;
+esac

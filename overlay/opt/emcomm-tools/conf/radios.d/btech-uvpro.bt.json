@@ -3,6 +3,41 @@
   "vendor": "BTECH",
   "model": "UV PRO (BT)",
   "bluetooth": {
+    "deviceName" : "UV-PRO",
+    "expect" : {
+      "pairing" : [
+        "set device \"${MAC}\"",
+        "set timeout 60",
+        "spawn bluetoothctl",
+        "expect \"Agent registered\"",
+        "send \"power on\\r\"",
+        "expect \"Changing power on succeeded\"",
+        "send \"scan on\\r\"",
+        "expect \"${MAC}\"",
+        "send \"pair ${MAC}\\r\"",
+        "expect \"Pairing successful\"",
+        "send \"trust ${MAC}\\r\"",
+        "expect \"trust succeeded\"",
+        "send \"exit\\r\"",
+        "expect eof"
+      ]
+    },
+    "instructions" : {
+      "pairing" : [
+        "1. Turn off your UV-PRO",
+        "2. Turn on your UV-PRO",
+        "3. Goto Menu > Pairing and press OK"
+      ],
+      "connect" : [
+        "1. Turn off your UV-PRO",
+        "2. Turn on your UV-PRO",
+        "3. Goto Menu > General Settings > KISS TNC > Enable KISS TNC"
+      ],
+      "unpairing" : [
+        "You may also want to remove this device from your UV-PRO",
+        "under Menu > General Settings > Connection > Paired Devices."
+      ]
+    },
     "mac": ""
   },
   "notes": [
