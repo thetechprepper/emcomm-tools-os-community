@@ -97,3 +97,4 @@ exitIfNotRoot
 
 # Instal SIGINT tools
 ./install-artemis.sh
+./install-minimodem.sh
