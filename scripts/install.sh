@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 1 December 2025
+# Updated : 15 February 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -94,3 +94,6 @@ exitIfNotRoot
 ./install-flmsg.sh
 ./install-flamp.sh
 ./install-et-portaudio.sh
+
+# Instal SIGINT tools
+./install-artemis.sh
