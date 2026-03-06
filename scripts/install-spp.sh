@@ -3,14 +3,8 @@
 # Author  : William McKeehan
 # Author  : Gaston Gonzalez
 # Date    : 3 September 2025
-# Updated : 10 December 2025
+# Updated : 6 March 2026
 # Purpose : Install SDR++
-
-# WARNING: SDR++ may get pulled altogether as this application's dependencies
-# has a high risk of breaking the stability of the platform. DO NOT RELY ON
-# SDR++ being here for much longer. I am testing this downgrade to an earlier
-# version (1.0.4). The nightly build goes against the goals of EmComm Tools
-# philosophy. Stability always wins over new and shinny.
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
@@ -22,7 +16,26 @@ APP=sdrpp
 VERSION=nightly
 DOWNLOAD_FILE=sdrpp_ubuntu_jammy_amd64.deb
 
+et-log "****************************************************************"
+et-log "* WARNING:                                                     *"
+et-log "*                                                              *"
+et-log "* SDR++ may get pulled at any time due to its nightly builds.  *"
+et-log "* Since the nightly builds are not version pinned, the library *"
+et-log "* dependencies may change and result in run-time issues or may *"
+et-log "* lead to breakage impacting other parts of the system.        *"
+et-log "****************************************************************"
+
 et-log "Installing ${APP} ${VERSION}..."
+
+et-log "Installing build dependencies..."
+apt install \
+  libvolk2-bin \
+  libvolk2-dev \
+  libfftw3-dev \
+  libglfw3-dev \
+  librtaudio-dev \
+  libzstd-dev \
+  -y
 
 if [[ ! -e ${ET_DIST_DIR}/${DOWNLOAD_FILE} ]]; then
 
