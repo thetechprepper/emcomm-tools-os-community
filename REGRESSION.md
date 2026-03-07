@@ -74,6 +74,7 @@
 * [ ] winlink-ardop
   * [ ] Callsign displayed
   * [ ] Listener enabled
+  * [ ] RMS station listed
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
 
