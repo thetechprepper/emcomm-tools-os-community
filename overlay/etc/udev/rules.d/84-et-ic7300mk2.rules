@@ -1,0 +1,34 @@
+# Author   : Gaston Gonzalez
+# Date     : 13 December 2024
+# Modified By : Gary "Padre" Priest
+# Date     : 8 February 2026
+# Purpose  : udev rules for the Icom IC-7300mk2
+#
+# Preconditions:
+# 1. IC-7300 turned on
+# 2. IC-7300 connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-cat created
+# 3. /dev/et-audio created
+# 3. rigctld is started
+
+# Create consistent device name/path for the CAT serial device
+KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{serial}=="IC-7300MK2*", \
+    ENV{ET_DEVICE}="IC-7300MK2"
+
+# Create consistent device name/path for the CAT serial device
+# Prevent the gpsd system unit from incorrectly flagging this as a GPS device
+# Targets first of two serial interfaces exposed by IC-7300mk2, second is configurable and may not be CI-V
+ENV{ET_DEVICE}=="IC-7300MK2", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0c26" ATTRS{idProduct}=="0052" ENV{ID_USB_INTERFACE_NUM}=="00", \
+    ACTION=="add", \
+    ENV{SYSTEMD_WANTS}="", \
+    ENV{ET_SUBDEVICE}="CAT", GROUP="dialout", MODE="0660", SYMLINK+="et-cat", \
+    RUN+="/usr/bin/systemctl start rigctld"
+
+# This rule creates a consistent device for AUDIO
+# Previous Icom rigs used the same audio chipset but the 7300mk2 has unique hardware
+SUBSYSTEM=="sound", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="0013", ENV{ET_DEVICE}=="", \
+    ACTION=="add", \
+    ATTR{id}="ET_AUDIO", \
+    ENV{ET_DEVICE}="Icom IC-7300mk2", ENV{ET_SUBDEVICE}="AUDIO", GROUP="audio", MODE="0660", SYMLINK+="et-audio"
