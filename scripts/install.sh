@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 15 February 2026
+# Updated : 6 March 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -73,6 +73,7 @@ exitIfNotRoot
 # Install SDR tools
 ./install-sdr-tools.sh
 ./install-dump1090.sh
+./install-sdrpp.sh
 
 # Install ETC custom maps
 ./download-et-maps.sh
@@ -98,3 +99,6 @@ exitIfNotRoot
 # Instal SIGINT tools
 ./install-artemis.sh
 ./install-minimodem.sh
+
+# Install security tools
+./install-gpa.sh
