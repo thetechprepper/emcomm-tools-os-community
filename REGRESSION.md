@@ -45,6 +45,7 @@
   * [ ] IC-7200
 * [ ] JS8Call
   * [ ] Callsign and grid displayed
+  * [ ] Call groups (TTP, TTPNET, @GHOSTNET, @GSTFLASH)
   * [ ] Decode data
   * [ ] Tune up + full TX power out
   * [ ] SNR + full TX power out
