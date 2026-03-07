@@ -96,6 +96,8 @@
 ## SIGINT
 
 * [ ] Artemis
+  * [ ] Available via application search
+  * [ ] Signal database renders
 
 ## Security
 

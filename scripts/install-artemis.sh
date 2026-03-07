@@ -1,7 +1,8 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 15 February 2025
-# Purpose : Install YAAC
+# Updated : 7 March 2025
+# Purpose : Install Artemis
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
@@ -44,3 +45,6 @@ fi
 ln -s ${INSTALL_DIR} ${LINK_PATH}
 
 cd ${CWD_DIR}
+
+et-log "Installing ${APP} launcher icon..."
+cp -v ../overlay/usr/share/applications/artemis.desktop /usr/share/applications/
