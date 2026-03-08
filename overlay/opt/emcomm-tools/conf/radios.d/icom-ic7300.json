@@ -8,6 +8,11 @@
     "ptt": "RIG"
   },
   "notes": [
-     "[MENU] > [SET] > [Connectors] > [CI-V] > CI-V USB Baud Rate = 19200"
+     "[MENU] > [SET] > [Connectors] > [CI-V] > CI-V USB Baud Rate = 19200",
+     "[MENU] > [SET] > [Connectors] > DATA MOD = USB",
+     "[FUNCTION] > AGC = FAST",
+     "Set MODE = USB-D",
+     "Set FILTER = FIL1 (3000)",
+     "Set alsamixer PCM to 82"
   ]
 }
