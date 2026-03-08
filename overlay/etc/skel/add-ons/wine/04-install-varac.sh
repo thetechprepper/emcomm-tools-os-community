@@ -12,8 +12,8 @@ installer=$(find ${HOME}/Downloads -name VarAC_Installer_*.exe | sort -r | head 
 
 if [ -z "${installer}" ]; then
   echo -e "${YELLOW}VarAC can not be downloaded automatically"
-  echo -e "${WHITE}Visit https://www.varac-hamradio.com/download"
-  echo -e "From there, download the VarAC Windows Installer and place it into ~/Downloads"
+  echo -e "${WHITE}Visit https://www.varac-hamradio.com/download#:~:text=Download%20VarAC%20Windows%20Installer"
+  echo -e "Fill out the form to download the VarAC Windows Installer executable (.exe) and place it into ~/Downloads"
   echo -e "Rerun ./04-install-varac.sh${NC}"
   exit 1
 fi
