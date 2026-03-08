@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R6 Build 6
-- **Date**: 6 March 2026
+- **Build**: ETC R6 Build 7
+- **Date**: 7 March 2026
 
 ## Desktop/Launcher Icons
 
@@ -15,8 +15,7 @@
 
 ## et-predict
 
-* [ ] Map displays
-* [ ] Location geodetected
+* [ ] Map rendered
 * [ ] Callsign search 
 * [ ] Run prediction (e.g, ardop, ssb, vara-500, etc.)
 
@@ -24,54 +23,83 @@
 
 * [ ] Conky 
   * [ ] lat,lon
-  * [ ] dynamic grid
+  * [ ] Dynamic grid
 * [ ] et-api - http://localhost:1981/api/geo/position
 * [ ] GPS Time
+* [ ] et-predict - location geodetected
+* [ ] Navit
+  * [ ] State-level map rendered
+  * [ ] Location geodetected
 
 ## User Configuration
 
 * [ ] Launch JS8Call before et-user init (not allowed)
-* [ ] et-user-restore
+* [ ] Launch fldigi before et-user init (not allowed)
 * [ ] et-user
+* [ ] Conky updated with callsign and grid
 
 ## Radio
 
 * [ ] et-radio
   * [ ] TX-500MP
+  * [ ] IC-7200
 * [ ] JS8Call
-  * [ ] alsamixer levels
-    [ ] dynamic grid
-    [ ] Decode data
-    [ ] Tune up + full TX power out
-    [ ] SNR + full TX power out
+  * [ ] Callsign and grid displayed
+  * [ ] Call groups (TTP, TTPNET, @GHOSTNET, @GSTFLASH, @AMRRON)
+  * [ ] Decode data
+  * [ ] Tune up + full TX power out
+  * [ ] SNR + full TX power out
+  * [ ] Settings > Station Info = ETC_<BUILD>
+  * [ ] alsamixer level (IC-7200 = 82 PCM)
+* [ ] fldigi
+  * [ ] Tune up + full TX power out
+  * [ ] Callsign displayed
+
+## SDR
+
 * [ ] et-aircraft-app
-  * [ ] Geolocation
+  * [ ] Launch app before SDR is connected (not allowed)
+  * [ ] Map rendered
+  * [ ] Location geodetected
   * [ ] RTL-SDR v4
+  * [ ] Offline FAA info
   * [ ] RTL-SDR v3
   * [ ] RTL-SDR v2
   * [ ] ADS-B Exchange
-* [ ] et-mode
-     [ ] FT-857D + Winlink ARDOP
+* [ ] SDR++
+  * [ ] WFM broadcast
 
+## et-mode
+
+* [ ] winlink-ardop
+  * [ ] Callsign displayed
+  * [ ] Listener enabled
+  * [ ] RMS station listed
+  * [ ] Select RMS gateway => VFO updated
+  * [ ] Connect
 
 ## Bluetooth TNC
 
 * [ ] et-uv-pro
-
+  * [ ] pair
+  * [ ] connect
+  * [ ] Winlink
+  * [ ] QtTermTCP
+  * [ ] YAAC
+  * [ ] unpair
 
 ## VARA
 
+* [ ] et-radio => DigiRig Lite
 * [ ] VARA restore
 * [ ] et-mode VARA FM (Winlink)
 * [ ] et-mode VARA HF (Winlink)
 
-## SDR
-
-* [ ] SDR++
-
 ## SIGINT
 
 * [ ] Artemis
+  * [ ] Available via application search
+  * [ ] Signal database renders
 
 ## Security
 
