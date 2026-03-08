@@ -2,6 +2,8 @@
 #
 # Purpose : Install VarAC
 
+source /opt/emcomm-tools/bin/et-common
+
 winetricks \
   --unattended \
   vcrun2015 \
