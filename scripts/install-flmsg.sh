@@ -1,6 +1,8 @@
 #!/bin/bash
 # Author  : William McKeehan
+# Author  : Gaston Gonzalez
 # Date    : 18 November 2025
+# Date    : 13 March 2026
 # Purpose : Builds and installs flmsg
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -42,7 +44,8 @@ make install
 [[ -e ${LINK_PATH} ]] && rm ${LINK_PATH}
 ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 
-stow -v -d /opt ${APP} -t /usr/local
-
 # Use wrapper script as launcher executable
 sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-flmsg start|' /opt/flmsg/share/applications/flmsg.desktop
+cp -v /opt/flmsg/share/applications/flmsg.desktop /usr/share/applications/flmsg.desktop
+
+stow -v -d /opt ${APP} -t /usr/local
