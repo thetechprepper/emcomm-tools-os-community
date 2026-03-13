@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 13 March 2026
+# Purpose : Wrapper script for starting flmsg with PnP support
+#
+# Preconditions
+# 1. None
+#
+# Postconditions
+# 1. flmsg core settings updated
+# 2. flmsg started
+
+usage() {
+  echo "usage: $(basename $0) <command>"
+  echo "  start           - Update config and start flmsg"
+  echo "  update-config   - Update config"
+}
+
+if [[ $# -ne 1 ]]; then
+  usage
+  exit 1
+fi
+
+start() {
+  update-config && /usr/local/bin/flmsg &
+}
+
+update-config () {
+
+    FLMSG_CONF_DIR="${HOME}/.nbems"
+    FLMSG_CONF_FILE="${FLMSG_CONF_DIR}/FLMSG.prefs"
+
+    if [[ ! -e ${FLMSG_CONF_DIR} ]]; then
+      et-log "${FLMSG_CONF_DIR} does not exist. Creating it from template."
+      cp -r /etc/skel/.nbems ${FLMSG_CONF_DIR}
+    fi
+
+    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    #################
+    # Update callsign
+    #################
+    et-log "Updating callsign configuration..."
+    CALLSIGN=$(jq -r -e '.callsign' ${ET_USER_CONFIG})
+
+    if [[ "${CALLSIGN}" = "N0CALL" ]]; then
+       et-log "Exiting early. No callsign set. Run: et-user."
+       exit 1
+    fi
+
+    et-log "Using callsign '${CALLSIGN}'"
+    sed -i "s|^mycall:.*|mycall:${CALLSIGN}|" ${FLMSG_CONF_FILE}
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update-config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac

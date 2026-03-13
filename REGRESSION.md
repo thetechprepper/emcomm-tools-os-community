@@ -104,3 +104,9 @@
 ## Security
 
 * [ ] gpa
+
+## flmsg
+
+* [ ] Launch flmsg from Applications search
+* [ ] Confirm custom AmRRON forms
+* [ ] Confirm callsign under Config > Personal data
