@@ -44,7 +44,7 @@ swx_default_location:
 swx_default_zone:
 swx_default_profile:
 change_modem_with_autosend:1
-sync_modem_to_fldigi:0
+sync_modem_to_fldigi:1
 caplocal:0
 auto_open_url:0
 retries:5
