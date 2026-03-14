@@ -105,14 +105,15 @@
 
 * [ ] gpa
 
-## flmsg
+## fldigi/flmsg
 
-* [ ] Launch flmsg from Applications search
-* [ ] Confirm custom AmRRON forms
+* [ ] Launch fldigi from Application Launcher 
 * [ ] Confirm callsign under Config > Personal data
-* [ ] Close flmsg
-* [ ] Confirm flmsg starts with fldigi using fldigi icon on launcher
+* [ ] Confirm custom AmRRON forms
+* [ ] Confirm flmsg starts with fldigi
 * [ ] Confirm flmsg modem syncs with fldigi modem
+* [ ] Confirm two rows of macros
+* [ ] Confirm AmRRON 2022 macros under: File > Macros > Open
 
 ## Offline Resources
 
