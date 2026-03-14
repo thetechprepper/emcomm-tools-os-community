@@ -2645,7 +2645,8 @@ Enable mouse wheel rotation to control visible macro set -->
 <!-- type: int; default: 1
 # and position of macro bars
 0..12, 1 = default -->
-<MBARSCHEME>1</MBARSCHEME>
+<!-- ETC: show two macro rows -->
+<MBARSCHEME>5</MBARSCHEME>
 
 <!-- type: bool; default: false
 Position 4 bar macro sat below Tx panel
