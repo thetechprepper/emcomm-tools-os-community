@@ -110,3 +110,11 @@
 * [ ] Launch flmsg from Applications search
 * [ ] Confirm custom AmRRON forms
 * [ ] Confirm callsign under Config > Personal data
+* [ ] Close flmsg
+* [ ] Confirm flmsg starts with fldigi using fldigi icon on launcher
+* [ ] Confirm flmsg modem syncs with fldigi modem
+
+## Offline Resources
+
+* [ ] `offline` folder on Desktop
+* [ ] List of public nets avaiable
