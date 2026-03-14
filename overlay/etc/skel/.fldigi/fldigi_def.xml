@@ -183,7 +183,7 @@ Default RTTY tracking point (Hz) -->
 
 <!-- type: double; default: 1500
 Default tracking point for all other modems (Hz) -->
-<PSKSWEETSPOT>1500</PSKSWEETSPOT>
+<PSKSWEETSPOT>1000</PSKSWEETSPOT>
 
 <!-- type: bool; default: true
 Always start new modems at sweet spot frequencies -->
