@@ -3218,7 +3218,7 @@ Full pathname to the fllog executable -->
 
 <!-- type: std::string; default: &quot;&quot;
 Full pathname to the prog1 executable -->
-<AUTO_PROG1_PATHNAME></AUTO_PROG1_PATHNAME>
+<AUTO_PROG1_PATHNAME>/opt/emcomm-tools/bin/et-flmsg start</AUTO_PROG1_PATHNAME>
 
 <!-- type: std::string; default: &quot;&quot;
 Full pathname to the prog2 executable -->
@@ -3246,7 +3246,7 @@ Enable on program start -->
 
 <!-- type: bool; default: false
 Enable on program start -->
-<PROG1_AUTO_ENABLE>0</PROG1_AUTO_ENABLE>
+<PROG1_AUTO_ENABLE>1</PROG1_AUTO_ENABLE>
 
 <!-- type: bool; default: false
 Enable on program start -->
