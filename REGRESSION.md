@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R6 Build 7
-- **Date**: 7 March 2026
+- **Build**: ETC R6 Build 9
+- **Date**: 14 March 2026
 
 ## Desktop/Launcher Icons
 
@@ -104,3 +104,25 @@
 ## Security
 
 * [ ] gpa
+
+## fldigi/flmsg/flamp
+
+* [ ] Launch fldigi from Application Launcher 
+* [ ] Confirm flmsg starts with fldigi
+* [ ] Confirm flamp starts with fldigi
+* [ ] On fldigi
+  * [ ] Confirm hamlib and callsign in application title
+  * [ ] Confirm custom AmRRON forms
+  * [ ] Confirm two rows of macros
+* [ ] Confirm AmRRON 2022 macros under: File > Macros > Open
+* [ ] On flmsg
+  * [ ] Confirm callsign under Config > Personal data
+  * [ ] Confirm flmsg modem syncs with fldigi modem
+* [ ] On flamp
+  * [ ] Confirm callsign
+  * [ ] Confirm flamp modem syncs with fldigi modem
+
+## Offline Resources
+
+* [ ] `offline` folder on Desktop
+* [ ] List of public nets avaiable
