@@ -5,6 +5,11 @@
     "dir": "bands/ham-radio"
   },
   {
+    "url": "https://ham.packet-radio.net/packet/bpq32/bpq32-guide/bpq-user-and-sysop-commands.pdf",
+    "file": "bpq-user-and-sysop-commands.pdf",
+    "dir": "bbs/bpq"
+  },
+  {
     "url": "https://amrron.com/wp-content/uploads/2019/03/AmRRON-Intelligence-Brief-White-Paper.pdf",
     "file": "AmRRON-Intelligence-Brief-White-Paper.pdf",
     "dir": "nets/amrron"
