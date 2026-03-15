@@ -103,5 +103,8 @@ exitIfNotRoot
 # Install security tools
 ./install-gpa.sh
 
+# Install ISO tools
+./install-ventoy.sh
+
 # Install offline resources
 ./install-offline-lib.sh
