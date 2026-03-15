@@ -1,0 +1,27 @@
+[
+  {
+    "url": "https://www.arrl.org/files/file/Regulatory/Band%20Chart/Hambands4_Color_11x8_5.pdf",
+    "file": "Hambands4_Color_11x8_5.pdf",
+    "dir": "bands/ham-radio"
+  },
+  {
+    "url": "https://ham.packet-radio.net/packet/bpq32/bpq32-guide/bpq-user-and-sysop-commands.pdf",
+    "file": "bpq-user-and-sysop-commands.pdf",
+    "dir": "bbs/bpq"
+  },
+  {
+    "url": "https://amrron.com/wp-content/uploads/2019/03/AmRRON-Intelligence-Brief-White-Paper.pdf",
+    "file": "AmRRON-Intelligence-Brief-White-Paper.pdf",
+    "dir": "nets/amrron"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/s2underground/GhostNet/1a2d08d579813e54967af06f1a871e7fa0ce583f/GhostNet_Version_1.5.pdf",
+    "file": "GhostNet_Version_1.5.pdf",
+    "dir": "nets/ghostnet"
+  },
+  {
+    "url": "https://www.swpc.noaa.gov/sites/default/files/images/NOAAscales.pdf",
+    "file": "NOAAscales.pdf",
+    "dir": "space-weather"
+  }
+]
