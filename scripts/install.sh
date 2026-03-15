@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 6 March 2026
+# Updated : 14 March 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -102,3 +102,6 @@ exitIfNotRoot
 
 # Install security tools
 ./install-gpa.sh
+
+# Install offline resources
+./install-offline-lib.sh
