@@ -45,3 +45,5 @@ ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-flamp start|' /opt/flamp/share/applications/flamp.desktop 
 
 stow -v -d /opt ${APP} -t /usr/local
+
+cd ${CWD_DIR}

@@ -2,7 +2,7 @@
 # Author  : William McKeehan
 # Author  : Gaston Gonzalez
 # Date    : 18 November 2025
-# Updated : 13 March 2026
+# Updated : 14 March 2026
 # Purpose : Builds and installs flmsg
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -49,3 +49,5 @@ sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-flmsg start|' /opt/flmsg/share/a
 cp -v /opt/flmsg/share/applications/flmsg.desktop /usr/share/applications/flmsg.desktop
 
 stow -v -d /opt ${APP} -t /usr/local
+
+cd ${CWD}
