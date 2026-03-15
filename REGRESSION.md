@@ -61,6 +61,7 @@
   * [ ] Launch app before SDR is connected (not allowed)
   * [ ] Map rendered
   * [ ] Location geodetected
+  * [ ] Tail # labels rendered horizontally
   * [ ] RTL-SDR v4
   * [ ] Offline FAA info
   * [ ] RTL-SDR v3
@@ -68,6 +69,7 @@
   * [ ] ADS-B Exchange
 * [ ] SDR++
   * [ ] WFM broadcast
+  * [ ] Shortwave AM broadcast
 
 ## et-mode
 
