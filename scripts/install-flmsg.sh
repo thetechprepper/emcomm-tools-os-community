@@ -2,7 +2,7 @@
 # Author  : William McKeehan
 # Author  : Gaston Gonzalez
 # Date    : 18 November 2025
-# Date    : 13 March 2026
+# Updated : 13 March 2026
 # Purpose : Builds and installs flmsg
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG

@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R6 Build 7
-- **Date**: 7 March 2026
+- **Build**: ETC R6 Build 9
+- **Date**: 14 March 2026
 
 ## Desktop/Launcher Icons
 
@@ -105,7 +105,7 @@
 
 * [ ] gpa
 
-## fldigi/flmsg
+## fldigi/flmsg/flamp
 
 * [ ] Launch fldigi from Application Launcher 
 * [ ] Confirm callsign under Config > Personal data

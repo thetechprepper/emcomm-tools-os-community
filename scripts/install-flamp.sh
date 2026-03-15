@@ -1,6 +1,8 @@
 #!/bin/bash
 # Author  : William McKeehan
+# Author  : Gaston Gonzalez
 # Date    : 18 November 2025
+# Updated : 14 March 2026
 # Purpose : Builds and installs flamp
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
