@@ -1,20 +1,19 @@
 #!/bin/bash
 #
 # Author  : Gaston Gonzalez
-# Date    : 13 March 2026
-# Updated : 14 March 2026
-# Purpose : Wrapper script for starting flmsg with PnP support
+# Date    : 14 March 2026
+# Purpose : Wrapper script for starting flamp with PnP support
 #
 # Preconditions
 # 1. None
 #
 # Postconditions
-# 1. flmsg core settings updated
-# 2. flmsg started
+# 1. flamp core settings updated
+# 2. flamp started
 
 usage() {
   echo "usage: $(basename $0) <command>"
-  echo "  start           - Update config and start flmsg"
+  echo "  start           - Update config and start flamp"
   echo "  update-config   - Update config"
 }
 
@@ -24,16 +23,17 @@ if [[ $# -ne 1 ]]; then
 fi
 
 start() {
-  update-config && /usr/local/bin/flmsg &
+  update-config && /usr/local/bin/flamp &
 }
 
 update-config () {
 
     FLMSG_CONF_DIR="${HOME}/.nbems"
-    FLMSG_CONF_FILE="${FLMSG_CONF_DIR}/FLMSG.prefs"
+    FLAMP_CONF_DIR="${HOME}/.nbems/FLAMP"
+    FLAMP_CONF_FILE="${FLAMP_CONF_DIR}/FLAMP.prefs"
 
-    if [[ ! -e ${FLMSG_CONF_FILE} ]]; then
-      et-log "${FLMSG_CONF_FILE} does not exist. Creating it from template."
+    if [[ ! -e ${FLAMP_CONF_FILE} ]]; then
+      et-log "${FLAMP_CONF_FILE} does not exist. Creating it from template."
       cp -r /etc/skel/.nbems ${HOME}
     fi
 
@@ -51,7 +51,7 @@ update-config () {
     fi
 
     et-log "Using callsign '${CALLSIGN}'"
-    sed -i "s|^mycall:.*|mycall:${CALLSIGN}|" ${FLMSG_CONF_FILE}
+    sed -i "s|^mycall:.*|mycall:${CALLSIGN}|" ${FLAMP_CONF_FILE}
 }
 
 case $1 in

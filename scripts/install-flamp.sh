@@ -41,4 +41,7 @@ make install
 [[ -e ${LINK_PATH} ]] && rm ${LINK_PATH}
 ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 
+# Use wrapper script as launcher executable
+sed -i 's|^Exec.*|Exec=/opt/emcomm-tools/bin/et-flamp start|' /opt/flamp/share/applications/flamp.desktop 
+
 stow -v -d /opt ${APP} -t /usr/local

@@ -21,7 +21,7 @@ compression:1
 encoder:3
 encoder_string:base256
 sync_mode_flamp_fldigi:0
-sync_mode_fldigi_flamp:0
+sync_mode_fldigi_flamp:1
 fldigi_xmt_mode_change:0
 repeat_every:1
 repeat_at_times:0

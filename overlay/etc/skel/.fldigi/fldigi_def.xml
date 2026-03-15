@@ -3207,7 +3207,7 @@ Full pathname to the flrig executable -->
 
 <!-- type: std::string; default: &quot;&quot;
 Full pathname to the flamp executable -->
-<AUTO_FLAMP_PATHNAME></AUTO_FLAMP_PATHNAME>
+<AUTO_FLAMP_PATHNAME>/opt/emcomm-tools/bin/et-flamp start</AUTO_FLAMP_PATHNAME>
 
 <!-- type: std::string; default: &quot;&quot;
 Full pathname to the flnet executable -->
@@ -3243,7 +3243,7 @@ Enable on program start -->
 
 <!-- type: bool; default: false
 Enable on program start -->
-<FLAMP_AUTO_ENABLE>0</FLAMP_AUTO_ENABLE>
+<FLAMP_AUTO_ENABLE>1</FLAMP_AUTO_ENABLE>
 
 <!-- type: bool; default: false
 Enable on program start -->

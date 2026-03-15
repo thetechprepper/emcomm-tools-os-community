@@ -108,12 +108,19 @@
 ## fldigi/flmsg/flamp
 
 * [ ] Launch fldigi from Application Launcher 
-* [ ] Confirm callsign under Config > Personal data
-* [ ] Confirm custom AmRRON forms
 * [ ] Confirm flmsg starts with fldigi
-* [ ] Confirm flmsg modem syncs with fldigi modem
-* [ ] Confirm two rows of macros
+* [ ] Confirm flamp starts with fldigi
+* [ ] On fldigi
+  * [ ] Confirm hamlib and callsign in application title
+  * [ ] Confirm custom AmRRON forms
+  * [ ] Confirm two rows of macros
 * [ ] Confirm AmRRON 2022 macros under: File > Macros > Open
+* [ ] On flmsg
+  * [ ] Confirm callsign under Config > Personal data
+  * [ ] Confirm flmsg modem syncs with fldigi modem
+* [ ] On flamp
+  * [ ] Confirm callsign
+  * [ ] Confirm flamp modem syncs with fldigi modem
 
 ## Offline Resources
 
