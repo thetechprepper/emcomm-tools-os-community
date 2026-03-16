@@ -27,7 +27,7 @@ This is an in-progress list of public BPQ HF nodes.
 | Node      | Frequency | Modulation | Mode                   | Grid   |  
 |-----------|-----------|------------|------------------------|--------|
 | KD6MTU-1  | 7.089     | USB        | VARA HF                | DN10qj | 
-| KT7RUN-10 | 7.063.5   | USB        | VARA HF                | DM33xv | 
+| KT7RUN-7  | 7.063.5   | USB        | VARA HF                | DM33xv | 
 | W7BMH-1   | 7.101.3   | USB        | VARA HF, ARDOP         | CN84ka |
 | W7BMH-1   | 7.103.2   | USB        | VARA HF, ARDOP         | CN84ka | 
 | N5MDT-4   | 7.103.2   | USB        | VARA HF                | EM20ej | 
@@ -38,7 +38,7 @@ This is an in-progress list of public BPQ HF nodes.
 
 | Node      | Frequency | Modulation | Mode                   | Grid   |  
 |-----------|-----------|------------|------------------------|--------|
-| KT7RUN-10 | 10.144    | USB        | VARA HF                | DM33xv | 
+| KT7RUN-7  | 10.144    | USB        | VARA HF                | DM33xv | 
 
 
 ## 20m Nodes
