@@ -30,5 +30,4 @@ if [ ! -e "${VARA_HOME}/nt4pdhdll.exe" ]; then
   cd ${CWD}
 fi
 
-echo -e "${YELLOW}OPTIONAL: run ${WHITE}./04-install-varac.sh${YELLOW} to install VarAC.${NC}"
-echo -e "${YELLOW}Or run ${WHITE}./05-run-regedit.sh${YELLOW} to run registry editor.${NC}"
+echo -e "${YELLOW}Run ${WHITE}./04-run-regedit.sh${YELLOW} to run registry editor.${NC}"
