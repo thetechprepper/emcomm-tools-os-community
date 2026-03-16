@@ -20,6 +20,7 @@ This is an in-progress list of public BPQ HF nodes.
 |-----------|-----------|------------|--------------------|--------|-----------|
 | KD6MTU-1  | 3.580     | USB        | VARA HF            | DN10qj |           |
 | N5MDT-4   | 3.594.2   | USB        | VARA HF            | EM20ej |           |
+| N3MEL-2   | 3.596     | USB        | VARA HF            | FM29dx |           |
 | N9SEO-1   | 3.596     | USB        | VARA HF            | EM36tg |           | 
 | N9SEO-1   | 3.597     | USB        | VARA HF            | EM36tg |           |
 
@@ -33,6 +34,7 @@ This is an in-progress list of public BPQ HF nodes.
 | W7BMH-1   | 7.101.3   | USB        | VARA HF, ARDOP     | CN84ka |           |
 | W7BMH-1   | 7.103.2   | USB        | VARA HF, ARDOP     | CN84ka |           |
 | N5MDT-4   | 7.103.2   | USB        | VARA HF            | EM20ej |           | 
+| N3MEL-2   | 7.103.2   | USB        | VARA HF            | FM29dx |           |
 | N9SEO-1   | 7.100     | USB        | VARA HF            | EM36tg |           |
 
 
@@ -50,5 +52,10 @@ This is an in-progress list of public BPQ HF nodes.
 | W7BMH-1   | 14.102.3  | USB        | VARA HF, ARDOP     | CN84ka |           |
 | W7BMH-1   | 14.106.5  | USB        | VARA HF, ARDOP     | CN84ka |           |
 | N5MDT-4   | 14.106.5  | USB        | VARA HF            | EM20ej |           |
+| N3MEL-2   | 14.106.5  | USB        | VARA HF            | FM29dx |           |
 | N9SEO-1   | 14.106.5  | USB        | VARA HF            | EM36tg |           |
 
+
+## Resources
+
+- [The Packet Radio RF Forwarding Network](https://www.tprfn.net/)
