@@ -10,6 +10,11 @@
     "dir": "bbs/bpq"
   },
   {
+    "url": "https://www.icomamerica.com/api/download.php?page_id=171&fl=JTJGdXBsb2FkcyUyRlVTQV9CYW5kX1BsYW4lMkZCYW5kX1BsYW5fTWFwJTJGQW1hdHVlckdyaWRTcXVhcmVNYXBfVVNBJTVCMTMlNUQucGRm",
+    "file": "icom-us-grid.pdf",
+    "dir": "geo/maidenhead"
+  },
+  {
     "url": "https://amrron.com/wp-content/uploads/2019/03/AmRRON-Intelligence-Brief-White-Paper.pdf",
     "file": "AmRRON-Intelligence-Brief-White-Paper.pdf",
     "dir": "nets/amrron"
