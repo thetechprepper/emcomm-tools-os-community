@@ -17,17 +17,21 @@ in this directory as your normal user (do not use 'sudo').
 
     ./03-install-vara-fm.sh
 
-4. Run the registry editor. Follow the instructions in the terminal. In 
+4. OPTIONAL: Install VarAC.
+
+   ./04-install-varac.sh
+
+5. Run the registry editor. Follow the instructions in the terminal. In
    this step we will need to map COM port 10 (COM10) to the EmComm Tools
    CAT control device (/dev/et-cat).
 
-    ./04-run-regedit.sh
+    ./05-run-regedit.sh
 
-5. If you want to include your WINE installation in a future EmComm Tools
+6. If you want to include your WINE installation in a future EmComm Tools
    Community image build, run the following to make a backup of your WINE
    installation now.
 
-    ./05-backup-wine-install.sh
+    ./06-backup-wine-install.sh
 
 It is important that you do not run any of the VARA programs until after
 the backup is run in step 5.
@@ -44,12 +48,12 @@ perform the following in Cubic after the main install script is finished.
 
 3. Unpack the backup file. This will create `/etc/skel/.wine32`.
 
-```
-tar -xzf etc-wine-backup-*
-```
+   ```
+   tar -xzf etc-wine-backup-*
+   ```
 
 4. Delete the backup file on the Cubic session to save on space.
 
-```
-rm etc-wine-backup-*
-```
+   ```
+   rm etc-wine-backup-*
+   ```
