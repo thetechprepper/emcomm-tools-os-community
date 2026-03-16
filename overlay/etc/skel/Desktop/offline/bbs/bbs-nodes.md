@@ -31,11 +31,11 @@ This is an in-progress list of public BPQ HF nodes.
 |-----------|-----------|------------|--------------------|--------|-----------|
 | KD6MTU-1  | 7.089     | USB        | VARA HF            | DN10qj | 20260316  |
 | KT7RUN-7  | 7.063.5   | USB        | VARA HF            | DM33xv | 20260316  |
-| W7BMH-1   | 7.101.3   | USB        | VARA HF, ARDOP     | CN84ka |           |
-| W7BMH-1   | 7.103.2   | USB        | VARA HF, ARDOP     | CN84ka |           |
 | N5MDT-4   | 7.103.2   | USB        | VARA HF            | EM20ej |           | 
 | N3MEL-2   | 7.103.2   | USB        | VARA HF            | FM29dx |           |
 | N9SEO-1   | 7.100     | USB        | VARA HF            | EM36tg |           |
+| W7BMH-1   | 7.101.3   | USB        | VARA HF, ARDOP     | CN84ka |           |
+| W7BMH-1   | 7.103.2   | USB        | VARA HF, ARDOP     | CN84ka |           |
 
 
 ## 30m Nodes
@@ -49,11 +49,11 @@ This is an in-progress list of public BPQ HF nodes.
 
 | Node      | Frequency | Modulation | Modes              | Grid   | Confirmed |
 |-----------|-----------|------------|--------------------|--------|-----------|
-| W7BMH-1   | 14.102.3  | USB        | VARA HF, ARDOP     | CN84ka |           |
-| W7BMH-1   | 14.106.5  | USB        | VARA HF, ARDOP     | CN84ka |           |
 | N5MDT-4   | 14.106.5  | USB        | VARA HF            | EM20ej |           |
 | N3MEL-2   | 14.106.5  | USB        | VARA HF            | FM29dx |           |
 | N9SEO-1   | 14.106.5  | USB        | VARA HF            | EM36tg |           |
+| W7BMH-1   | 14.102.3  | USB        | VARA HF, ARDOP     | CN84ka |           |
+| W7BMH-1   | 14.106.5  | USB        | VARA HF, ARDOP     | CN84ka |           |
 
 
 ## Resources
