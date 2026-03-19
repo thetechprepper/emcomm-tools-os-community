@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R6 Build 9
-- **Date**: 14 March 2026
+- **Build**: ETC R6 Build 10
+- **Date**: 19 March 2026
 
 ## Desktop/Launcher Icons
 
@@ -127,4 +127,5 @@
 ## Offline Resources
 
 * [ ] `offline` folder on Desktop
-* [ ] List of public nets avaiable
+* [ ] Check `nets` folder for `amrron` and `ghostnet`
+* [ ] Test gpg signature verifcation gpg crypto doc

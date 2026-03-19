@@ -20,6 +20,16 @@
     "dir": "nets/amrron"
   },
   {
+    "url": "https://amrron.com/wp-content/uploads/2023/02/GPG-PGP_Signature_Verification_Guidance_5-25-23.pdf",
+    "file": "GPG-PGP_Signature_Verification_Guidance_5-25-23.pdf",
+    "dir": "nets/amrron"
+  },
+  {
+    "url": "https://amrron.com/wp-content/uploads/2023/02/AmRRON_Actual_ECC_PUBLIC.asc",
+    "file": "AmRRON_Actual_ECC_PUBLIC.asc",
+    "dir": "nets/amrron"
+  },
+  {
     "url": "https://raw.githubusercontent.com/s2underground/GhostNet/1a2d08d579813e54967af06f1a871e7fa0ce583f/GhostNet_Version_1.5.pdf",
     "file": "GhostNet_Version_1.5.pdf",
     "dir": "nets/ghostnet"
