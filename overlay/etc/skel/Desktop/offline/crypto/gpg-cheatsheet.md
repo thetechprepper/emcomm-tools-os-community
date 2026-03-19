@@ -4,7 +4,7 @@ date: 2026-03-19
 updated: 2026-03-19
 author: [The Tech Prepper]
 categories: [cryptography]
-tags: [pgp]
+tags: [gpg, pgp]
 copyright: "(C) 2026 The Tech Prepper, LLC"
 ---
 
@@ -12,9 +12,29 @@ This is an in-progress cheatsheet for performing basic cryptographic
 functions using GNU Privacy Guard (gpg), including encrypting,
 decrypting, and verifying files in an offline environment.
 
+## Add Key
+
+Import a public key into your keyring.
+
+1. Download the public key from the trusted individual. It can be saved
+   anywhere. For ease of backup, save them under `~/keys/`. Create this
+   directory if it does not exist in your home directory.
+
+2. Import the key file.
+
+    gpg --import KEYFILE
+
+3. Verify the key fingerprint. Your trusted source should provide you
+   with the fingerprint.
+
+    gpg --fingerprint
+
+4. Optionally, edit the key and set the trust level. See the "Set Trust
+   Level" section.
+
 ## List Keys
 
-List the current keys on your system.
+List the current public keys on your system.
 
 ```
 gpg --list-keys
@@ -30,6 +50,9 @@ gpg --list-keys
 - `[SC]` - Sign + Certify
 - `[E]`  - Encrypt
 - `unknown|full|ultimate` - See "Set Trust Levels"
+
+
+List the current private keys on your system.
 
 ```
 gpg --list-secret-keys
