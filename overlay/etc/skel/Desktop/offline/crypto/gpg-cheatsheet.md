@@ -5,6 +5,7 @@ updated: 2026-03-19
 author: [The Tech Prepper]
 categories: [cryptography]
 tags: [pgp]
+copyright: "(C) 2026 The Tech Prepper, LLC"
 ---
 
 This is an in-progress cheatsheet for performing basic cryptographic
@@ -28,10 +29,7 @@ gpg --list-keys
   - Can be revoked or rotated if compromised
 - `[SC]` - Sign + Certify
 - `[E]`  - Encrypt
-- Trust levels 
-  - `unknown` - No trust assigned (default)
-  - `full` - you trust this person to sign other keys
-  - `ultimate` - Your own key
+- `unknown|full|ultimate` - See "Set Trust Levels"
 
 ```
 gpg --list-secret-keys
@@ -64,3 +62,27 @@ gpg --verify file.sig file.txt
 ```
 gpg --verify file.asc
 ```
+
+## Set Trust Levels
+
+Here are common trust levels for basic use:
+
+- `unknown`  - No trust assigned (default)
+- `full`     - You trust this person to sign other keys
+- `ultimate` - Your own key
+
+Perform the following steps to change the trust level for a key.
+
+1. List the keys and identify the key ID (KEYID).
+
+    gpg --list-keys
+
+2. Replace `KEYID` with the key ID to edit.
+
+    gpg --edit-key KEYID
+
+3. Type `trust` and press [ENTER].
+
+4. Type the number for the desired trust level and press [ENTER].
+
+5. Type `quit` to exit.
