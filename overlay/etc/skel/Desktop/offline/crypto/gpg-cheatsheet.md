@@ -151,7 +151,33 @@ gpg --list-secret-keys
 
 ## Sign File
 
-TODO
+Signing a file allows recipients to verify the sender is authentic
+and that the file has not been modified in transit.
+
+Create a test file:
+
+    echo "This is a test file for gpg training." > file.txt
+
+There are two common ways to sign a file.
+
+
+### Embedded Signature
+
+Create a single text file that contains both the message and the
+signature.
+
+    gpg --clearsign file.txt
+
+This creates:
+
+    file.txt.asc
+
+
+### Detached Signature (ASCII)
+
+Create a separate ASCII signature file for the original file.
+
+    gpg --armor --detach-sign file.txt
 
 
 ## Encrypt File
