@@ -85,7 +85,7 @@ sub   cv25519 2023-05-25 [E]
 
 There are two common types of signed files:
 
-### 1. Inline (clearsigned) message
+### 1. Embedded Signature
 
 A single file that contains both the message and the signature. For
 example, the AmRRON Intelligence Brief (AIB) uses an inline message.
@@ -93,7 +93,7 @@ example, the AmRRON Intelligence Brief (AIB) uses an inline message.
     gpg --verify COMBINEDFILE
 
 
-### 2. Detached signature
+### 2. Detached Signature
 
 A file and a separate signature file.
 
@@ -173,14 +173,14 @@ This creates:
     file.txt.asc
 
 
-### Detached Signature (ASCII)
+### Detached Signature
 
 Create a separate ASCII signature file for the original file.
 
     gpg --armor --detach-sign file.txt
 
 
-## Encrypt / Decrypt Files
+## Encrypt / Decrypt File
 
 Encryption protects a file so that only the intended recipient can
 read it. Decryption restores the original file using your private key.
