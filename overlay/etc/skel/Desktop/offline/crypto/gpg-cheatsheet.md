@@ -114,6 +114,32 @@ gpg: depth: 1  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 1f, 0u
 gpg: Good signature from "AmRRON Actual (ECC) <amrron@actual.net>" [full]
 ```
 
+
+## Create Key
+
+Generate a new private/public key pair using ECC. It is a modern
+standard that provides strong security and works well for radio use
+due to smaller key sizes.
+
+1. Create a primary key for signing using ECC. Replace FIRSTNAME,
+   LASTNAME, and EMAIL (keep the < and > characters).
+
+    gpg --quick-generate-key "FIRSTNAME LASTNAME <EMAIL>" ed25519 sign 0
+
+2. List your keys and identify the fingerprint of your new key.
+
+    gpg --list-keys
+
+3. Generate an encryption subkey. Replace FINGERPRINT.
+
+    gpg --quick-add-key FINGERPRINT cv25519 encrypt 0
+
+4. List your keys again. You should now see a subkey that is suitable
+   for encryption (`[E]`).
+
+    gpg --list-keys
+
+
 ## List Private Keys
 
 List the current private keys on your system.
@@ -122,17 +148,18 @@ List the current private keys on your system.
 gpg --list-secret-keys
 ```
 
-## Create Key
 
-```
-gpg --full-generate-key
-```
+## Sign File
+
+TODO
+
 
 ## Encrypt File
 
 ```
 gpg -e -r RECIPIENT file.txt
 ```
+
 
 ## Decrypt File
 
