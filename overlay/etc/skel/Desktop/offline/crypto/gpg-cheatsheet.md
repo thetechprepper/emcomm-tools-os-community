@@ -180,18 +180,38 @@ Create a separate ASCII signature file for the original file.
     gpg --armor --detach-sign file.txt
 
 
-## Encrypt File
+## Encrypt / Decrypt Files
 
-```
-gpg -e -r RECIPIENT file.txt
-```
+Encryption protects a file so that only the intended recipient can
+read it. Decryption restores the original file using your private key.
+
+Create a test file:
+
+    echo "This is a test file for gpg training." > file.txt
 
 
-## Decrypt File
+### Encrypt File
 
-```
-gpg -d file.txt.gpg
-```
+Encrypt a file for a specific recipient. Replace RECIPIENT with the
+recipient email or key ID. This command also signs it (`-s`) and
+encrypts the output as plain ASCII (`--armor`).
+
+    gpg --armor -e -s -r RECIPIENT file.txt
+
+This creates:
+
+    file.txt.asc
+
+
+### Decrypt File
+
+Decrypt a file that was encrypted to you.
+
+    gpg -d file.txt.asc > decrypted.txt
+
+This creates:
+
+    decrypted.txt
 
 
 ## Set Trust Levels
