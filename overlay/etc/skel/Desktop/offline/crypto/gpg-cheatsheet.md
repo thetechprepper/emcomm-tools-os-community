@@ -167,6 +167,7 @@ gpg -e -r RECIPIENT file.txt
 gpg -d file.txt.gpg
 ```
 
+
 ## Set Trust Levels
 
 Here are common trust levels for basic use:
@@ -190,3 +191,28 @@ Perform the following steps to change the trust level for a key.
 4. Type the number for the desired trust level and press [ENTER].
 
 5. Type `quit` to exit.
+
+
+## Export Keys
+
+If you need to back up your keys, export them as follows.
+
+### Export Public Key
+
+To export your public key for distribution, run the command below.
+Replace EMAIL with the email address attached to the key. This file can
+be shared with your community.
+
+    gpg --export -a EMAIL > public.asc
+
+### Export Private Key
+
+WARNING: DO NOT SHARE THIS KEY WITH ANYONE.
+
+    gpg --export-secret-keys -a EMAIL > private.asc
+
+Restrict permissions to read-only for your user:
+
+    chmod 400 private.asc
+
+Store this file securely and be careful when moving it between systems.
