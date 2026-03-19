@@ -12,6 +12,7 @@ This is an in-progress cheatsheet for performing basic cryptographic
 functions using GNU Privacy Guard (gpg), including encrypting,
 decrypting, and verifying files in an offline environment.
 
+
 ## Add Key
 
 Import a public key into your keyring.
@@ -25,14 +26,28 @@ Import a public key into your keyring.
     gpg --import KEYFILE
 
 3. Verify the key fingerprint. Your trusted source should provide you
-   with the fingerprint.
+   with the fingerprint. From the example above, the fingerprint is the
+   value starting with `77F8`.
 
     gpg --fingerprint
 
 4. Optionally, edit the key and set the trust level. See the "Set Trust
    Level" section.
 
-## List Keys
+5. For an off-grid use case, where you trust the key, you can sign it
+   youself to mark the key valid on your machine.
+
+    gpg --lsign-key FINGERPRINT
+
+Here's an example from EmComm Tools Community R6 that imports the AmRRON
+public key.
+
+```
+$ gpg --import ~/Desktop/offline/nets/amrron/AmRRON_Actual_ECC_PUBLIC.asc
+```
+
+
+## List Public Keys
 
 List the current public keys on your system.
 
@@ -40,8 +55,10 @@ List the current public keys on your system.
 gpg --list-keys
 ```
 
+Use the following to interpret the keys listed:
+
 - `pub` - Primary key
-  - Your identity (root of trust)
+  - Your identity
   - Used for signing and certifying other keys
 - `sub` - Subkey
   - Used for specific operations (usually encryption)
@@ -51,6 +68,53 @@ gpg --list-keys
 - `[E]`  - Encrypt
 - `unknown|full|ultimate` - See "Set Trust Levels"
 
+Here's an example showing the AmRRON public key.
+
+```
+$ gpg --list-keys
+/home/ham/.gnupg/pubring.kbx
+-------------------------------
+pub   ed25519 2023-05-25 [SC]
+      77F888F3524F00C75FF9F91A8D518D7A50612239
+uid           [ unknown] AmRRON Actual (ECC) <amrron@actual.net>
+sub   cv25519 2023-05-25 [E]
+```
+
+
+## Verify Signature
+
+There are two common types of signed files:
+
+### 1. Inline (clearsigned) message
+
+A single file that contains both the message and the signature. For
+example, the AmRRON Intelligence Brief (AIB) uses an inline message.
+
+    gpg --verify COMBINEDFILE
+
+
+### 2. Detached signature
+
+A file and a separate signature file.
+
+    gpg --verify SIGNATUREFILE FILE
+
+Here's an example from EmComm Tools Community R6 that verifies that the
+AIB distributed by AmRRON on the nationwide net on March, 16, 2026 was
+created by AmRRON.
+
+```
+$ gpg --verify ~/Desktop/offline/nets/amrron/NATL-RR-260316-1330Z-AIB-sig.k2s 
+gpg: Signature made Mon 16 Mar 2026 06:22:46 AM MST
+gpg:                using EDDSA key 77F888F3524F00C75FF9F91A8D518D7A50612239
+gpg: checking the trustdb
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:   1  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 1f, 0u
+gpg: Good signature from "AmRRON Actual (ECC) <amrron@actual.net>" [full]
+```
+
+## List Private Keys
 
 List the current private keys on your system.
 
@@ -74,16 +138,6 @@ gpg -e -r RECIPIENT file.txt
 
 ```
 gpg -d file.txt.gpg
-```
-
-## Verify Signature
-
-```
-gpg --verify file.sig file.txt
-```
-
-```
-gpg --verify file.asc
 ```
 
 ## Set Trust Levels
