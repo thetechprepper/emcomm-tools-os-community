@@ -1,5 +1,5 @@
 ---
-title: "GNU Privacy Guard: Crypto Cheetsheet"
+title: "GNU Privacy Guard: Crypto Cheatsheet"
 date: 2026-03-19
 updated: 2026-03-19
 author: [The Tech Prepper]
@@ -18,7 +18,7 @@ decrypting, and verifying files in an offline environment.
 Import a public key into your keyring.
 
 1. Download the public key from the trusted individual. It can be saved
-   anywhere. For ease of backup, save them under `~/keys/`. Create this
+   anywhere. For ease of backup, save it under `~/keys/`. Create this
    directory if it does not exist in your home directory.
 
 2. Import the key file.
@@ -32,10 +32,10 @@ Import a public key into your keyring.
     gpg --fingerprint
 
 4. Optionally, edit the key and set the trust level. See the "Set Trust
-   Level" section.
+   Levels" section.
 
 5. For an off-grid use case, where you trust the key, you can sign it
-   youself to mark the key valid on your machine.
+   yourself to mark the key valid on your machine.
 
     gpg --lsign-key FINGERPRINT
 
@@ -100,7 +100,7 @@ A file and a separate signature file.
     gpg --verify SIGNATUREFILE FILE
 
 Here's an example from EmComm Tools Community R6 that verifies that the
-AIB distributed by AmRRON on the nationwide net on March, 16, 2026 was
+AIB distributed by AmRRON on the nationwide net on March 16, 2026 was
 created by AmRRON.
 
 ```
