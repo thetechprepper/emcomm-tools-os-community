@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 14 March 2026
+# Updated : 22 March 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -108,3 +108,6 @@ exitIfNotRoot
 
 # Install offline resources
 ./install-offline-lib.sh
+
+# Install WSJT-X (FT8)
+./install-wsjtx.sh

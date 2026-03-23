@@ -124,8 +124,15 @@
   * [ ] Confirm callsign
   * [ ] Confirm flamp modem syncs with fldigi modem
 
+# WSJT-X
+
+* [ ] Available via application search
+* [ ] Callsign and grid displayed
+* [ ] Tune up + full TX power out
+* [ ] Decode data
+
 ## Offline Resources
 
 * [ ] `offline` folder on Desktop
 * [ ] Check `nets` folder for `amrron` and `ghostnet`
-* [ ] Test gpg signature verifcation gpg crypto doc
+* [ ] Test gpg signature verifcation (see gpg crypto doc)
