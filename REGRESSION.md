@@ -20,6 +20,7 @@
   * [ ] KT7RUN (U.S.)
   * [ ] VA1AAD (Canada)
 * [ ] Run prediction (e.g, ardop, ssb, vara-500, etc.)
+* [ ] Verify "later" and "24-hour" dark mode fix
 
 ## GPS
 
