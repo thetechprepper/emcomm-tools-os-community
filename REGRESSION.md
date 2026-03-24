@@ -17,6 +17,8 @@
 
 * [ ] Map rendered
 * [ ] Callsign search 
+  * [ ] KT7RUN (U.S.)
+  * [ ] VA1AAD (Canada)
 * [ ] Run prediction (e.g, ardop, ssb, vara-500, etc.)
 
 ## GPS
