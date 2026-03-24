@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 13 August 2025
-# Updated : 30 November 2025
+# Updated : 24 March 2026
 # Purpose : Install EmComm Tools API
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -11,7 +11,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ../overlay/opt/emcomm-tools/bin/et-common
 
 APP=et-api
-VERSION=1.2.0
+VERSION=1.3.0
 ET_API_JAR="emcomm-tools-api-${VERSION}.jar"
 BASE_URL="https://github.com/thetechprepper/et-api-java/releases/download/${VERSION}"
 
