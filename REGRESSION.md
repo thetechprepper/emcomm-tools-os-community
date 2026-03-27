@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R6 Build 10
-- **Date**: 19 March 2026
+- **Build**: ETC R6 Build 12
+- **Date**: 27 March 2026
 
 ## Desktop/Launcher Icons
 
@@ -109,6 +109,7 @@
 ## Security
 
 * [ ] gpa
+* [ ] Paranoia File & Text Encryption
 
 ## fldigi/flmsg/flamp
 
