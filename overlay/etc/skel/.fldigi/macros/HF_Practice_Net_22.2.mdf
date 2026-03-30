@@ -1,0 +1,457 @@
+//fldigi macro definition file extended
+// This file defines the macro structure(s) for the digital modem program, fldigi
+// It also serves as a basis for any macros that are written by the user
+//
+// The top line of this file should always be the first line in every macro 
+// definition file (.mdf) for the fldigi program to recognize it as such.
+//
+
+//
+// Macro # 1
+/$ 0 CQ @>|
+<TX>\n
+\n
+CQ CQ CQ de <MYCALL> <MYCALL> pse k\n
+\n
+<RX>
+
+//
+// Macro # 2
+/$ 1 ANCS RQST @>|
+<TX>\n
+\n
+CQ CQ de <MYCALL>, Net Control.  Is there a station with good copy on my signal willing to \n
+act as ANCS?  K\n
+\n
+<RX>
+
+//
+// Macro # 3
+/$ 2 TX @>>
+<TX>\n
+
+
+//
+// Macro # 4
+/$ 3 de @>>
+<TX>\n
+\n
+de <MYCALL>
+
+//
+// Macro # 5
+/$ 4 QSO @>>
+<TX>\n
+\n
+<CALL> de <MYCALL>
+
+//
+// Macro # 6
+/$ 5 kn @||
+kn\n
+\n
+<RX>
+
+//
+// Macro # 7
+/$ 6 k @||
+k\n
+\n
+<RX>
+
+//
+// Macro # 8
+/$ 7 sk @||
+sk\n
+\n
+<RX>
+
+//
+// Macro # 9
+/$ 8 RX @||
+<RX>
+
+//
+// Macro # 10
+/$ 9 T/R
+<TX/RX>
+
+//
+// Macro # 11
+/$ 10 
+
+
+//
+// Macro # 12
+/$ 11 Check IN
+<TXRSID:off|t>\n
+<TX>\n
+\n
+DE <MYCALL>  <MYCALL> / <MYNAME> / <MYST> / <FILE:\...\NWOTW.txt> / No Tfc\n
+\n
+<RX>
+
+//
+// Macro # 13
+/$ 12 5 MIN @>|
+<TX>\n
+\n
+QST QST QST AmRRON de <MYCALL> The (Add the name of your net here) digital net will begin in 5 min.  \n
+We wud appreciate a clear freq at that time. \n
+\n
+Turn Beacons/Sounders/Heartbeats OFF now. \n
+\n
+Is there a station with good copy on me willing to act as ANCS?  Call now. \n
+\n
+<RX>
+
+//
+// Macro # 14
+/$ 13 START @>|
+<TXRSID:on|t>\n
+<TX>\n
+\n
+QST, QST, QST AmRRON, de <MYCALL>, NCS for the AmRRON (fill in the net name here) digital net.  Name is <MYNAME>, \n
+located in <MYST>.\n
+\n
+Turn beaconing/heartbeating/sounding OFF.\n
+\n
+We are currently at: <FILE:/.../AmCON Level.txt>\n
+\n
+This practice net meets (Fill in days/weeks here) on (Fill in freq and mode).\n
+\n
+AmRRON is the American Redoubt Radio Operators Network, a patriot-oriented nationwide network for disasters and civil defense.\n
+\n
+Visit www.AmRRON.com to learn more.\n
+\n
+This is a directed net, so pse hold any non-emergency tfc until the NCS calls for it. \n
+\n
+Emergency tfc may break in at any time. \n
+\n
+<RX>\n
+\n
+
+
+//
+// Macro # 15
+/$ 14 ANCS Ancmt
+<TX>\n
+ANCS, PLS announce the net is under way and ask all stations who copy you but cannot copy NCS to \n
+hold their check-ins until they hear from you again. \n
+I will stand by. DE <MYCALL> kn\n
+<RX>\n
+
+
+//
+// Macro # 16
+/$ 15 TRFC AFT @>
+<TX>\n
+I have the following tfc to pass after the first round of check-ins.  \n
+<FILE:/.../Net Traffic LIST.txt>\n
+Have your flmsg and flamp programs open.\n
+<RX>
+
+//
+// Macro # 17
+/$ 16 Chkins Call @>|
+\n
+<TX>\n
+\n
+The Net Word Of The Week (NWOTW) for this week is: <FILE:\...\NWOTW.txt> \n
+\n
+We will take checkins in a moment.  Pse turn OFF your TxID in the upper right-hand corner of your screen.\n
+If you cannot transmit, you may still check in by going to www.amrron.com/checkin\n
+\n
+Pse provide your call sign (twice) / name / state / the NWOTW / any net traffic with precedence. \n
+\n
+For example, if I were checking in, I wud check in as follows:\n
+\n
+de <MYCALL> <MYCALL> / <MYNAME> / <MYST> / <FILE:\... \NWOTW.txt> / NO TFC\n
+\n
+If I had traffic, I would indicate how many, and Precedence level, example... / <FILE:\... \NWOTW.txt>  / 1 PPP QST\n
+\n
+I will ack check-ins as a group. Do not repeat your check-in unless you do not see your call sign \n
+when I ack what I have rx'd so far.\n
+\n
+de <MYCALL> Check-ins call now.\n
+\n
+<RX>
+
+//
+// Macro # 18
+/$ 17 Chkins ACK @>|
+<TX>\n
+\n
+de <MYCALL> Tnx for your check-ins. I have rx'd the following check-ins so far:\n
+\n
+<FILE:...\CK-IN.txt>\n
+\n
+Are there any more check-ins or relays? Come now. k\n
+\n
+<RX>
+
+//
+// Macro # 19
+/$ 18 Addl Ckins ||
+I have the following additional checkins:\n
+\n
+\n
+Any others?\n
+\n
+DE <MYCALL>\n
+<RX>
+
+//
+// Macro # 20
+/$ 19 FLMSG TFC >|
+<TX>\n
+\n
+de <MYCALL>.  All stations hold your transmissions.  We will resume checkins after net traffic. \n
+\n
+Stand by for the the following traffic in about 30 sec. \n
+<FILE:/.../Net Traffic LIST.txt>\n
+I will send it in MFSK 32 mode using FLMSG, and then again using FLAMP. \n
+Have your RxID checked GREEN in the upper right-hand corner of FLDIGI. \n
+\n
+Switching mode to MFSK32 Now...\n
+<!MODEM:MFSK32>\n
+Adjust squelch settings and MFSK band edges at this time.  Stand by... \n
+<RX>
+
+//
+// Macro # 21
+/$ 20 FLAMP TFC>|
+<TX>\n
+de <MYCALL> Stand by for compressed FLAMP traffic in appx 30 sec.  \n
+\n
+DO NOT transmit until I specifically call for block fill requests.  \n
+<RX>
+
+//
+// Macro # 22
+/$ 21 Block Fill Rqst
+<TX> \n
+Stations missing FIVE OR FEWER BLOCKS, please report.\n
+<RX>
+
+//
+// Macro # 23
+/$ 22 Missing ANY
+<TX> \n
+Stations missing ANY blocks, please report.\n
+<RX>
+
+//
+// Macro # 24
+/$ 23  BK2 Contes
+<TX>\n
+All stations, hold transmissions.  I will switch the net back to Contestia 4/250.  If you are still missing net traffic, stand by. \n
+\n
+Stations with full copy of net traffic, please stand by to relay to other stations with whom you have a better path than I do, \n
+after the net closes. \n
+\n
+Changing modes now. \n
+<RX>
+
+//
+// Macro # 25
+/$ 24 Contest 4/250
+ <TX><MODEM:Cont-4/250>\n
+Remember to adjust your squelch level in FLDIGI so you won't miss transmissions.\n
+<RX>
+
+//
+// Macro # 26
+/$ 25 ANCS Call
+<TX>\n
+<CALL> DE <MYCALL> Wud U pls request checkins from stations who cannot copy me? \n
+I will stand by.\n
+<RX>
+
+//
+// Macro # 27
+/$ 26 Late/Missed Ckns
+<TX>\n
+\n
+Are there any other late/missed/relay checkins? de <MYCALL> k\n
+\n
+<RX>
+
+//
+// Macro # 28
+/$ 27 LST CALL @>|
+<TX>\n
+\n
+de <MYCALL>. Last call.  Are there any late check-ins, relays, or any other tfc, before we \n
+close the net? pse k\n
+\n
+<RX>
+
+//
+// Macro # 29
+/$ 28 SIGNOFF @>|
+<TX>\n
+\n
+de <MYCALL>. Tnx to everyone for participating in (fill in today's/tonight's net name) digital net.\n
+\n
+Reminder, the Net Word Of The Week is <FILE:/... NWOTW.txt>\n
+\n
+This concludes the AmRRON (fill in net name) digital net.\n
+\n
+Assistant NCS, pls announce the end of net after my final signoff. \n
+\n
+73, everyone, and God bless the Republic. \n
+de <MYCALL>\n
+<IZDT[:fmt]>\n
+\n
+<RX>
+
+//
+// Macro # 30
+/$ 29 
+
+
+//
+// Macro # 31
+/$ 30 ANCS Accept
+<TX>\n
+<CALL> DE <MYCALL> <MYCALL> in <MYST>.  I can act as ANCS.\n
+<RX>
+
+//
+// Macro # 32
+/$ 31 ANCS NetStart
+<TX>\n
+<CALL> DE <MYCALL>  WILCO.  BK\n
+\n
+QST QST AmRRON, DE <MYCALL>, located in <MYSTATE>, and I am ANCS for the AmRRON Net, assisting NCS, <CALL>.\n
+The net is under way.  If you cannot copy <CALL>, hold your transmissions until you hear from me and I will relay you in.\n
+\n
+We are currently at <FILE:/.../AmCON Level.txt>\n
+\n
+<CALL> DE <MYCALL> BTU\n
+\n
+<RX>
+
+//
+// Macro # 33
+/$ 32 ANCS Call4chkns
+<TX>\n
+\n
+DE <MYCALL>, assistant NCS, located in <MYST>\n
+\n
+The Net Word Of The Week (NWOTW) for this week is: <FILE:\...\NWOTW.txt> \n
+\n
+In a moment, I will take checkins for those who cannot copy Net Control, and relay you in to NCS.\n
+\n
+Pse provide your Call Sign (twice) / Name / State / the NWOTW / any Net Traffic and Precedence. \n
+\n
+For example, if I were checking in, I wud check in as follows:\n
+\n
+de <MYCALL> <MYCALL> / <MYNAME> / <MYST> / <FILE:\... \NWOTW.txt> / NO TFC\n
+\n
+If I had traffic, I would indicate how many, and Precedence level, example... / <FILE:\... \NWOTW.txt>  / 1 PPP QST\n
+\n
+I will ack check-ins as a group. Do not repeat your check-in unless you do not see your call sign \n
+when I ack what I have rx'd so far.\n
+\n
+Check-ins come now. de <MYCALL> k\n
+\n
+<RX>
+
+//
+// Macro # 34
+/$ 33 Ack Ckins ||
+I have the following stations checked in: \n
+\n
+\n
+\n
+Any others?\n
+<RX>
+
+//
+// Macro # 35
+/$ 34 Rlys 2NCS ||
+Net Control, I have the following checkins: \n
+\n
+\n
+DE <MYCALL> BTU\n
+<RX>
+
+//
+// Macro # 36
+/$ 35 ANCS Close @>
+<TX>\n
+\n
+<CALL> de <MYCALL>. WILCO. \n
+Tnx to everyone for participating in this AmRRON net.\n
+\n
+Reminder, the Net Word Of The Week is <FILE:.../NWOTW.txt>\n
+\n
+This concludes the net.\n
+\n
+73, everyone, and God bless the Republic. \n
+de <MYCALL>\n
+<IZDT[:fmt]>\n
+\n
+<RX>
+
+//
+// Macro # 37
+/$ 36 
+
+
+//
+// Macro # 38
+/$ 37 
+
+
+//
+// Macro # 39
+/$ 38 
+
+
+//
+// Macro # 40
+/$ 39 
+
+
+//
+// Macro # 41
+/$ 40 
+
+
+//
+// Macro # 42
+/$ 41 
+
+
+//
+// Macro # 43
+/$ 42 
+
+
+//
+// Macro # 44
+/$ 43 
+
+
+//
+// Macro # 45
+/$ 44 
+
+
+//
+// Macro # 46
+/$ 45 
+
+
+//
+// Macro # 47
+/$ 46 
+
+
+//
+// Macro # 48
+/$ 47 
+

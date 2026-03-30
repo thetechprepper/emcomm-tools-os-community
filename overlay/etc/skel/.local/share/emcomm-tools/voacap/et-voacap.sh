@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 23 May 2023
-# Updated : 12 November 2025
+# Updated : 1 December 2025
 # Purpose : Offline HF prediction using voacapl
 set -e
 set -o pipefail
@@ -144,7 +144,7 @@ usage() {
   echo 
   echo "Other options (required):"
   echo "  -p POWER                  Output power [5|10|20|50|100|500|1500]"
-  echo "  -m MODE                   Mode [am|ardop|cw|js8|ssb]"
+  echo "  -m MODE                   Mode [am|ardop|cw|js8|ssb|vara-500|vara-2300|vara-2750]"
   echo
 
   exit 1
@@ -213,6 +213,18 @@ case "${MODE,,}" in
   am)
     MD="49.0"
     ;;
+  vara-500)
+    # VARA 500 Hz bandwidth (narrow)
+    MD="15.0"
+    ;;
+  vara-2300)
+    # VARA 2300 Hz bandwidth (standard)
+    MD="20.0"
+    ;;
+  vara-2750)
+    # VARA 2750 Hz bandwidth (tactical)
+    MD="22.0"
+    ;;    
   *)
     echo -e "${RED}Unknown mode: ${MODE}${NC}" >&2
     usage
