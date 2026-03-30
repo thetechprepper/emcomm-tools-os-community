@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 11 October 2024
-# Updated  : 13 March 2025
+# Updated  : 13 December 2025
 # Purpose  : A script for managaing plug-and-play radios
 source /opt/emcomm-tools/bin/et-common
 
@@ -16,6 +16,14 @@ while IFS= read -r radio; do
     ID=$(cat $radio | jq -r .id)
     VENDOR=$(cat $radio | jq -r .vendor)
     MODEL=$(cat $radio | jq -r .model)
+
+    # Hack to simplify PnP support for the X6200. It is the same as 
+    # the X6100. No need to mess with a new JSON radio configuration,
+    # audio scripts, or udev rules. Just let the user know in the
+    # menu selection that there is support for the X6100/X6200.
+    if [[  "${MODEL}" == "X6100" ]]; then
+      MODEL="X6100/X6200"
+    fi
 
     options+=("$ID" "$VENDOR $MODEL")
 done < <(find $ET_HOME/conf/radios.d -type f -name \*.json | grep -v "bt.json" | sort)
