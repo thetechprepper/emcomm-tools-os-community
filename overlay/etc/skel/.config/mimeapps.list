@@ -1,0 +1,9 @@
+[Default Applications]
+x-scheme-handler/http=min.desktop
+x-scheme-handler/https=min.desktop
+text/html=min.desktop
+
+[Added Associations]
+x-scheme-handler/http=min.desktop;
+x-scheme-handler/https=min.desktop;
+text/html=min.desktop;

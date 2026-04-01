@@ -22,4 +22,4 @@ gem install jekyll bundler && jekyll new ${SITE}
 
 echo -e "${YELLOW}1. Move into the site directory: ${WHITE}cd ${SITE}${NC}"
 echo -e "${YELLOW}2. Build and start site: ${WHITE}bundle exec jekyll serve${NC}" 
-echo -e "${YELLOW}3. Access site in web browser: ${WHITE}min http://localhost:4000${NC}" 
+echo -e "${YELLOW}3. Access site in web browser: ${WHITE}xdg-open http://localhost:4000${NC}"

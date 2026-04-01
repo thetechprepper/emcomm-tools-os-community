@@ -4,6 +4,7 @@
 # Date     : 6 November 2024
 # Updated  : 25 March 2025
 # Purpose  : Configures the system for a specific mode of operation
+source /opt/emcomm-tools/bin/et-common
 
 # Use a simple text file to save the state of the last mode selected
 MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
@@ -240,12 +241,12 @@ if [ $exit_status -eq 0 ]; then
       et-log "Using ARDOP as the modem."
       start_and_wait_for_service et-service-ardop
       start_and_wait_for_service et-service-winlink-ardop
-      min http://localhost:8080
+      open-url http://localhost:8080
     ;;
     ${MODE_ID_WINLINK_PACKET})
       start_and_wait_for_service et-service-direwolf-simple 
       start_and_wait_for_service et-service-winlink-packet
-      min http://localhost:8080
+      open-url http://localhost:8080
     ;;
     ${MODE_ID_WINLINK_VARA_FM})
       dialog --title "User Action Required" --msgbox "VARA FM is not a plug and play mode. You must configure VARA manually." 10 50
@@ -253,7 +254,7 @@ if [ $exit_status -eq 0 ]; then
       start_and_wait_for_vara et-vara-fm
       et-winlink start-vara-fm &
       sleep 1
-      min http://localhost:8080 2>/dev/null
+      open-url http://localhost:8080
     ;;
     ${MODE_ID_WINLINK_VARA_HF})
       dialog --title "User Action Required" --msgbox "VARA HF is not a plug and play mode. You must configure VARA manually." 10 50
@@ -261,7 +262,7 @@ if [ $exit_status -eq 0 ]; then
       start_and_wait_for_vara et-vara-hf
       et-winlink start-vara-hf &
       sleep 1
-      min http://localhost:8080 2>/dev/null
+      open-url http://localhost:8080
     ;;
     *)
       et-log "Mode ${SELECTED_MODE} not yet supported"
