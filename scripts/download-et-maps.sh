@@ -24,10 +24,8 @@ FILES=(
 )
 
 # Show dialog
-SELECTED_COUNTRY=$(dialog --clear --menu "Select a country" 10 40 5 "${OPTIONS[@]}" 2>&1 >/dev/tty)
+SELECTED_COUNTRY=$(dialog --erase-on-exit --stdout --menu "Select a country" 10 40 5 "${OPTIONS[@]}")
 EXIT_STATUS=$?
-
-tput sgr0 && clear
 
 if [[ $EXIT_STATUS -eq 0 ]]; then
   DOWNLOAD_FILE="${FILES[$SELECTED_COUNTRY]}"

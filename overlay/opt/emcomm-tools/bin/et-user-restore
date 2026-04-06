@@ -3,6 +3,7 @@
 # Date    : 15 January 2025
 # Updated : 17 January 2025
 # Purpose : Restore backup to user's home directory.
+source /opt/emcomm-tools/bin/et-common
 
 BACKUP_FILE_PATTERN="etc-user-backup-*.tar.gz"
 USB_MEDIA_MOUNT=/media
@@ -24,10 +25,8 @@ if [ $? -eq 0 ]; then
   done < <(find ${USB_MEDIA_MOUNT} -type f -name ${BACKUP_FILE_PATTERN} 2> /dev/null)
 fi
 
-selected_file=$(dialog --clear --menu "Select a backup to restore" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3)
+selected_file=$(show-dialog --menu "Select a backup to restore" 20 80 10 "${options[@]}")
 exit_status=$?
-
-tput sgr 0 && clear
 
 [ ${exit_status} -ne 0 ] && echo "No backup selected. Exiting." && exit 1
 
