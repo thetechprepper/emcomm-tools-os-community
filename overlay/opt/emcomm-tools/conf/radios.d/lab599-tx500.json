@@ -1,0 +1,21 @@
+{
+  "id": "lab599-tx500",
+  "vendor": "Lab599",
+  "model": "TX-500 (DigiRig Mobile)",
+  "rigctrl": {
+    "id": "2002",
+    "baud": "9600",
+    "ptt": "RTS",
+    "pttOnly": "false"
+  },
+  "audio": {
+    "script": "/opt/emcomm-tools/conf/radios.d/audio/lab599-tx500mp.sh"
+  },
+  "notes": [
+    "1. Set MODE = DIGI",
+    "",
+    "Ensure VOX is disabled"
+  ],
+  "fieldNotes": [
+  ]
+}
