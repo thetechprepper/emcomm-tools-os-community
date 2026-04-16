@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 27 March 2026
+# Updated : 16 April 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -112,3 +112,6 @@ exitIfNotRoot
 
 # Install WSJT-X (FT8)
 ./install-wsjtx.sh
+
+# Install simple WWV util
+./install-et-wwv.sh
