@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 1 February 2025
-# Updated : 7 October 2025
+# Updated : 16 April 2026
 # Purpose : Common environment variables and functions
 
 # Standardized device paths for supported hardware
@@ -36,6 +36,13 @@ notify-user() {
 exit_if_no_sdr() {
   if [[ ! -e ${ET_DEVICE_SDR} ]]; then
     et-log "No ${ET_DEVICE_SDR} detected."
+    exit 1
+  fi
+}
+
+exit_if_no_audio() {
+  if [[ ! -e ${ET_DEVICE_AUDIO} ]]; then
+    et-log "No ${ET_DEVICE_AUDIO} detected."
     exit 1
   fi
 }
