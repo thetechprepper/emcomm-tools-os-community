@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 25 March 2025
+# Updated  : 16 March 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -23,6 +23,7 @@ MODE_ID_WINLINK_ARDOP="winlink-ardop"
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 MODE_ID_WINLINK_VARA_HF="winlink-vara-hf" 
 MODE_ID_WINLINK_VARA_FM="winlink-vara-fm" 
+MODE_ID_TIME_WWV="time-wwv" 
 
 # Default to 1200 baud packet for terminal sessions
 TERM_MODE=1200
@@ -128,6 +129,11 @@ select_term_mode () {
   fi  
 }
 
+wwv_mode () {
+    dialog --title "Note on WWV" --msgbox "Manually set your radio to AM and tune it to one of the WWV frequencies appropriate for this operating time.\n\nTry: 2.5, 5, 10, 15 or 20 MHz." 0 0
+    tput sgr 0 && clear
+}
+
 # Build list of options
 options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
@@ -149,6 +155,8 @@ options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
 if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
 fi
+
+options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
 
 # Prompt user for option and save exit status
 SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
@@ -262,6 +270,10 @@ if [ $exit_status -eq 0 ]; then
       et-winlink start-vara-hf &
       sleep 1
       min http://localhost:8080 2>/dev/null
+    ;;
+    ${MODE_ID_TIME_WWV})
+      wwv_mode
+      sudo /opt/emcomm-tools/sbin/wrapper-et-wwv.sh
     ;;
     *)
       et-log "Mode ${SELECTED_MODE} not yet supported"

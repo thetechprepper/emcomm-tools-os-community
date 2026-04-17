@@ -1,6 +1,6 @@
 # Author      : Gaston Gonzalez
 # Date        : 23 April 2024
-# Updated     : 18 March 2025
+# Updated     : 16 April 2026
 # Description : bash profile
 
 # All user accounts should be in the 'et-data' group to allow data sharing with
@@ -13,6 +13,7 @@ xset b off
 
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
+alias et-clock='tty-clock -c -s -b'
 
 RED='\x1B[1;31m'
 BLUE='\x1B[1;34m'
