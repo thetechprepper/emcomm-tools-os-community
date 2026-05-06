@@ -29,11 +29,8 @@ while IFS= read -r zim_files; do
     options+=("$zim_file" "")
 done < <(grep "[.]zim" kiwix.html | grep "wikipedia_en" kiwix.html | grep nopic | grep -E "computer|history|mathematics|medicine|simple" | sort)
 
-#selected_file=$(dialog --clear --menu "Select a Wikipedia file:" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3)
-selected_file=$(dialog --clear --menu "Select a Wikipedia file:" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3)
+selected_file=$(dialog --erase-on-exit --stdout --menu "Select a Wikipedia file:" 20 80 10 "${options[@]}")
 exit_status=$?
-
-tput sgr 0 && clear
 
 download_url="${URL}/${selected_file}"
 et-log "Downloading ${download_url}..."

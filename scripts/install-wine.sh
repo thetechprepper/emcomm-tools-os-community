@@ -29,6 +29,5 @@ apt install \
 
 # Only show the directions for including WINE in the image to advanced users
 if [[ ! -z "${ET_EXPERT}" ]]; then
-  dialog --textbox wine.txt 15 74
-  tput sgr 0 && clear
+  dialog --erase-on-exit --stdout --textbox wine.txt 15 74
 fi

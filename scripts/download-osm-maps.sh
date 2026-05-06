@@ -35,10 +35,8 @@ while IFS= read -r state_html; do
     options+=("$state_name" "$state_url")
 done < <(grep "[.]pbf" page.html | grep 'href="us/' | sort)
 
-SELECTED_STATE=$(dialog --clear --menu "Select a map file:" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_STATE=$(dialog --erase-on-exit --stdout --menu "Select a map file:" 20 80 10 "${options[@]}")
 exit_status=$?
-
-tput sgr 0 && clear
 
 if [ $exit_status -eq 0 ]; then
   download_file="${SELECTED_STATE}-latest.osm.pbf"

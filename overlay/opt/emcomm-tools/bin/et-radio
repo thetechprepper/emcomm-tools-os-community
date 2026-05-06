@@ -28,10 +28,8 @@ while IFS= read -r radio; do
     options+=("$ID" "$VENDOR $MODEL")
 done < <(find $ET_HOME/conf/radios.d -type f -name \*.json | grep -v "bt.json" | sort)
 
-SELECTED_RADIO=$(dialog --clear --menu "Select a radio:" 21 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_RADIO=$(show-dialog --menu "Select a radio:" 21 60 10 "${options[@]}")
 exit_status=$?
-
-tput sgr 0 && clear
 
 if [ $exit_status -eq 0 ]; then
 

@@ -4,6 +4,7 @@
 # Date     : 6 November 2024
 # Updated  : 25 March 2025
 # Purpose  : Configures the system for a specific mode of operation
+source /opt/emcomm-tools/bin/et-common
 
 # Use a simple text file to save the state of the last mode selected
 MODE_STATUS_FILE="${HOME}/.config/emcomm-tools/et-mode"
@@ -113,14 +114,12 @@ select_term_mode () {
     fi
   fi
 
-  TERM_MODE=$(dialog --clear --menu "Select a modem" 13 60 10 "${term_mode[@]}" 3>&1 1>&2 2>&3)
+  TERM_MODE=$(show-dialog --menu "Select a modem" 13 60 10 "${term_mode[@]}")
   exit_status=$?
 
   if [ "${TERM_MODE}" == "9600" ]; then
-    dialog --title "Note on 9600 Baud" --msgbox "9600 baud is only supported on limited radios and typically requires a special cable.\n\nDon't forget to set the packet settings to 9600 on the radio." 0 0
+    show-dialog --title "Note on 9600 Baud" --msgbox "9600 baud is only supported on limited radios and typically requires a special cable.\n\nDon't forget to set the packet settings to 9600 on the radio." 0 0
   fi 
-
-  tput sgr 0 && clear
 
   if [ ${exit_status} -ne 0 ]; then
     et-log "No modem selected. Mode will not be started."
@@ -151,10 +150,8 @@ if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
 fi
 
 # Prompt user for option and save exit status
-SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
+SELECTED_MODE=$(show-dialog --menu "Select a mode:" 18 65 10 "${options[@]}")
 exit_status=$?
-
-tput sgr 0 && clear
 
 if [ $exit_status -eq 0 ]; then
 
@@ -248,17 +245,13 @@ if [ $exit_status -eq 0 ]; then
       min http://localhost:8080
     ;;
     ${MODE_ID_WINLINK_VARA_FM})
-      dialog --title "User Action Required" --msgbox "VARA FM is not a plug and play mode. You must configure VARA manually." 10 50
-      tput sgr 0 && clear
-      start_and_wait_for_vara et-vara-fm
+      show-dialog --title "User Action Required" --msgbox "VARA FM is not a plug and play mode. You must configure VARA manually." 10 50      start_and_wait_for_vara et-vara-fm
       et-winlink start-vara-fm &
       sleep 1
       min http://localhost:8080 2>/dev/null
     ;;
     ${MODE_ID_WINLINK_VARA_HF})
-      dialog --title "User Action Required" --msgbox "VARA HF is not a plug and play mode. You must configure VARA manually." 10 50
-      tput sgr 0 && clear
-      start_and_wait_for_vara et-vara-hf
+      show-dialog --title "User Action Required" --msgbox "VARA HF is not a plug and play mode. You must configure VARA manually." 10 50      start_and_wait_for_vara et-vara-hf
       et-winlink start-vara-hf &
       sleep 1
       min http://localhost:8080 2>/dev/null
