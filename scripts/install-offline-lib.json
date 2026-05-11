@@ -38,5 +38,10 @@
     "url": "https://www.swpc.noaa.gov/sites/default/files/images/NOAAscales.pdf",
     "file": "NOAAscales.pdf",
     "dir": "space-weather"
+  },
+  {
+    "url": "https://reticulum.betweentheborders.com/primer.pdf",
+    "file": "primer.pdf",
+    "dir": "reticulum"
   }
 ]
