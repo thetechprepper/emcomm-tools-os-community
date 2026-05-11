@@ -3,6 +3,8 @@
 # Updated     : 16 April 2026
 # Description : bash profile
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # All user accounts should be in the 'et-data' group to allow data sharing with
 # EmComm Tools. A umask of 002 is required to allow users and the system to
 # read and write shared data files.
