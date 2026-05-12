@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 12 November 2024
-# Updated  : 2 October 2025
+# Updated  : 12 May 2026
 # Purpose  : Stops all EmComm Tools sound-based services (i.e. modems) and
 #            amatuer radio applications to ensure a clean start for the next mode.
 
@@ -21,6 +21,8 @@ stop_all_services() {
   systemctl --user stop et-service-winlink-ardop
   systemctl --user stop et-service-winlink-packet
   systemctl --user stop et-service-winlink-native-packet
+  systemctl --user stop et-service-reticulum-300
+  systemctl --user stop et-service-reticulum-1200
   systemctl --user stop et-service-ardop
   systemctl --user stop et-service-direwolf-300
   systemctl --user stop et-service-direwolf-9600
