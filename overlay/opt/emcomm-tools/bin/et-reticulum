@@ -1,0 +1,134 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 12 May 2026
+# Purpose : Wrapper script for starting Reticulum with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. Reticulum configuration updated
+# 2. Dire Wolf started
+# 3. Reticulum started
+. /opt/emcomm-tools/bin/et-common
+
+APP="Reticulum"
+RETICULUM_CONF_FILE="${HOME}/.reticulum/config"
+
+usage() {
+  echo "usage: $(basename $0) <command> <type>"
+  echo "  <command>"
+  echo "    start              - Start ${APP} in selected mode"
+  echo "    update-config      - Update configuration for selected mode"
+  echo ""
+  echo "  <type>"
+  echo "    1200               - Run with AX.25 interface over VHF/UHF (1200 baud)"
+  echo "    300                - Run with AX.25 interface over HF (300 baud)"
+}
+
+if [ $# -ne 2 ]; then
+  usage
+  exit 1
+fi
+
+MODE=$2
+case "${MODE}" in
+  1200)
+    RETICULUM_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/reticulum/config.ax25.1200"
+    RETICULUM_PACKET_INTERFACE_SERVICE=et-service-direwolf-simple
+  ;;
+  300)
+    RETICULUM_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/reticulum/config.ax25.300"
+    RETICULUM_PACKET_INTERFACE_SERVICE=et-service-direwolf-300
+  ;;
+  *)
+    et-log "Can't start ${APP}. Mode '${MODE}' not supported"
+    usage
+    exit 1
+  ;;
+esac
+
+if [[ ! -e "${RETICULUM_TEMPLATE_CONF_FILE}" ]]; then
+  et-log "${RETICULUM_TEMPLATE_CONF_FILE} does not exist. Exiting."
+  notify-user "Config file does not exist. Can't start Reticulum."
+  exit 1
+fi
+
+start() {
+  update_config
+  
+  if [[ $? -eq 0 ]]; then
+
+    systemctl is-active --quiet ${RETICULUM_PACKET_INTERFACE_SERVICE}
+    if [[ $? -ne 0 ]]; then
+      et-log "Can't start ${APP}. direwolf not running. Ensure radio is selected."
+      notify-user "Can't start ${APP}. direwolf not running."
+      exit 1
+    fi
+   
+    CMD="rnsd"
+    et-log "Starting ${APP} with: '${CMD}'"
+    echo
+    ${CMD}
+  else 
+    et-log "Error updating configuration. Can't start ${APP}"
+    exit 1
+  fi
+}
+
+
+update_config () {
+
+    et-log "Attempting to start ${APP} in mode: '${MODE}'"
+
+    [[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    if [[ "${CALLSIGN}" = "N0CALL" ]]; then
+      notify_user "Can't ${APP}. No callsign set. Run: et-user."
+      exit 1
+    fi
+
+    # 1. Check if the audio symlink was created by the udev rules
+    if [[ -e /dev/et-audio ]]; then
+
+       # Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [[ $? -eq 0 ]]; then
+
+         # Configure ALSA settings for sound card
+         /opt/emcomm-tools/bin/et-audio update-config
+
+       else
+         et-log "No ET_AUDIO device detected."
+         notify-user "Can't start ${APP}. No ET_AUDIO device detected."
+         exit 1
+       fi
+    else
+      et-log "No ET_AUDIO device plugged in."
+      notify-user "Can't start ${APP}. No supported audio device plugged in."
+      exit 1
+    fi
+
+    et-log "Creating '${RETICULUM_CONF_FILE}' from template '${RETICULUM_TEMPLATE_CONF_FILE}'"
+    cp ${RETICULUM_TEMPLATE_CONF_FILE} ${RETICULUM_CONF_FILE}
+
+    # Update callsign
+    sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE} 
+}
+
+case $1 in
+  start)
+    start
+    ;;
+  update-config)
+    update_config
+    ;;
+  *)
+    echo "Invalid command."
+    usage
+    exit 1
+  ;;
+esac
