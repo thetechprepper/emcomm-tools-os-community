@@ -62,9 +62,7 @@ start() {
 
     systemctl is-active --quiet ${RETICULUM_PACKET_INTERFACE_SERVICE}
     if [[ $? -ne 0 ]]; then
-      et-log "Can't start ${APP}. direwolf not running. Ensure radio is selected."
-      notify-user "Can't start ${APP}. direwolf not running."
-      exit 1
+      start_and_wait_for_service ${RETICULUM_PACKET_INTERFACE_SERVICE}
     fi
    
     CMD="rnsd"
