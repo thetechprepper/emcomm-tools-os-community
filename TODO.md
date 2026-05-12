@@ -1,10 +1,10 @@
 # To-Do
 
 * [ ] Add Reticulum
-  * [ ] Add .reticulum/config with template support
   * [ ] Add rnsd systemd service (user)
   * [ ] Add nomadnet systemd service (user)
   * [ ] Add et-mode with encryption warning
+  * [ ] Add support for Bluetooth devices
 * [ ] et-mail
 * [ ] et-debug
 * [ ] et-index

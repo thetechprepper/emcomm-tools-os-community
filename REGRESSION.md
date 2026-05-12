@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 1
-- **Date**: 16 April 2026
+- **Build**: ETC R7 Build 3
+- **Date**: 12 May 2026
 
 ## Desktop/Launcher Icons
 
@@ -83,6 +83,7 @@
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
 * [ ] wwv
+* [ ] reticulum
 
 ## Bluetooth TNC
 
