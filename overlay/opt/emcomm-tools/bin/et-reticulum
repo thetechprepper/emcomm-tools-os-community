@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
+# Updated : 13 May 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -14,7 +15,8 @@
 . /opt/emcomm-tools/bin/et-common
 
 APP="Reticulum"
-RETICULUM_CONF_FILE="${HOME}/.reticulum/config"
+RETICULUM_CONF_DIR="${HOME}/.reticulum"
+RETICULUM_CONF_FILE="${RETICULUM_CONF_DIR}/config"
 
 usage() {
   echo "usage: $(basename $0) <command> <type>"
@@ -48,6 +50,11 @@ case "${MODE}" in
     exit 1
   ;;
 esac
+
+if [[ ! -e "${RETICULUM_CONF_DIR}" ]]; then
+ et-log "Creating missing configuration directory: ${RETICULUM_CONF_DIR}"
+ mkdir -p "${RETICULUM_CONF_DIR}"
+fi
 
 if [[ ! -e "${RETICULUM_TEMPLATE_CONF_FILE}" ]]; then
   et-log "${RETICULUM_TEMPLATE_CONF_FILE} does not exist. Exiting."

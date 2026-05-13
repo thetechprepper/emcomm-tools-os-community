@@ -1,10 +1,12 @@
 # To-Do
 
 * [ ] Add Reticulum
-  * [ ] Add rnsd systemd service (user)
-  * [ ] Add nomadnet systemd service (user)
-  * [ ] Add et-mode with encryption warning
-  * [ ] Add support for Bluetooth devices
+  * [ ] Add solution for handling first start
+  * [ ] et-user-backup
+    * [ ] ~/.reticulum/storage/identities
+    * [ ] ~/.nomadnetwork/storage
+  * [ ] Add PnP support for LoRa devices
+  * [ ] Add support for Bluetooth devices (et-uv-pro)
 * [ ] et-mail
 * [ ] et-debug
 * [ ] et-index
