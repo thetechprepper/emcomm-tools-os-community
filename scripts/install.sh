@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 11 May 2026
+# Updated : 13 May 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -119,8 +119,9 @@ exitIfNotRoot
 # Security Patches
 ./patch-copy-fail.sh
 
-# Install Reticulum and NomadNet
+# Install Reticulum and related applications (NomadNet, MeshChat)
 ./install-reticulum.sh
+./install-meshchat.sh
 
 # Debrand Ubuntu
 ./debrand.sh

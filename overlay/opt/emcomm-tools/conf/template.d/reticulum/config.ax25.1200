@@ -17,7 +17,7 @@
   # always-on. This directive is optional and can be removed
   # for brevity.
   
-  enable_transport = False
+  enable_transport = True
   
   
   # By default, the first program to launch the Reticulum
@@ -115,7 +115,7 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = No
+    enabled = Yes
 
   [[Packet Radio AX25 KISS]]
     type = AX25KISSInterface
