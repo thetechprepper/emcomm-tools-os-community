@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 15 May 2026
+# Purpose : Wrapper script for starting MeshChat with PnP support
+#
+# Preconditions
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions
+# 1. Stop all running EmComm Tools modes
+# 2. Start Dire Wolf in appropriate mode
+# 3. Start Reticulum (rnsd) in appropriate mode
+. /opt/emcomm-tools/bin/et-common
+
+usage() {
+  echo "usage: $(basename $0) <mode>"
+  echo "  <mode>"
+  echo "    1200 - Run MeshChat with AX.25 interface over VHF/UHF (1200 baud)"
+  echo "    300  - Run MeshChat with AX.25 interface over HF (300 baud)"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+et-kill-all
+
+MODE=$1
+case "${MODE}" in
+  "1200")
+    start_and_wait_for_service et-service-reticulum-1200
+  ;;
+  "300")
+    start_and_wait_for_service et-service-reticulum-300
+  ;;
+  *)
+    et-log "Unsupported mode."
+    exit 1
+  ;;
+esac
+
+et-meshchat

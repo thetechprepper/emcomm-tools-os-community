@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=MeshChat 1200
+Comment=MeshChat over Reticulum using 1200 baud packet
+Exec=/opt/emcomm-tools/bin/et-meshchat-app 1200
+Icon=/opt/ReticulumMeshChat-2.3.0/logo-chat-bubble.png
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=Radio;
+StartupNotify=true

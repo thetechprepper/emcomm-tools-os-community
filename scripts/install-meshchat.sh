@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 13 May 2026
+# Updated : 15 May 2026
 # Purpose : Install MeshChat for Reticulum
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -40,3 +41,10 @@ ${INSTALL_BIN_DIR}/${DOWNLOAD_FILE}
 EOF
 
 chmod -v 755 ${ET_WRAPPER_SCRIPT}
+
+ICON=logo-chat-bubble.png
+ICON_URL="https://raw.githubusercontent.com/thetechprepper/reticulum-meshchat/master/logo/${ICON}"
+download_with_retries ${ICON_URL} ${ICON}
+mv ${ICON} ${INSTALL_DIR}
+
+cp ../overlay/usr/share/applications/et-meshchat-1200.desktop /usr/share/applications
