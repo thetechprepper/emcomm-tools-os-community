@@ -10,6 +10,16 @@
     "dir": "bbs/bpq"
   },
   {
+    "url": "https://resource.heltec.cn/download/WiFi_LoRa_32_V3/HTIT-WB32LA_V3.2.pdf",
+    "file": "HTIT-WB32LA_V3.2.pdf",
+    "dir": "lora/heltec"
+  },
+  {
+    "url": "https://resource.heltec.cn/download/WiFi_LoRa_32_V4/datasheet/WiFi_LoRa_32_V4.2.0.pdf",
+    "file": "WiFi_LoRa_32_V4.2.0.pdf",
+    "dir": "lora/heltec"
+  },
+  {
     "url": "https://www.icomamerica.com/api/download.php?page_id=171&fl=JTJGdXBsb2FkcyUyRlVTQV9CYW5kX1BsYW4lMkZCYW5kX1BsYW5fTWFwJTJGQW1hdHVlckdyaWRTcXVhcmVNYXBfVVNBJTVCMTMlNUQucGRm",
     "file": "icom-us-grid.pdf",
     "dir": "geo/maidenhead"

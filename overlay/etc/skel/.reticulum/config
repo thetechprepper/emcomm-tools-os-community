@@ -115,14 +115,4 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = No
-
-  [[Packet Radio AX25 KISS]]
-    type = AX25KISSInterface
     enabled = Yes
-  
-    callsign = {{ET_CALLSIGN}}
-    ssid = 1
-
-    port = /tmp/kisstnc
-    mtu = 256
