@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 3
-- **Date**: 12 May 2026
+- **Build**: ETC R7 Build 5
+- **Date**: 14 June 2026
 
 ## Desktop/Launcher Icons
 
@@ -142,3 +142,10 @@
 * [ ] `offline` folder on Desktop
 * [ ] Check `nets` folder for `amrron` and `ghostnet`
 * [ ] Test gpg signature verifcation (see gpg crypto doc)
+
+## LoRa
+
+* [ ] SDR and LoRa listed in Conky
+* [ ] Heltec v3 and DigiRig Lite (chip sets conflict)
+* [ ] Heltec v4
+
