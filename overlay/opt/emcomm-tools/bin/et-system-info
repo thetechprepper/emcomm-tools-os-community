@@ -146,7 +146,7 @@ case $1 in
     ;; 
   et-lora)
     # 1. Check if the symlink was created by the udev rules
-    if [ -e /dev/et-lora]; then 
+    if [ -e /dev/et-lora ]; then 
         echo "Connected"; 
     else
       echo "Not connected";
