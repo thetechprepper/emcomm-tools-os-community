@@ -1,12 +1,10 @@
-# This is the default Reticulum config file.
-# You should probably edit it to include any additional,
-# interfaces and settings you might need.
-
-# Only the most basic options are included in this default
-# configuration. To see a more verbose, and much longer,
-# configuration example, you can run the command:
-# rnsd --exampleconfig
-
+# Author    : Gaston Gonzalez
+# Date      : 7 June 2026
+# Updated   : 14 June 2026
+# Blueprint : Permament Transport Node
+# Purpose   : This confguration is a blueprint for a radio-only node.
+#             If a supported et-radio and/or et-lora device is
+#             detected, they will be enabled. 
 
 [reticulum]
   
@@ -38,22 +36,6 @@
   # sockets, this can be done with the instance_name option:
   
   instance_name = default
-
-
-# Some platforms don't support domain sockets, and if that
-# is the case, you can isolate different instances by
-# specifying a unique set of ports for each:
-
-# shared_instance_port = 37428
-# instance_control_port = 37429
-
-
-# If you want to explicitly use TCP for shared instance
-# communication, instead of domain sockets, this is also
-# possible, by using the following option:
-
-# shared_instance_type = tcp
-
 
 # You can configure whether Reticulum should discover
 # available interfaces from other Transport Instances over
@@ -97,22 +79,57 @@
   loglevel = 4
 
 
-# The interfaces section defines the physical and virtual
-# interfaces Reticulum will use to communicate on. This
-# section will contain examples for a variety of interface
-# types. You can modify these or use them as a basis for
-# your own config, or simply remove the unused ones.
-
 [interfaces]
-  
-  # This interface enables communication with other
-  # link-local Reticulum nodes over UDP. It does not
-  # need any functional IP infrastructure like routers
-  # or DHCP servers, but will require that at least link-
-  # local IPv6 is enabled in your operating system, which
-  # should be enabled by default in almost any OS. See
-  # the Reticulum Manual for more configuration options.
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = Yes
+    enabled = No
+
+  [[Packet Radio AX.25 KISS]]
+    type = AX25KISSInterface
+    mode = roaming
+    enabled = {{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}
+  
+    callsign = {{ET_CALLSIGN}}
+    ssid = 1
+
+    port = /tmp/kisstnc
+    mtu = 256
+
+  [[RNode LoRa Interface]]
+    type = RNodeInterface
+    mode = roaming
+    enabled = {{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}
+    
+    port = /dev/et-lora
+
+    # Set frequency to 915 MHz
+    frequency = 915000000
+    #frequency = {{ET_RETICULUM_INTERFACE_RNODE_FREQUENCY}}
+
+    # Set LoRa bandwidth to 125 KHz
+    bandwidth = 125000
+    #bandwidth = {{ET_RETICULUM_INTERFACE_RNODE_BANDWIDTH}}
+
+    # Set TX power in dBm
+    #  7 dBm = 5 mW
+    # 17 dbm = 50 mW
+    # 20 dbm = 100 mW
+    # 22 dbm = 158 mW
+    # 28 dbm = 631 mW
+    # 30 dbm = 1 wat
+    txpower = 22
+    #txpower = {{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}
+
+    # Select spreading factor 8. Valid
+    # range is 7 through 12, with 7
+    # being the fastest and 12 having
+    # the longest range.
+    spreadingfactor = 9
+    #spreadingfactor = {{ET_RETICULUM_INTERFACE_RNODE_SPREADINGFACTOR}}
+
+    # Select coding rate 5. Valid range
+    # is 5 throough 8, with 5 being the
+    # fastest, and 8 the longest range.
+    codingrate = 5
+    #codingrate = {{ET_RETICULUM_INTERFACE_RNODE_CODINGRATE}}
