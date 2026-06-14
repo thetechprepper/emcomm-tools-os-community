@@ -4,6 +4,8 @@
 #
 # Supported Devices
 # 1. Heltec v4
+# 2. Heltec v3 (disabled due to collection with et-radio devices)
+# 3. LilyGO TTGO v2.1
 #
 # Preconditions:
 # 1. LoRa device connected via USB cable
@@ -16,11 +18,13 @@
 
 # Heltec v4
 SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", \
-    GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
-
+    ENV{ET_SUBDEVICE}="LORA" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
 
 # Heltec v3
 # Uses the CP210x so this will collide with radios already supported by et-radio
-SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", \
-    GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
+#SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", \
+#    GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
 
+# LilyGO TTGO v2.1
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", \
+    ENV{ET_SUBDEVICE}="LORA" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
