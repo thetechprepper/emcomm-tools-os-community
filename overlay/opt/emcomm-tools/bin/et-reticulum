@@ -68,14 +68,31 @@ et-log "Linking new configuration..."
 ln -v -s "${ACTIVE_CONF_FILE}" "${RETICULUM_CONF_FILE}"
 
 
-# AX.25 KISS interface updates
+et-log "Updating configuration for this session..."
+
+############################################################
+# AX.25 KISS (Packet Radio) interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
+if [[ -e /tmp/kisstnc ]]; then
+  INTERFACE_AX25KISS_ENABLED="yes"
+else
+  INTERFACE_AX25KISS_ENABLED="no"
+fi
+sed -i "s|{{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}|${INTERFACE_AX25KISS_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+# Update callsign
 [[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
 sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE} 
 
-sed -i "s|{{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}|no|g" ${RETICULUM_CONF_FILE}
 
+############################################################
 # RNode (LoRA) interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
 if [[ -e /dev/et-lora ]]; then
   INTERFACE_RNODE_ENABLED="yes"
 else
