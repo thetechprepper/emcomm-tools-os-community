@@ -67,6 +67,55 @@ fi
 et-log "Linking new configuration..."
 ln -v -s "${ACTIVE_CONF_FILE}" "${RETICULUM_CONF_FILE}"
 
+############################################################
+# Optionally, launch a modem if a radio is connected
+############################################################
+
+# If a supported radio is plugged in and detected, it  will have the 
+# rigctld process running automatically.
+IS_RADIO_CONNECTED=`ps -ef | grep [r]igctld`
+if [[ $? -eq 0 ]]; then
+
+  et-log "Radio connected and detected." 
+
+  modem_options=()
+  modem_options+=("1200" "1200 baud (VHF/UHF operation)")
+  modem_options+=("300" "300 baud (HF option)")
+
+  modem_choice=$(dialog \
+    --clear \
+    --title "Reticulum Configuration" \
+    --menu "Select a modem" \
+    13 60 10 \
+    "${modem_options[@]}" \
+    2>&1 >/dev/tty)
+
+  dialog \
+    --title "Note on Reticulum" \
+    --yesno "Reticulum uses end-to-end encryption. Check your local laws and regulations and ensure that you can legally run this mode! Are you sure that you want to run this?" \
+  0 0
+  EXIT_STATUS=$?
+
+  tput sgr 0 && clear
+
+  if [[ ${EXIT_STATUS} -ne 0 ]]; then
+    et-log "User canceled modem selection. Packet modem will not be started and interface will not be enabled."
+  else
+    case ${modem_choice} in
+      300)
+        et-log "Starting 300 baud packet modem"
+        start_and_wait_for_service et-service-direwolf-300
+      ;;
+      1200)
+        et-log "Starting 1200 baud packet modem"
+        start_and_wait_for_service et-service-direwolf-simple
+      ;;
+      *)
+        et-log "No modem specified"
+      ;;
+    esac
+  fi
+fi
 
 et-log "Updating configuration for this session..."
 
