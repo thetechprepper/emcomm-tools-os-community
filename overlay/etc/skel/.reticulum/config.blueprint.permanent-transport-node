@@ -1,9 +1,10 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 14 June 2026
+# Updated   : 15 June 2026
 # Blueprint : Permament Transport Node
-# Purpose   : This configuration is a blueprint for running a node that
-#             as 24x7 transport node with multiple interfaces.
+# Purpose   : This configuration is a blueprint for running a
+#             node that runs as a 24x7 transport node with
+#             multiple interfaces.
 
 [reticulum]
   
@@ -82,7 +83,7 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = {{ET_RETICULUM_INTERFACE_AUTO_ENABLED}}
+    enabled = Yes
 
   [[Packet Radio AX.25 KISS]]
     type = AX25KISSInterface
