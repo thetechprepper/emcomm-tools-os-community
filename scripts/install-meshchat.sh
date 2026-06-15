@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 13 May 2026
-# Updated : 15 May 2026
+# Updated : 15 June 2026
 # Purpose : Install MeshChat for Reticulum
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -47,4 +47,4 @@ ICON_URL="https://raw.githubusercontent.com/thetechprepper/reticulum-meshchat/ma
 download_with_retries ${ICON_URL} ${ICON}
 mv ${ICON} ${INSTALL_DIR}
 
-cp ../overlay/usr/share/applications/et-meshchat-1200.desktop /usr/share/applications
+cp ../overlay/usr/share/applications/meshchat.desktop /usr/share/applications
