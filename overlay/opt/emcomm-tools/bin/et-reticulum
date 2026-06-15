@@ -29,7 +29,7 @@ while IFS= read -r file; do
   files[$index]="$name"
   options+=("$index" "$name")
   ((index++))
-done < <(find "${HOME}/.reticulum" -type f -name 'config.blueprint.*')
+done < <(find "${HOME}/.reticulum" -type f -name 'config.blueprint.*' | sort)
 
 choice=$(dialog \
   --title "Reticulum Configuration" \
