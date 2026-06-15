@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 13 May 2026
+# Updated  : 14 June 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -19,8 +19,6 @@ MODE_ID_BBS_CLIENT2="bbs-client2"
 MODE_ID_BBS_SERVER="bbs-server" 
 MODE_ID_CHAT_CLIENT="chat-chattervox" 
 MODE_ID_PACKET_DIGIPEATER="packet-digipeater" 
-MODE_ID_RETICULUM_MESHCHAT="reticulum-meshchat" 
-MODE_ID_RETICULUM_NOMADNET="reticulum-nomadnet" 
 MODE_ID_WINLINK_ARDOP="winlink-ardop" 
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 MODE_ID_WINLINK_VARA_HF="winlink-vara-hf" 
@@ -131,27 +129,6 @@ select_term_mode () {
   fi  
 }
 
-select_reticulum_mode () {
-  term_mode=()
-  term_mode+=("1200" "1200 baud (default for VHF/UHF)")
-  term_mode+=("300" "300 baud (HF)")
-
-  TERM_MODE=$(dialog --clear --menu "Select a modem" 13 60 10 "${term_mode[@]}" 3>&1 1>&2 2>&3)
-
-  dialog \
-    --title "Note on Reticulum" \
-    --yesno "Reticulum uses end-to-end encryption. Check your local laws and regulations and ensure that you can legally run this mode!" \
-    0 0
-  exit_status=$?
-
-  tput sgr 0 && clear
-
-  if [ ${exit_status} -ne 0 ]; then
-    et-log "User canceled mode selection. Mode will not be started."
-    exit 1
-  fi  
-}
-
 wwv_mode () {
     dialog --title "Note on WWV" --msgbox "Manually set your radio to AM and tune it to one of the WWV frequencies appropriate for this operating time.\n\nTry: 2.5, 5, 10, 15 or 20 MHz." 0 0
     tput sgr 0 && clear
@@ -180,8 +157,6 @@ if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
 fi
 
 options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
-options+=("${MODE_ID_RETICULUM_MESHCHAT}" "Reticulum MeshChat over AX.25 Packet")
-options+=("${MODE_ID_RETICULUM_NOMADNET}" "Reticulum NomadNet over AX.25 Packet")
 
 # Prompt user for option and save exit status
 SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
@@ -299,36 +274,6 @@ if [ $exit_status -eq 0 ]; then
     ${MODE_ID_TIME_WWV})
       wwv_mode
       sudo /opt/emcomm-tools/sbin/wrapper-et-wwv.sh
-    ;;
-    ${MODE_ID_RETICULUM_MESHCHAT})
-      select_reticulum_mode
-      et-log "Using ${TERM_MODE} as the modem."
-
-      case "${TERM_MODE}" in
-        "1200")
-          start_and_wait_for_service et-service-reticulum-1200
-        ;;
-        "300")
-          start_and_wait_for_service et-service-reticulum-300
-        ;;
-      esac
-
-      et-meshchat
-    ;;
-    ${MODE_ID_RETICULUM_NOMADNET})
-      select_reticulum_mode
-      et-log "Using ${TERM_MODE} as the modem."
-
-      case "${TERM_MODE}" in
-        "1200")
-          start_and_wait_for_service et-service-reticulum-1200
-        ;;
-        "300")
-          start_and_wait_for_service et-service-reticulum-300
-        ;;
-      esac
-
-      nomadnet
     ;;
     *)
       et-log "Mode ${SELECTED_MODE} not yet supported"
