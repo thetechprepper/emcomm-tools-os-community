@@ -67,18 +67,22 @@ fi
 et-log "Linking new configuration..."
 ln -v -s "${ACTIVE_CONF_FILE}" "${RETICULUM_CONF_FILE}"
 
-# Update replacement tokens
 
-# Callsign
+# AX.25 KISS interface updates
 [[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
 sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE} 
 
-# AX.25 KISS interface
 sed -i "s|{{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}|no|g" ${RETICULUM_CONF_FILE}
 
-# RNode (LoRA) interface
-sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}|yes|g" ${RETICULUM_CONF_FILE}
+# RNode (LoRA) interface updates
+if [[ -e /dev/et-lora ]]; then
+  INTERFACE_RNODE_ENABLED="yes"
+else
+  INTERFACE_RNODE_ENABLED="no"
+fi
+
+sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}|${INTERFACE_RNODE_ENABLED}|g" ${RETICULUM_CONF_FILE}
 
 
 CMD="rnsd"

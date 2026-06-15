@@ -117,7 +117,7 @@
     # 20 dbm = 100 mW
     # 22 dbm = 158 mW
     # 28 dbm = 631 mW
-    # 30 dbm = 1 wat
+    # 30 dbm = 1 watt
     txpower = 22
     #txpower = {{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}
 
