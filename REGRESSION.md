@@ -145,7 +145,9 @@
 
 ## LoRa
 
-* [ ] SDR and LoRa listed in Conky
-* [ ] Heltec v3 and DigiRig Lite (chip sets conflict)
-* [ ] Heltec v4
+* [ ] LoRa listed in Conky
+* [ ] Heltec v4 PnP
+* [ ] et-reticulum
+  * [ ] All blueprints
+  * [ ] All permutations of radios and LoRa connected/disconnected
 
