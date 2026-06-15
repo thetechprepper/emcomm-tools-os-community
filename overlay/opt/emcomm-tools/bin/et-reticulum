@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
-# Updated : 14 May 2026
+# Updated : 15 May 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -17,6 +17,8 @@
 APP="Reticulum"
 RETICULUM_CONF_DIR="${HOME}/.reticulum"
 RETICULUM_CONF_FILE="${RETICULUM_CONF_DIR}/config"
+
+INTERFACE_RNODE_TXPOWER_DEFAULT=17
 
 options=()
 files=()
@@ -141,14 +143,24 @@ sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE}
 # RNode (LoRA) interface updates
 ############################################################
 
-# Enable/disable intereface based on PnP device detection
+# 1. Enable/disable intereface based on PnP device detection
 if [[ -e /dev/et-lora ]]; then
   INTERFACE_RNODE_ENABLED="yes"
 else
   INTERFACE_RNODE_ENABLED="no"
 fi
-
 sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}|${INTERFACE_RNODE_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+# 2. Determine max power settings
+et-log "Connecting to device to determine max power..."
+INTERFACE_RNODE_TXPOWER=`rnodeconf -i /dev/et-lora | awk -F': ' '/Max TX power/ {print $2}' | awk '{print $1}'`
+if [[ $? -ne 0 ]]; then
+  INTERFACE_RNODE_TXPOWER=${INTERFACE_RNODE_TXPOWER_DEFAULT}
+  et-log "Can't determine max power. Using defaulting ${INTERFACE_RNODE_TXPOWER}."
+fi
+
+et-log "Setting max power to ${INTERFACE_RNODE_TXPOWER} dBm."
+sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}|${INTERFACE_RNODE_TXPOWER}|g" ${RETICULUM_CONF_FILE}
 
 
 CMD="rnsd"

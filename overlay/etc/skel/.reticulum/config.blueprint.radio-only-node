@@ -1,7 +1,7 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 14 June 2026
-# Blueprint : Permament Transport Node
+# Updated   : 15 June 2026
+# Blueprint : Radio-Only Node, transport disabled
 # Purpose   : This confguration is a blueprint for a radio-only node.
 #             If a supported et-radio and/or et-lora device is
 #             detected, they will be enabled. 
@@ -112,14 +112,18 @@
     #bandwidth = {{ET_RETICULUM_INTERFACE_RNODE_BANDWIDTH}}
 
     # Set TX power in dBm
-    #  7 dBm = 5 mW
-    # 17 dbm = 50 mW
-    # 20 dbm = 100 mW
-    # 22 dbm = 158 mW
-    # 28 dbm = 631 mW
-    # 30 dbm = 1 watt
-    txpower = 22
-    #txpower = {{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}
+    #
+    #  7 dBm =    5 mW
+    # 10 dBm =   10 mW
+    # 14 dBm =   25 mW
+    # 17 dBm =   50 mW
+    # 20 dBm =  100 mW
+    # 22 dBm =  158 mW
+    # 24 dBm =  251 mW
+    # 27 dBm =  501 mW
+    # 28 dBm =  631 mW
+    # 30 dBm = 1000 mW (1 W)
+    txpower = {{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}
 
     # Select spreading factor 8. Valid
     # range is 7 through 12, with 7
