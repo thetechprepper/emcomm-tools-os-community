@@ -102,6 +102,7 @@
     enabled = {{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}
     
     port = /dev/et-lora
+    #port = tcp://192.168.8.200
 
     # Set frequency to 915 MHz
     frequency = 915000000
