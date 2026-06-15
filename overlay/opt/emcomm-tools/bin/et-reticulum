@@ -144,7 +144,7 @@ sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE}
 ############################################################
 
 # 1. Enable/disable intereface based on PnP device detection
-if [[ -e /dev/et-lora ]]; then
+if [[ -e "${ET_DEVICE_LORA}" ]]; then
   INTERFACE_RNODE_ENABLED="yes"
 else
   INTERFACE_RNODE_ENABLED="no"
@@ -153,7 +153,7 @@ sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}|${INTERFACE_RNODE_ENABLED}|g"
 
 # 2. Determine max power settings
 et-log "Connecting to device to determine max power..."
-INTERFACE_RNODE_TXPOWER=`rnodeconf -i /dev/et-lora | awk -F': ' '/Max TX power/ {print $2}' | awk '{print $1}'`
+INTERFACE_RNODE_TXPOWER=`rnodeconf -i ${ET_DEVICE_LORA} | awk -F': ' '/Max TX power/ {print $2}' | awk '{print $1}'`
 if [[ $? -ne 0 ]]; then
   INTERFACE_RNODE_TXPOWER=${INTERFACE_RNODE_TXPOWER_DEFAULT}
   et-log "Can't determine max power. Using defaulting ${INTERFACE_RNODE_TXPOWER}."
