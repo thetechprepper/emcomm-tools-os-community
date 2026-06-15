@@ -13,12 +13,10 @@
 # Postconditions:
 # 1. /dev/et-lora created
 
-#KERNEL=="swradio0", \
-#   GROUP="dialout", MODE="0660", SYMLINK+="et-sdr"
-
 # Heltec v4
-SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", \
-    ENV{ET_SUBDEVICE}="LORA" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ENV{ET_LORA_DEVICE}=="" \
+    ACTION=="add", \
+    ENV{ET_LORA_DEVICE}="Heltec v4" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
 
 # Heltec v3
 # Uses the CP210x so this will collide with radios already supported by et-radio
@@ -26,5 +24,6 @@ SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", \
 #    GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
 
 # LilyGO TTGO v2.1
-SUBSYSTEM=="usb", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", \
-    ENV{ET_SUBDEVICE}="LORA" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", ENV{ET_LORA_DEVICE}=="" \
+    ACTION=="add", \
+    ENV{ET_LORA_DEVICE}="LillyGO TTGO v2.1" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
