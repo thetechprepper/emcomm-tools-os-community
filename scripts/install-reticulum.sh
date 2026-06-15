@@ -6,7 +6,9 @@
 
 # Version pin Reticulum as we want to favor stability
 # above all other concerns (security, features, etc.).
-RNS_VERSION=1.3.5
+RNS_VERSION=1.2.5
+# WARNING: 1.3.5 does not work with MeshChat
+#RNS_VERSION=1.3.5
 
 et-log "Installing Python3..."
 apt install \
