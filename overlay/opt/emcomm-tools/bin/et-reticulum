@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
-# Updated : 13 May 2026
+# Updated : 14 May 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -10,7 +10,7 @@
 #
 # Postconditions:
 # 1. Reticulum configuration updated
-# 2. Dire Wolf started
+# 2. Optional modem started
 # 3. Reticulum started
 . /opt/emcomm-tools/bin/et-common
 
@@ -18,122 +18,70 @@ APP="Reticulum"
 RETICULUM_CONF_DIR="${HOME}/.reticulum"
 RETICULUM_CONF_FILE="${RETICULUM_CONF_DIR}/config"
 
-usage() {
-  echo "usage: $(basename $0) <command> <type>"
-  echo "  <command>"
-  echo "    start              - Start ${APP} in selected mode"
-  echo "    update-config      - Update configuration for selected mode"
-  echo ""
-  echo "  <type>"
-  echo "    1200               - Run with AX.25 interface over VHF/UHF (1200 baud)"
-  echo "    300                - Run with AX.25 interface over HF (300 baud)"
-}
+options=()
+files=()
+index=1
 
-if [ $# -ne 2 ]; then
-  usage
-  exit 1
+while IFS= read -r file; do
+  name=$(basename "$file")
+  files[$index]="$name"
+  options+=("$index" "$name")
+  ((index++))
+done < <(find "${HOME}/.reticulum" -type f -name 'config.blueprint.*')
+
+choice=$(dialog \
+  --title "Reticulum Configuration" \
+  --menu "Choose a blueprint:" \
+  15 60 10 \
+  "${options[@]}" \
+  2>&1 >/dev/tty)
+EXIT_STATUS=$?
+
+tput sgr0 && clear
+
+if [[ ${EXIT_STATUS} -ne 0 ]]; then
+  et-log "No blueprint configuration selected"
+  exit ${EXIT_STATUS}
 fi
 
-MODE=$2
-case "${MODE}" in
-  1200)
-    RETICULUM_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/reticulum/config.ax25.1200"
-    RETICULUM_PACKET_INTERFACE_SERVICE=et-service-direwolf-simple
-  ;;
-  300)
-    RETICULUM_TEMPLATE_CONF_FILE="${ET_HOME}/conf/template.d/reticulum/config.ax25.300"
-    RETICULUM_PACKET_INTERFACE_SERVICE=et-service-direwolf-300
-  ;;
-  *)
-    et-log "Can't start ${APP}. Mode '${MODE}' not supported"
-    usage
-    exit 1
-  ;;
-esac
+SELECTED_CONF="${files[$choice]}"
 
 if [[ ! -e "${RETICULUM_CONF_DIR}" ]]; then
- et-log "Creating missing configuration directory: ${RETICULUM_CONF_DIR}"
- mkdir -p "${RETICULUM_CONF_DIR}"
+  et-log "Creating missing configuration directory: ${RETICULUM_CONF_DIR}"
+  mkdir -p "${RETICULUM_CONF_DIR}"
 fi
 
-if [[ ! -e "${RETICULUM_TEMPLATE_CONF_FILE}" ]]; then
-  et-log "${RETICULUM_TEMPLATE_CONF_FILE} does not exist. Exiting."
-  notify-user "Config file does not exist. Can't start Reticulum."
+ACTIVE_CONF_FILE="${RETICULUM_CONF_DIR}/${SELECTED_CONF}"
+if [[ ! -e ${ACTIVE_CONF_FILE} ]]; then
+  et-log "${ACTIVE_CONF_FILE} does not exist."
   exit 1
 fi
 
-start() {
-  update_config
-  
-  if [[ $? -eq 0 ]]; then
+et-log "Using ${ACTIVE_CONF_FILE}"
 
-    systemctl is-active --quiet ${RETICULUM_PACKET_INTERFACE_SERVICE}
-    if [[ $? -ne 0 ]]; then
-      start_and_wait_for_service ${RETICULUM_PACKET_INTERFACE_SERVICE}
-    fi
-   
-    CMD="rnsd"
-    et-log "Starting ${APP} with: '${CMD}'"
-    echo
-    ${CMD}
-  else 
-    et-log "Error updating configuration. Can't start ${APP}"
-    exit 1
-  fi
-}
+if [[ -e "${RETICULUM_CONF_FILE}" ]]; then
+  et-log "Removing previous Reticulum configuration: ${RETICULUM_CONF_FILE}"
+  rm "${RETICULUM_CONF_FILE}"
+fi
+
+et-log "Linking new configuration..."
+ln -v -s "${ACTIVE_CONF_FILE}" "${RETICULUM_CONF_FILE}"
+
+# Update replacement tokens
+
+# Callsign
+[[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE} 
+
+# AX.25 KISS interface
+sed -i "s|{{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}|no|g" ${RETICULUM_CONF_FILE}
+
+# RNode (LoRA) interface
+sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}|yes|g" ${RETICULUM_CONF_FILE}
 
 
-update_config () {
+CMD="rnsd"
+et-log "Starting Reticulum: ${CMD}"
 
-    et-log "Attempting to start ${APP} in mode: '${MODE}'"
-
-    [[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
-
-    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
-
-    if [[ "${CALLSIGN}" = "N0CALL" ]]; then
-      notify_user "Can't ${APP}. No callsign set. Run: et-user."
-      exit 1
-    fi
-
-    # 1. Check if the audio symlink was created by the udev rules
-    if [[ -e /dev/et-audio ]]; then
-
-       # Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
-       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
-       if [[ $? -eq 0 ]]; then
-
-         # Configure ALSA settings for sound card
-         /opt/emcomm-tools/bin/et-audio update-config
-
-       else
-         et-log "No ET_AUDIO device detected."
-         notify-user "Can't start ${APP}. No ET_AUDIO device detected."
-         exit 1
-       fi
-    else
-      et-log "No ET_AUDIO device plugged in."
-      notify-user "Can't start ${APP}. No supported audio device plugged in."
-      exit 1
-    fi
-
-    et-log "Creating '${RETICULUM_CONF_FILE}' from template '${RETICULUM_TEMPLATE_CONF_FILE}'"
-    cp ${RETICULUM_TEMPLATE_CONF_FILE} ${RETICULUM_CONF_FILE}
-
-    # Update callsign
-    sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE} 
-}
-
-case $1 in
-  start)
-    start
-    ;;
-  update-config)
-    update_config
-    ;;
-  *)
-    echo "Invalid command."
-    usage
-    exit 1
-  ;;
-esac
+${CMD}
