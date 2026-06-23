@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 13 May 2026
-# Updated : 15 June 2026
+# Updated : 23 June 2026
 # Purpose : Install MeshChat for Reticulum
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -11,13 +11,13 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ../overlay/opt/emcomm-tools/bin/et-common
 
 APP=ReticulumMeshChat
-VERSION=2.3.0
+VERSION="2.3.0-R7B7"
 INSTALL_DIR="/opt/${APP}-${VERSION}"
 INSTALL_BIN_DIR="${INSTALL_DIR}/bin"
 LINK_PATH="/opt/${APP}"
 
 DOWNLOAD_FILE="${APP}-v${VERSION}-linux.AppImage"
-URL="https://github.com/liamcottle/reticulum-meshchat/releases/download/v${VERSION}/${DOWNLOAD_FILE}"
+URL="https://github.com/thetechprepper/reticulum-meshchat/releases/download/${VERSION}/ReticulumMeshChat-v${VERSION}-linux.AppImage"
 
 et-log "Installing ${APP} ${VERSION}..."
 
@@ -48,3 +48,8 @@ download_with_retries ${ICON_URL} ${ICON}
 mv ${ICON} ${INSTALL_DIR}
 
 cp ../overlay/usr/share/applications/meshchat.desktop /usr/share/applications
+
+[[ -e ${LINK_PATH} ]] && rm ${LINK_PATH}
+ln -s ${INSTALL_DIR} ${LINK_PATH}
+
+stow -v -d /opt ${APP} -t /usr/local

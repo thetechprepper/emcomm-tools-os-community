@@ -2,8 +2,8 @@
 Version=1.0
 Name=MeshChat
 Comment=MeshChat
-Exec=/opt/ReticulumMeshChat-2.3.0/bin/ReticulumMeshChat-v2.3.0-linux.AppImage
-Icon=/opt/ReticulumMeshChat-2.3.0/logo-chat-bubble.png
+Exec=/opt/emcomm-tools/bin/et-meshchat
+Icon=/opt/ReticulumMeshChat/logo-chat-bubble.png
 Terminal=false
 X-MultipleArgs=false
 Type=Application
