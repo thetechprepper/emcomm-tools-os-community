@@ -7,6 +7,7 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
+. ../overlay/opt/emcomm-tools/bin/et-common
 
 APP="modem73"
 VERSION="1.0.7"
@@ -42,3 +43,15 @@ ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 stow -v -d /opt ${APP} -t /usr/local
 
 cd ${CWD}
+
+
+et-log "Enabling modem73 interface..."
+
+INTERFACE_FILE=Modem73Interface.py
+INTERFACE_DIR=/etc/skel/.reticulum/interfaces
+
+download_with_retries https://raw.githubusercontent.com/thetechprepper/modem73interface/refs/heads/master/Modem73Interface.py ${INTERFACE_FILE}
+
+[[ ! -e ${INTERFACE_DIR} ]] && mkdir -v -p ${INTERFACE_DIR}
+mv -v ${INTERFACE_FILE} /etc/skel/.reticulum/interfaces
+
