@@ -84,9 +84,17 @@ if [[ $? -eq 0 ]]; then
   et-log "Radio connected and detected." 
 
   modem_options=()
-  modem_options+=("1200-packet" "1200 baud packet (VHF/UHF)")
-  modem_options+=("300-packet" "300 baud packet (HF)")
-  modem_options+=("modem73-default" "modem73 (HF/VHF/UHF)")
+
+  HAS_PACKET_CONFIG=`grep AX25KISSInterface ~/.reticulum/config`
+  if [[ $? -eq 0 ]]; then
+    modem_options+=("1200-packet" "1200 baud packet (VHF/UHF)")
+    modem_options+=("300-packet" "300 baud packet (HF)")
+  fi
+
+  HAS_MODEM73_CONFIG=`grep Modem73Interface ~/.reticulum/config`
+  if [[ $? -eq 0 ]]; then
+    modem_options+=("modem73-default" "modem73 (HF/VHF/UHF)")
+  fi
 
   modem_choice=$(dialog \
     --clear \
