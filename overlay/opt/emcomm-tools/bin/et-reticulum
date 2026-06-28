@@ -138,6 +138,19 @@ fi
 et-log "Updating configuration for this session..."
 
 ############################################################
+# MODEM73  interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
+IS_MODEM73_RUNNING=`ps -ef | grep [m]odem73`
+if [[ $? -eq 0 ]]; then
+  INTERFACE_MODEM73_ENABLED="yes"
+else
+  INTERFACE_MODEM73_ENABLED="no"
+fi
+sed -i "s|{{ET_RETICULUM_INTERFACE_MODEM73_ENABLED}}|${INTERFACE_MODEM73_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+############################################################
 # AX.25 KISS (Packet Radio) interface updates
 ############################################################
 

@@ -129,9 +129,8 @@
   [[modem73]]
     type = Modem73Interface
     mode = roaming
-    enabled = yes
+    enabled = {{ET_RETICULUM_INTERFACE_MODEM73_ENABLED}}
     target_host = 127.0.0.1
     target_port = 8001
     control_host = 127.0.0.1
     control_port = 8073
-
