@@ -1,8 +1,8 @@
 # Author    : Gaston Gonzalez
 # Date      : 28 June 2026
 # Blueprint : Radio-Only Node, transport disabled
-# Purpose   : This confguration is a blueprint for a radio-only node
-#             that modem73 as the radio interface. If a supported 
+# Purpose   : This confguration is a blueprint for a radio-only node.
+#             It uses modem73 as the radio interface. If a supported
 #             et-lora device is detected, it will be enabled, too.
 
 [reticulum]
@@ -128,6 +128,7 @@
     
   [[modem73]]
     type = Modem73Interface
+    mode = roaming
     enabled = yes
     target_host = 127.0.0.1
     target_port = 8001

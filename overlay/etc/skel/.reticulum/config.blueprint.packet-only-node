@@ -1,10 +1,11 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 15 June 2026
+# Updated   : 28 June 2026
 # Blueprint : Radio-Only Node, transport disabled
 # Purpose   : This confguration is a blueprint for a radio-only node.
-#             If a supported et-radio and/or et-lora device is
-#             detected, they will be enabled. 
+#             It uses an AX.25 KISS radio interface. If a supported
+#             et-lora device is detected, it will be enabled, too.
+
 
 [reticulum]
   
