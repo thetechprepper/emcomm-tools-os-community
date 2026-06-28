@@ -27,7 +27,7 @@ et-log "Installing ${APP} ${VERSION}"
 CWD_DIR=`pwd`
 
 cd ${ET_SRC_DIR}
-[[ ! -e ${GIT_WORKSPACE} ]] && git clone ${GIT_URL} ${GIT_WORKSPACE}
+[[ ! -e ${GIT_WORKSPACE} ]] && git clone --branch emcomm-tools --single-branch ${GIT_URL}
 
 cd ${GIT_WORKSPACE}
 make
