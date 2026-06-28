@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
-# Updated : 15 May 2026
+# Updated : 28 June 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -13,6 +13,9 @@
 # 2. Optional modem started
 # 3. Reticulum started
 . /opt/emcomm-tools/bin/et-common
+
+# Ensure that no other modes are running
+et-kill-all
 
 APP="Reticulum"
 RETICULUM_CONF_DIR="${HOME}/.reticulum"
@@ -81,8 +84,9 @@ if [[ $? -eq 0 ]]; then
   et-log "Radio connected and detected." 
 
   modem_options=()
-  modem_options+=("1200" "1200 baud (VHF/UHF operation)")
-  modem_options+=("300" "300 baud (HF option)")
+  modem_options+=("1200-packet" "1200 baud packet (VHF/UHF)")
+  modem_options+=("300-packet" "300 baud packet (HF)")
+  modem_options+=("modem73-default" "modem73 (HF/VHF/UHF)")
 
   modem_choice=$(dialog \
     --clear \
@@ -104,13 +108,17 @@ if [[ $? -eq 0 ]]; then
     et-log "User canceled modem selection. Packet modem will not be started and interface will not be enabled."
   else
     case ${modem_choice} in
-      300)
+      300-packet)
         et-log "Starting 300 baud packet modem"
         start_and_wait_for_service et-service-direwolf-300
       ;;
-      1200)
+      1200-packet)
         et-log "Starting 1200 baud packet modem"
         start_and_wait_for_service et-service-direwolf-simple
+      ;;
+      modem73-default)
+        et-log "Starting modem73 with defaults"
+        start_and_wait_for_service et-service-modem73-default
       ;;
       *)
         et-log "No modem specified"
