@@ -9,6 +9,18 @@
 #
 # Postconditions:
 # 1. modem73 started with sane defaults
+#
+# Notes:
+#
+# modem73 supports many modulation types and configuration options. To
+# keep usage simple, only five modulation settings have been configured
+# that map to a combination of reliability and speed for most general
+# purpose applications.
+#
+# In all cases, normal frames and 1/2 coding rate is used.
+#
+# There are faster speeds, but EmComm Tools has the design goal of 
+# getting the message through and favoring delivery over speed..
 
 MODEM73_CONF_FILE="${HOME}/.config/modem73/settings"
 
@@ -16,8 +28,10 @@ usage() {
   echo "usage: $(basename $0) <mode> [options]"
   echo "  <mode>"
   echo "    reliability - Max reliability (Slower Speed) [BPSK]"
-  echo "    balanced    - Balanced (Reliability and Speed) [QPSK]"
-  echo "    speed       - Max speed (Lower Reliability) [8PSK]"
+  echo "    balanced    - Balanced (Reliability and Speed) [QPSK] RECOMENDED"
+  echo "    fast        - Fast (Low Reliability) [8PSK]"
+  echo "    faster      - Faster (Lower Reliability) [QAM16]"
+  echo "    fastest     - Fastest (Lowest Reliability) [QAM64]"
   echo ""
   echo "  [options]"
   echo "    --headless  - Run modem73 headless"
@@ -25,6 +39,7 @@ usage() {
 
 HEADLESS=""
 MODE=""
+MODE_ARGS=""
 CALLSIGN="N0CALL"
 
 for arg in "$@"; do
@@ -32,7 +47,7 @@ for arg in "$@"; do
     --headless)
       HEADLESS="--headless"
     ;;
-    reliability|balanced|speed)
+    reliability|balanced|fast|faster|fastest)
       if [[ -n "${MODE}" ]]; then
         et-log "Only one mode may be specified."
         usage
@@ -49,10 +64,28 @@ for arg in "$@"; do
 done
 
 if [[ -z "${MODE}" ]]; then
-    et-log "Can't started modem73. Mode not specified."
-    usage
-    exit 1
+  et-log "Can't started modem73. Mode not specified."
+  usage
+  exit 1
 fi
+
+case "${MODE}" in
+  reliability)
+    MODE_ARGS="--modulation BPSK --normal --rate 1/2"
+  ;;
+  balanced)
+    MODE_ARGS="--modulation QPSK --normal --rate 1/2"
+  ;;
+  fast)
+    MODE_ARGS="--modulation 8PSK --normal --rate 1/2"
+  ;;
+  faster)
+    MODE_ARGS="--modulation QAM16 --normal --rate 1/2"
+  ;;
+  fastest)
+    MODE_ARGS="--modulation QAM64 --normal --rate 1/2"
+  ;;
+esac
 
 [[ -z ${ET_LOG_DIR} ]] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
 [[ ! -e ${ET_LOG_DIR} ]] && mkdir -p ${ET_LOG_DIR}
@@ -73,12 +106,12 @@ start() {
     INPUT_AUDIO=$(modem73 --list-audio | grep input | grep $ALSA_DEVICE | cut -d":" -f3)
     OUTPUT_AUDIO=$(modem73 --list-audio | grep output| grep $ALSA_DEVICE | cut -d":" -f3)
 
-    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl --callsign ${CALLSIGN} ${HEADLESS}"
-    et-log "Starting modem73 with: '${CMD}'"
+    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl --callsign ${CALLSIGN} ${MODE_ARGS} ${HEADLESS}"
+    et-log "Starting modem73 in mode ${MODE} with: '${CMD}'"
     echo
     ${CMD}
   else 
-    et-log "Error updating configuration. Can't start modem73"
+    et-log "Error configurating modem. Can't start modem73"
     exit 1
   fi
 }
