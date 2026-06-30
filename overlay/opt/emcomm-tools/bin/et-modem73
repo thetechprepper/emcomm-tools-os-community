@@ -25,6 +25,7 @@ usage() {
 
 HEADLESS=""
 MODE=""
+CALLSIGN="N0CALL"
 
 for arg in "$@"; do
   case "$arg" in
@@ -72,7 +73,7 @@ start() {
     INPUT_AUDIO=$(modem73 --list-audio | grep input | grep $ALSA_DEVICE | cut -d":" -f3)
     OUTPUT_AUDIO=$(modem73 --list-audio | grep output| grep $ALSA_DEVICE | cut -d":" -f3)
 
-    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl ${HEADLESS}"
+    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl --callsign ${CALLSIGN} ${HEADLESS}"
     et-log "Starting modem73 with: '${CMD}'"
     echo
     ${CMD}
@@ -94,16 +95,16 @@ update_config () {
 
     et-log "Attempting to start modem73 in mode: '${MODE}'"
 
-    [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+    [[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
     CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
 
     # 1. Check if the symlink was created by the udev rules
-    if [ -e /dev/et-audio ]; then
+    if [[ -e /dev/et-audio ]]; then
 
        # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
        APLAY_OUT=$(arecord -l | grep ET_AUDIO)
-       if [ $? -eq 0 ]; then
+       if [[ $? -eq 0 ]]; then
 
          # Configure ALSA settings for sound card
          /opt/emcomm-tools/bin/et-audio update-config
