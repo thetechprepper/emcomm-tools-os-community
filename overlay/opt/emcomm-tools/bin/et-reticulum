@@ -101,7 +101,11 @@ if [[ $? -eq 0 ]]; then
 
   HAS_MODEM73_CONFIG=`grep Modem73Interface ~/.reticulum/config`
   if [[ $? -eq 0 ]]; then
-    modem_options+=("modem73-default" "modem73 (HF/VHF/UHF)")
+    modem_options+=("modem73-reliability" "Max reliability (Slower Speed) [BPSK]")
+    modem_options+=("modem73-balanced" "Balanced (Reliability and Speed) [QPSK] RECOMENDED")
+    modem_options+=("modem73-fast" "Fast (Low Reliability) [8PSK]")
+    modem_options+=("modem73-faster" "Faster (Lower Reliability) [QAM16]")
+    modem_options+=("modem73-fastest" "Fastest (Lowest Reliability) [QAM64]")
   fi
 
   modem_choice=$(dialog \
@@ -132,9 +136,25 @@ if [[ $? -eq 0 ]]; then
         et-log "Starting 1200 baud packet modem"
         start_and_wait_for_service et-service-direwolf-simple
       ;;
-      modem73-default)
-        et-log "Starting modem73 with defaults"
+      modem73-reliability)
+        et-log "Starting modem73 in reliability mode"
+        start_and_wait_for_service et-service-modem73-reliability
+      ;;
+      modem73-balanced)
+        et-log "Starting modem73 in balanced mode"
         start_and_wait_for_service et-service-modem73-default
+      ;;
+      modem73-fast)
+        et-log "Starting modem73 in fast mode"
+        start_and_wait_for_service et-service-modem73-fast
+      ;;
+      modem73-faster)
+        et-log "Starting modem73 in faster mode"
+        start_and_wait_for_service et-service-modem73-faster
+      ;;
+      modem73-fastest)
+        et-log "Starting modem73 in fastest mode"
+        start_and_wait_for_service et-service-modem73-fastest
       ;;
       *)
         et-log "No modem specified"
