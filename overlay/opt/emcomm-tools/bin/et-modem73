@@ -28,7 +28,7 @@ usage() {
   echo "usage: $(basename $0) <mode> [options]"
   echo "  <mode>"
   echo "    reliability - Max reliability (Slower Speed) [BPSK]"
-  echo "    balanced    - Balanced (Reliability and Speed) [QPSK] RECOMENDED"
+  echo "    balanced    - Balanced (Reliability and Speed) [QPSK] RECOMMENDED"
   echo "    fast        - Fast (Low Reliability) [8PSK]"
   echo "    faster      - Faster (Lower Reliability) [QAM16]"
   echo "    fastest     - Fastest (Lowest Reliability) [QAM64]"

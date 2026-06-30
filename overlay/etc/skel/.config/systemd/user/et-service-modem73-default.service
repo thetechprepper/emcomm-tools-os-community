@@ -1,5 +1,6 @@
 # Author  : Gaston Gonzalez
 # Date    : 28 June 2026
+# Updated : 30 June 2026
 # Purpose : User systemd unit file for EmComm Tools that starts modem73
 #         : in a default configuration.
 #
@@ -10,10 +11,10 @@
 #  Reload this config : systemctl --user daemon-reload
 
 [Unit]
-Description=EmComm Tools modem73 default service
+Description=EmComm Tools modem73 default service for balanced performance
 
 [Service]
-ExecStart=/opt/emcomm-tools/bin/et-modem73 start default
+ExecStart=/opt/emcomm-tools/bin/et-modem73 balanced --headless
 Restart=no
 
 [Install]
