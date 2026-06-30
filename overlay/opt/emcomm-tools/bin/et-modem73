@@ -13,49 +13,56 @@
 MODEM73_CONF_FILE="${HOME}/.config/modem73/settings"
 
 usage() {
-  echo "usage: $(basename $0) <command> <type>"
-  echo "  <command>"
-  echo "    start              - Start modem73 in selected mode"
-  echo "    update-config      - Update configuration for selected mode"
+  echo "usage: $(basename $0) <mode> [options]"
+  echo "  <mode>"
+  echo "    reliability - Max reliability (Slower Speed) [BPSK]"
+  echo "    balanced    - Balanced (Reliability and Speed) [QPSK]"
+  echo "    speed       - Max speed (Lower Reliability) [8PSK]"
   echo ""
-  echo "  <type>"
-  echo "    default            - QPSK, normal frames, 1/2 code rate (recommended)"
+  echo "  [options]"
+  echo "    --headless  - Run modem73 headless"
 }
 
-if [[ $# -ne 2 ]]; then
-  usage
-  exit 1
-fi
+HEADLESS=""
+MODE=""
 
-MODE=$2
-case "${MODE}" in
-  default)
-    et-log "Configuration updates not yet implemented."
-  ;;
-  *)
-    et-log "Can't started modem73. Mode '${MODE}' not supported"
+for arg in "$@"; do
+  case "$arg" in
+    --headless)
+      HEADLESS="--headless"
+    ;;
+    reliability|balanced|speed)
+      if [[ -n "${MODE}" ]]; then
+        et-log "Only one mode may be specified."
+        usage
+        exit 1
+      fi
+      MODE="$arg"
+    ;;
+    *)
+      echo "Unknown argument: $arg"
+      usage
+      exit 1
+    ;;
+  esac
+done
+
+if [[ -z "${MODE}" ]]; then
+    et-log "Can't started modem73. Mode not specified."
     usage
     exit 1
-  ;;
-esac
+fi
 
-notify_user() {
-  notify-send \
-   -t 10000 \
-   --app-name="EmComm Tools" \
-   "$1"
-}
-
-[ -z ${ET_LOG_DIR} ] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
-[ ! -e ${ET_LOG_DIR} ] && mkdir -p ${ET_LOG_DIR}
+[[ -z ${ET_LOG_DIR} ]] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
+[[ ! -e ${ET_LOG_DIR} ]] && mkdir -p ${ET_LOG_DIR}
 
 start() {
   update_config
   
-  if [ $? -eq 0 ]; then
+  if [[ $? -eq 0 ]]; then
 
     systemctl is-active --quiet rigctld
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
       et-log "Can't start modem73. rigctld not running. Ensure radio is selected."
       notify_user "Can't start modem73. rigctld not running."
       exit 1
@@ -65,7 +72,7 @@ start() {
     INPUT_AUDIO=$(modem73 --list-audio | grep input | grep $ALSA_DEVICE | cut -d":" -f3)
     OUTPUT_AUDIO=$(modem73 --list-audio | grep output| grep $ALSA_DEVICE | cut -d":" -f3)
 
-    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl --headless"
+    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl ${HEADLESS}"
     et-log "Starting modem73 with: '${CMD}'"
     echo
     ${CMD}
@@ -114,16 +121,4 @@ update_config () {
 
 }
 
-case $1 in
-  start)
-    start
-    ;;
-  update-config)
-    update_config
-    ;;
-  *)
-    echo "Invalid command."
-    usage
-    exit 1
-  ;;
-esac
+start
