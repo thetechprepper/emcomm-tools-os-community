@@ -112,7 +112,7 @@ if [[ $? -eq 0 ]]; then
     --clear \
     --title "Reticulum Configuration" \
     --menu "Select a modem" \
-    13 60 10 \
+    13 70 10 \
     "${modem_options[@]}" \
     2>&1 >/dev/tty)
 
