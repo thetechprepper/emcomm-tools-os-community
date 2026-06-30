@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
-# Updated : 28 June 2026
+# Updated : 30 June 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -12,6 +12,14 @@
 # 1. Reticulum configuration updated
 # 2. Optional modem started
 # 3. Reticulum started
+
+# The current version of modem73 does not alway exit.
+cleanup() {
+    pkill -9 modem73 2>/dev/null || true
+}
+
+trap cleanup EXIT INT TERM
+
 . /opt/emcomm-tools/bin/et-common
 
 # Ensure that no other modes are running
