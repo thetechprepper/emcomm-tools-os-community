@@ -1,0 +1,20 @@
+# Author  : Gaston Gonzalez
+# Date    : 30 June 2026
+# Purpose : User systemd unit file for EmComm Tools that starts modem73
+#         : in a reliability configuration.
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-modem73-reliability
+#  Start service      : systemctl --user start et-service-modem73-reliability
+#  Stop service       : systemctl --user stop et-service-modem73-reliability
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools modem73 service for reliable performance
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-modem73 reliability --headless
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 1
-- **Date**: 16 April 2026
+- **Build**: ETC R7 Build 5
+- **Date**: 14 June 2026
 
 ## Desktop/Launcher Icons
 
@@ -83,6 +83,7 @@
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
 * [ ] wwv
+* [ ] reticulum
 
 ## Bluetooth TNC
 
@@ -141,3 +142,12 @@
 * [ ] `offline` folder on Desktop
 * [ ] Check `nets` folder for `amrron` and `ghostnet`
 * [ ] Test gpg signature verifcation (see gpg crypto doc)
+
+## LoRa
+
+* [ ] LoRa listed in Conky
+* [ ] Heltec v4 PnP
+* [ ] et-reticulum
+  * [ ] All blueprints
+  * [ ] All permutations of radios and LoRa connected/disconnected
+

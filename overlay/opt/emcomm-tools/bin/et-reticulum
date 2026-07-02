@@ -1,0 +1,229 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 12 May 2026
+# Updated : 30 June 2026
+# Purpose : Wrapper script for starting Reticulum with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. Reticulum configuration updated
+# 2. Optional modem started
+# 3. Reticulum started
+
+# The current version of modem73 does not alway exit.
+cleanup() {
+    pkill -9 modem73 2>/dev/null || true
+}
+
+trap cleanup EXIT INT TERM
+
+. /opt/emcomm-tools/bin/et-common
+
+# Ensure that no other modes are running
+et-kill-all
+
+APP="Reticulum"
+RETICULUM_CONF_DIR="${HOME}/.reticulum"
+RETICULUM_CONF_FILE="${RETICULUM_CONF_DIR}/config"
+
+INTERFACE_RNODE_TXPOWER_DEFAULT=17
+
+options=()
+files=()
+index=1
+
+while IFS= read -r file; do
+  name=$(basename "$file")
+  files[$index]="$name"
+  options+=("$index" "$name")
+  ((index++))
+done < <(find "${HOME}/.reticulum" -type f -name 'config.blueprint.*' | sort)
+
+choice=$(dialog \
+  --title "Reticulum Configuration" \
+  --menu "Choose a blueprint:" \
+  15 60 10 \
+  "${options[@]}" \
+  2>&1 >/dev/tty)
+EXIT_STATUS=$?
+
+tput sgr0 && clear
+
+if [[ ${EXIT_STATUS} -ne 0 ]]; then
+  et-log "No blueprint configuration selected"
+  exit ${EXIT_STATUS}
+fi
+
+SELECTED_CONF="${files[$choice]}"
+
+if [[ ! -e "${RETICULUM_CONF_DIR}" ]]; then
+  et-log "Creating missing configuration directory: ${RETICULUM_CONF_DIR}"
+  mkdir -p "${RETICULUM_CONF_DIR}"
+fi
+
+ACTIVE_CONF_FILE="${RETICULUM_CONF_DIR}/${SELECTED_CONF}"
+if [[ ! -e ${ACTIVE_CONF_FILE} ]]; then
+  et-log "${ACTIVE_CONF_FILE} does not exist."
+  exit 1
+fi
+
+et-log "Using ${ACTIVE_CONF_FILE}"
+
+if [[ -e "${RETICULUM_CONF_FILE}" ]]; then
+  et-log "Removing previous Reticulum configuration: ${RETICULUM_CONF_FILE}"
+  rm "${RETICULUM_CONF_FILE}"
+fi
+
+et-log "Linking new configuration..."
+ln -v -s "${ACTIVE_CONF_FILE}" "${RETICULUM_CONF_FILE}"
+
+############################################################
+# Optionally, launch a modem if a radio is connected
+############################################################
+
+# If a supported radio is plugged in and detected, it  will have the 
+# rigctld process running automatically.
+IS_RADIO_CONNECTED=`ps -ef | grep [r]igctld`
+if [[ $? -eq 0 ]]; then
+
+  et-log "Radio connected and detected." 
+
+  modem_options=()
+
+  HAS_PACKET_CONFIG=`grep AX25KISSInterface ~/.reticulum/config`
+  if [[ $? -eq 0 ]]; then
+    modem_options+=("1200-packet" "1200 baud packet (VHF/UHF)")
+    modem_options+=("300-packet" "300 baud packet (HF)")
+  fi
+
+  HAS_MODEM73_CONFIG=`grep Modem73Interface ~/.reticulum/config`
+  if [[ $? -eq 0 ]]; then
+    modem_options+=("modem73-reliability" "Max reliability (Slower Speed) [BPSK]")
+    modem_options+=("modem73-balanced" "Balanced (Reliability and Speed) [QPSK] RECOMENDED")
+    modem_options+=("modem73-fast" "Fast (Low Reliability) [8PSK]")
+    modem_options+=("modem73-faster" "Faster (Lower Reliability) [QAM16]")
+    modem_options+=("modem73-fastest" "Fastest (Lowest Reliability) [QAM64]")
+  fi
+
+  modem_choice=$(dialog \
+    --clear \
+    --title "Reticulum Configuration" \
+    --menu "Select a modem" \
+    13 70 10 \
+    "${modem_options[@]}" \
+    2>&1 >/dev/tty)
+
+  dialog \
+    --title "Note on Reticulum" \
+    --yesno "Reticulum uses end-to-end encryption. Check your local laws and regulations and ensure that you can legally run this mode! Are you sure that you want to run this?" \
+  0 0
+  EXIT_STATUS=$?
+
+  tput sgr 0 && clear
+
+  if [[ ${EXIT_STATUS} -ne 0 ]]; then
+    et-log "User canceled modem selection. Packet modem will not be started and interface will not be enabled."
+  else
+    case ${modem_choice} in
+      300-packet)
+        et-log "Starting 300 baud packet modem"
+        start_and_wait_for_service et-service-direwolf-300
+      ;;
+      1200-packet)
+        et-log "Starting 1200 baud packet modem"
+        start_and_wait_for_service et-service-direwolf-simple
+      ;;
+      modem73-reliability)
+        et-log "Starting modem73 in reliability mode"
+        start_and_wait_for_service et-service-modem73-reliability
+      ;;
+      modem73-balanced)
+        et-log "Starting modem73 in balanced mode"
+        start_and_wait_for_service et-service-modem73-default
+      ;;
+      modem73-fast)
+        et-log "Starting modem73 in fast mode"
+        start_and_wait_for_service et-service-modem73-fast
+      ;;
+      modem73-faster)
+        et-log "Starting modem73 in faster mode"
+        start_and_wait_for_service et-service-modem73-faster
+      ;;
+      modem73-fastest)
+        et-log "Starting modem73 in fastest mode"
+        start_and_wait_for_service et-service-modem73-fastest
+      ;;
+      *)
+        et-log "No modem specified"
+      ;;
+    esac
+  fi
+fi
+
+et-log "Updating configuration for this session..."
+
+############################################################
+# MODEM73  interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
+IS_MODEM73_RUNNING=`ps -ef | grep [m]odem73`
+if [[ $? -eq 0 ]]; then
+  INTERFACE_MODEM73_ENABLED="yes"
+else
+  INTERFACE_MODEM73_ENABLED="no"
+fi
+sed -i "s|{{ET_RETICULUM_INTERFACE_MODEM73_ENABLED}}|${INTERFACE_MODEM73_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+############################################################
+# AX.25 KISS (Packet Radio) interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
+if [[ -e /tmp/kisstnc ]]; then
+  INTERFACE_AX25KISS_ENABLED="yes"
+else
+  INTERFACE_AX25KISS_ENABLED="no"
+fi
+sed -i "s|{{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}|${INTERFACE_AX25KISS_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+# Update callsign
+[[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE} 
+
+
+############################################################
+# RNode (LoRA) interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
+if [[ -e "${ET_DEVICE_LORA}" ]]; then
+  INTERFACE_RNODE_ENABLED="yes"
+
+  # Determine max power settings
+  et-log "Connecting to device to determine max power..."
+
+  INTERFACE_RNODE_TXPOWER=`rnodeconf -i ${ET_DEVICE_LORA} | awk -F': ' '/Max TX power/ {print $2}' | awk '{print $1}'`
+  if [[ $? -ne 0 ]]; then
+    INTERFACE_RNODE_TXPOWER=${INTERFACE_RNODE_TXPOWER_DEFAULT}
+    et-log "Can't determine max power. Using defaulting ${INTERFACE_RNODE_TXPOWER}."
+  fi
+
+  et-log "Setting max power to ${INTERFACE_RNODE_TXPOWER} dBm."
+  sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}|${INTERFACE_RNODE_TXPOWER}|g" ${RETICULUM_CONF_FILE}
+
+else
+  INTERFACE_RNODE_ENABLED="no"
+fi
+
+sed -i "s|{{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}|${INTERFACE_RNODE_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+
+CMD="rnsd"
+et-log "Starting Reticulum: ${CMD}"
+
+${CMD}

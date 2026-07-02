@@ -1,13 +1,23 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 7 May 2026
-# Updated : 11 May 2026
+# Updated : 12 May 2026
 # Purpose : Debrand Ubuntu
 #
 # Post Conditions:
-# 1. Plymouth splash screen displays on Live USB boot 
+# 1. EmComm Tools splash screen displays on Live USB boot 
+# 2. Installer shows EmComm Tools slideshow
 
 et-log "Debranding Ubuntu..."
+
+et-log "Customizing Installer..."
+apt install \
+  ubiquity-slideshow-ubuntu \
+  -y
+cp -v -r ../overlay/usr/share/ubiquity-slideshow/* /usr/share/ubiquity-slideshow 
+
+et-log "Customizing boot screen..."
+cp -v -r ../overlay/usr/share/plymouth/* /usr/share/plymouth
 
 # A new kernel is required as the initramfs that Cubic uses is
 # based on the base ISO by default.

@@ -122,7 +122,8 @@ standard that provides strong security and works well for radio use
 due to smaller key sizes.
 
 1. Create a primary key for signing using ECC. Replace FIRSTNAME,
-   LASTNAME, and EMAIL (keep the < and > characters).
+   LASTNAME, and EMAIL. NOTE: You MUST keep `<` and `>` characters around
+   your EMAIL. For example: `John Doe <john.doe@email.com>`.
 
     gpg --quick-generate-key "FIRSTNAME LASTNAME <EMAIL>" ed25519 sign 0
 

@@ -1,0 +1,136 @@
+# Author    : Gaston Gonzalez
+# Date      : 28 June 2026
+# Blueprint : Radio-Only Node, transport disabled
+# Purpose   : This confguration is a blueprint for a radio-only node.
+#             It uses modem73 as the radio interface. If a supported
+#             et-lora device is detected, it will be enabled, too.
+
+[reticulum]
+  
+  # If you enable Transport, your system will route traffic
+  # for other peers, pass announces and serve path requests.
+  # This should only be done for systems that are suited to
+  # act as transport nodes, ie. if they are stationary and
+  # always-on. This directive is optional and can be removed
+  # for brevity.
+  
+  enable_transport = False
+  
+  
+  # By default, the first program to launch the Reticulum
+  # Network Stack will create a shared instance, that other
+  # programs can communicate with. Only the shared instance
+  # opens all the configured interfaces directly, and other
+  # local programs communicate with the shared instance over
+  # a local socket. This is completely transparent to the
+  # user, and should generally be turned on. This directive
+  # is optional and can be removed for brevity.
+  
+  share_instance = Yes
+  
+  
+  # If you want to run multiple *different* shared instances
+  # on the same system, you will need to specify different
+  # instance names for each. On platforms supporting domain
+  # sockets, this can be done with the instance_name option:
+  
+  instance_name = default
+
+# You can configure whether Reticulum should discover
+# available interfaces from other Transport Instances over
+# the network. If this option is enabled, Reticulum will
+# collect interface information discovered from the network.
+
+# discover_interfaces = No
+
+
+# You can configure Reticulum to panic and forcibly close
+# if an unrecoverable interface error occurs, such as the
+# hardware device for an interface disappearing. This is
+# an optional directive, and can be left out for brevity.
+# This behaviour is disabled by default.
+
+# panic_on_interface_error = No
+
+
+# If you're connecting to a large external network, you
+# can use one or more external blackhole list to block
+# spammy and excessive announces onto your network. This
+# funtionality is especially useful if you're hosting public
+# entrypoints or gateways. The list source below provides a
+# functional example, but better, more timely maintained
+# lists probably exist in the community.
+
+# blackhole_sources = 521c87a83afb8f29e4455e77930b973b
+
+
+[logging]
+  # Valid log levels are 0 through 7:
+  #   0: Log only critical information
+  #   1: Log errors and lower log levels
+  #   2: Log warnings and lower log levels
+  #   3: Log notices and lower log levels
+  #   4: Log info and lower (this is the default)
+  #   5: Verbose logging
+  #   6: Debug logging
+  #   7: Extreme logging
+  
+  loglevel = 4
+
+
+[interfaces]
+  
+  [[Default Interface]]
+    type = AutoInterface
+    enabled = No
+
+  [[RNode LoRa Interface]]
+    type = RNodeInterface
+    mode = roaming
+    enabled = {{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}
+
+    port = /dev/et-lora
+
+    # Set frequency to 915 MHz
+    frequency = 915000000
+    #frequency = {{ET_RETICULUM_INTERFACE_RNODE_FREQUENCY}}
+
+    # Set LoRa bandwidth to 125 KHz
+    bandwidth = 125000
+    #bandwidth = {{ET_RETICULUM_INTERFACE_RNODE_BANDWIDTH}}
+
+    # Set TX power in dBm
+    #
+    #  7 dBm =    5 mW
+    # 10 dBm =   10 mW
+    # 14 dBm =   25 mW
+    # 17 dBm =   50 mW
+    # 20 dBm =  100 mW
+    # 22 dBm =  158 mW
+    # 24 dBm =  251 mW
+    # 27 dBm =  501 mW
+    # 28 dBm =  631 mW
+    # 30 dBm = 1000 mW (1 W)
+    txpower = {{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}
+
+    # Select spreading factor 8. Valid
+    # range is 7 through 12, with 7
+    # being the fastest and 12 having
+    # the longest range.
+    spreadingfactor = 9
+    #spreadingfactor = {{ET_RETICULUM_INTERFACE_RNODE_SPREADINGFACTOR}}
+
+    # Select coding rate 5. Valid range
+    # is 5 throough 8, with 5 being the
+    # fastest, and 8 the longest range.
+    codingrate = 5
+    #codingrate = {{ET_RETICULUM_INTERFACE_RNODE_CODINGRATE}}
+    
+  [[modem73]]
+    type = Modem73Interface
+    mode = roaming
+    enabled = {{ET_RETICULUM_INTERFACE_MODEM73_ENABLED}}
+    target_host = 127.0.0.1
+    target_port = 8001
+    control_host = 127.0.0.1
+    control_port = 8073
