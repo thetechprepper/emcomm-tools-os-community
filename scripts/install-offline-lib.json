@@ -58,5 +58,10 @@
     "url": "https://github.com/markqvist/Reticulum/releases/download/1.2.5/Reticulum.Manual.pdf",
     "file": "Reticulum.Manual.pdf",
     "dir": "reticulum"
+  },
+  {
+    "url": "https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/emcomm-tools-os-community-20260401-r6-final-6.0.0/NIFOG.2.02_508.FINAL.VERSION.12.03.2024.pdf",
+    "file": "National_Interoperability_Field_Operations_Guide_Version_2.02.pdf",
+    "dir": "gov/fogs"
   }
 ]
