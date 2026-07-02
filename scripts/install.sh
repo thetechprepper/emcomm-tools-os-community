@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 28 June 2026
+# Updated : 3 July 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -97,7 +97,6 @@ exitIfNotRoot
 ./install-et-portaudio.sh
 
 # Instal SIGINT tools
-./install-artemis.sh
 ./install-minimodem.sh
 
 # Install security tools

@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 5
-- **Date**: 14 June 2026
+- **Build**: ETC R7 Build 9
+- **Date**: 2 July 2026
 
 ## Desktop/Launcher Icons
 
@@ -101,12 +101,6 @@
 * [ ] VARA restore
 * [ ] et-mode VARA FM (Winlink)
 * [ ] et-mode VARA HF (Winlink)
-
-## SIGINT
-
-* [ ] Artemis
-  * [ ] Available via application search
-  * [ ] Signal database renders
 
 ## Security
 
