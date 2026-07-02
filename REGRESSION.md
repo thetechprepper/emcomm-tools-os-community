@@ -140,7 +140,8 @@
 ## LoRa
 
 * [ ] LoRa listed in Conky
-* [ ] Heltec v4 PnP
+* [ ] Heltec v4 PnP (/dev/et-lora)
+  * [ ] Offline firmware: rnodeconf --autoinstall --nocheck --fw-version 1.86 
 * [ ] et-reticulum
   * [ ] All blueprints
   * [ ] All permutations of radios and LoRa connected/disconnected

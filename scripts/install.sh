@@ -122,6 +122,7 @@ exitIfNotRoot
 ./install-reticulum.sh
 ./install-meshchat.sh
 ./install-modem73.sh
+./install-offline-rnode-firmware.sh
 
 # Debrand Ubuntu
 ./debrand.sh
