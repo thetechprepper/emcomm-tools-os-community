@@ -3,7 +3,7 @@
 # Author   : Gaston Gonzalez
 # Author   : William McKeehan
 # Date     : 6 October 2024
-# Updated  : 5 September 2025
+# Updated  : 14 June 2025
 # Purpose  : Utility script for dumping system information
 
 function usage() {
@@ -13,6 +13,7 @@ function usage() {
   echo "  et-audio      - Show state of audio interface"
   echo "  et-audio-card - Display audio card and device: <card>,<device>"
   echo "  et-cat        - Show state of CAT control interface"
+  echo "  et-lora       - Show state of LoRa interface"
   echo "  et-gps        - Show state of GPS interface"
   echo "  et-time       - Show if time is synched via GPS"
   echo "  et-mode       - Show current mode"
@@ -143,6 +144,15 @@ case $1 in
     fi
 
     ;; 
+  et-lora)
+    # 1. Check if the symlink was created by the udev rules
+    if [ -e /dev/et-lora ]; then 
+        echo "Connected"; 
+    else
+      echo "Not connected";
+    fi
+
+    ;;
   et-sdr)
     # 1. Check if the symlink was created by the udev rules
     if [ -e /dev/et-sdr ]; then 

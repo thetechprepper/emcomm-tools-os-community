@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 27 March 2026
+# Updated : 15 June 2026
 # Purpose : Install Paranoia File & Text Encryption
 
 set -e
@@ -18,7 +19,7 @@ et-log "Installing ${APP} ${VERSION}..."
 
 if [[ ! -e ${ET_DIST_DIR}/${DOWNLOAD_FILE} ]]; then
 
-  URL="https://paranoiaworks.mobi/download/files/${DOWNLOAD_FILE}"
+  URL="https://paranoiaworks.com/download/pfte_15.0.8-1_amd64.deb"
 
   download_with_retries ${URL} ${DOWNLOAD_FILE}
   mv ${DOWNLOAD_FILE} ${ET_DIST_DIR}

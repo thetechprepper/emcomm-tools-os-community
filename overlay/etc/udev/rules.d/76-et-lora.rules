@@ -1,0 +1,29 @@
+# Author   : Gaston Gonzalez
+# Date     : 14 June 2026
+# Purpose  : udev rules for supported LoRa devices
+#
+# Supported Devices
+# 1. Heltec v4
+# 2. Heltec v3 (disabled due to collection with et-radio devices)
+# 3. LilyGO TTGO v2.1
+#
+# Preconditions:
+# 1. LoRa device connected via USB cable
+#
+# Postconditions:
+# 1. /dev/et-lora created
+
+# Heltec v4
+SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ENV{ET_LORA_DEVICE}=="" \
+    ACTION=="add", \
+    ENV{ET_LORA_DEVICE}="Heltec v4" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
+
+# Heltec v3
+# Uses the CP210x so this will collide with radios already supported by et-radio
+#SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", \
+#    GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
+
+# LilyGO TTGO v2.1
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", ENV{ET_LORA_DEVICE}=="" \
+    ACTION=="add", \
+    ENV{ET_LORA_DEVICE}="LillyGO TTGO v2.1" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"

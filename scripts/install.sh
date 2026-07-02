@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 2 May 2026
+# Updated : 28 June 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -118,3 +118,11 @@ exitIfNotRoot
 
 # Security Patches
 ./patch-copy-fail.sh
+
+# Install Reticulum and related applications
+./install-reticulum.sh
+./install-meshchat.sh
+./install-modem73.sh
+
+# Debrand Ubuntu
+./debrand.sh
