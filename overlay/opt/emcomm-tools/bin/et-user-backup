@@ -1,13 +1,14 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 14 January 2025
-# Updated : 1 February 2025
+# Updated : 3 July 2026
 # Purpose : Back up select files from the user's home directory.
 #
 # The backups are limited to the following:
 # 1. EmComm Tools configuration
 # 2. Winlink email
-# 3. SSH keys
+# 3. Reticulum
+# 4. Meshchat
 
 TODAY=$(date +"%Y%m%d")
 BACKUP_FILE="${HOME}/etc-user-backup-${HOSTNAME}-${TODAY}.tar.gz"
@@ -31,6 +32,8 @@ BACKUP_DIRS=(
   ".config/emcomm-tools"
   ".local/share/emcomm-tools"
   ".local/share/pat"
+  ".reticulum"
+  ".reticulum-meshchat"
 )
 
 tar -czf ${BACKUP_FILE} \
