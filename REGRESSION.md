@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 9
-- **Date**: 2 July 2026
+- **Build**: ETC R7 Build 11
+- **Date**: 5 July 2026
 
 ## Desktop/Launcher Icons
 
@@ -146,3 +146,6 @@
   * [ ] All blueprints
   * [ ] All permutations of radios and LoRa connected/disconnected
 
+## Email
+
+* [ ] Thunderbird installed
