@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 5 July 2026
+# Purpose : Flash the Heltec v4 esp32 LoRa device offline.
+#           Uses that cached firmare in EmComm Tools.
+
+rnodeconf \
+  --autoinstall \
+  --nocheck \
+  --fw-version 1.86 \
+  --baud-flash 115200
