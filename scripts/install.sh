@@ -2,8 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 3 July 2026
-# Purpose : Main installer for EmComm Tools Community (ETC)
+# Updated : 5 July 2026 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
 . ./functions.sh
@@ -126,3 +125,6 @@ exitIfNotRoot
 
 # Debrand Ubuntu
 ./debrand.sh
+
+# Email
+./install-thunderbird.sh
