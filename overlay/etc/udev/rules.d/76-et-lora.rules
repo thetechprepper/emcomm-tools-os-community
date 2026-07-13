@@ -1,11 +1,13 @@
 # Author   : Gaston Gonzalez
 # Date     : 14 June 2026
+# Updated  : 13 July 2026
 # Purpose  : udev rules for supported LoRa devices
 #
 # Supported Devices
 # 1. Heltec v4
-# 2. Heltec v3 (disabled due to collection with et-radio devices)
+# 2. Heltec v3 (disabled due to collision with et-radio devices)
 # 3. LilyGO TTGO v2.1
+# 4. RAK4631
 #
 # Preconditions:
 # 1. LoRa device connected via USB cable
@@ -27,3 +29,8 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ENV{ET_LORA
 SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", ENV{ET_LORA_DEVICE}=="" \
     ACTION=="add", \
     ENV{ET_LORA_DEVICE}="LillyGO TTGO v2.1" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
+
+# RAK4631 (Tested with Delta Plus Nephilim HV 1.14)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="8029", ENV{ET_LORA_DEVICE}=="" \
+    ACTION=="add", \
+    ENV{ET_LORA_DEVICE}="Delta Plus Nephilim" GROUP="dialout", MODE="0660", SYMLINK+="et-lora"
