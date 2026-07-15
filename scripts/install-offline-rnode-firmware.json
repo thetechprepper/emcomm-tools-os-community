@@ -5,5 +5,12 @@
     "dir": "update/1.86",
     "version": "1.86",
     "hash": "75ed47d6a4259e9d073cda680b7323eda420659e117ca4ce42c119b2c9513805"
+  },
+  {
+    "url": "https://github.com/markqvist/RNode_Firmware/releases/download/1.86/rnode_firmware_rak4631.zip",
+    "file": "rnode_firmware_rak4631.zip",
+    "dir": "update/1.86",
+    "version": "1.86",
+    "hash": "99cae226cca349a1f567f0a6c0c9a0fd4cc9500ec079a631b18b8d4c29e7aa9c"
   }
 ]
