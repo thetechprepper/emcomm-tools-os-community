@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 11
-- **Date**: 5 July 2026
+- **Build**: ETC R7 Build 12
+- **Date**: 16 July 2026
 
 ## Desktop/Launcher Icons
 
@@ -143,8 +143,18 @@
 * [ ] Heltec v4 PnP (/dev/et-lora)
   * [ ] Offline firmware: rnodeconf --autoinstall --nocheck --fw-version 1.86 
 * [ ] et-reticulum
-  * [ ] All blueprints
+  * [ ] rnode blueprint
+  * [ ] packet radio blueprint
+  * [ ] transport blueprint
+  * [ ] modem73 blueprint
+  * [ ] local network blueprint
+  * [ ] internet blueprint
   * [ ] All permutations of radios and LoRa connected/disconnected
+
+## Modems
+
+* [ ] modem73
+* [ ] mercury
 
 ## Email
 
