@@ -1,6 +1,6 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 15 July 2026
+# Updated   : 16 July 2026
 # Blueprint : Permament Transport Node
 # Purpose   : This configuration is a blueprint for running a
 #             node that runs as a 24x7 transport node with
@@ -84,7 +84,7 @@
   [[Default Interface]]
     type = AutoInterface
     mode = ap
-    enabled = Yes
+    enabled = yes
 
   [[Packet Radio AX.25 KISS]]
     type = AX25KISSInterface
@@ -145,7 +145,7 @@
    # configure.
 #  [[TCP Client]]
 #    type = TCPClientInterface
-#    enabled = Yes
+#    enabled = yes
 #    mode = boundary
 #    # Set the IP address to the remote TCP Server
 #    target_host = IP_ADDRESS_HERE
