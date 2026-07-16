@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 12 November 2024
-# Updated  : 29 June 2026
+# Updated  : 16 July 2026
 # Purpose  : Stops all EmComm Tools soundcard-based services (i.e. modems)
 #            and radio applications to ensure a clean start for the next mode.
 
@@ -31,7 +31,16 @@ stop_all_services() {
   # Stop modem73 with a sledge hammer (belt and suspenders) as the current
   # 1.0.7 version can hang on exit.
   systemctl --user stop et-service-modem73-default
+  systemctl --user stop et-service-modem73-reliability
+  systemctl --user stop et-service-modem73-fast
+  systemctl --user stop et-service-modem73-faster
+  systemctl --user stop et-service-modem73-fastest
   pkill -9 modem73
+
+  # Stop the Mercury HF modem
+  systemctl --user stop et-service-mercury-balanced
+  systemctl --user stop et-service-mercury-reliability
+  systemctl --user stop et-service-mercury-fast
 
   # Stop VARA with a sledge hammer
   pkill et-winlink
