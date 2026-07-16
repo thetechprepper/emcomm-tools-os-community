@@ -108,6 +108,13 @@ if [[ $? -eq 0 ]]; then
     modem_options+=("modem73-fastest" "Fastest (Lowest Reliability) [QAM64]")
   fi
 
+  HAS_MERCURY_CONFIG=`grep "Mercury HF" ~/.reticulum/config`
+  if [[ $? -eq 0 ]]; then
+    modem_options+=("mercury-reliability" "Max reliability (Slower Speed) [DATAC1]")
+    modem_options+=("mercury-balanced" "Balanced (Reliability and Speed) [DATAC17]")
+    modem_options+=("mercury-fast" "Fast (Low Reliability) [QAM16C2]")
+  fi
+
   modem_choice=$(dialog \
     --clear \
     --title "Reticulum Configuration" \
@@ -156,6 +163,18 @@ if [[ $? -eq 0 ]]; then
         et-log "Starting modem73 in fastest mode"
         start_and_wait_for_service et-service-modem73-fastest
       ;;
+      mercury-reliability)
+        et-log "Starting mercury in reliability mode"
+        start_and_wait_for_service et-service-mercury-reliability
+      ;;
+      mercury-balanced)
+        et-log "Starting mercury in balanced mode"
+        start_and_wait_for_service et-service-mercury-balanced
+      ;;
+      mercury-fast)
+        et-log "Starting mercury in fast mode"
+        start_and_wait_for_service et-service-mercury-fast
+      ;;
       *)
         et-log "No modem specified"
       ;;
@@ -177,6 +196,19 @@ else
   INTERFACE_MODEM73_ENABLED="no"
 fi
 sed -i "s|{{ET_RETICULUM_INTERFACE_MODEM73_ENABLED}}|${INTERFACE_MODEM73_ENABLED}|g" ${RETICULUM_CONF_FILE}
+
+############################################################
+# Mercurcy HF interface updates
+############################################################
+
+# Enable/disable intereface based on PnP device detection
+IS_MERCURY_RUNNING=`ps -ef | grep [m]ercury`
+if [[ $? -eq 0 ]]; then
+  INTERFACE_MERCURY_ENABLED="yes"
+else
+  INTERFACE_MERCURY_ENABLED="no"
+fi
+sed -i "s|{{ET_RETICULUM_INTERFACE_MERCURY_ENABLED}}|${INTERFACE_MERCURY_ENABLED}|g" ${RETICULUM_CONF_FILE}
 
 ############################################################
 # AX.25 KISS (Packet Radio) interface updates
