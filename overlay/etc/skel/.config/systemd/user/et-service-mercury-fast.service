@@ -1,0 +1,20 @@
+# Author  : Gaston Gonzalez
+# Date    : 16 July 2026
+# Purpose : User systemd unit file for EmComm Tools that starts mercury
+#         : in a fast configuration.
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-mercury-fast
+#  Start service      : systemctl --user start et-service-mercury-fast
+#  Stop service       : systemctl --user stop et-service-mercury-fast
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools mercury default service for fast performance
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-mercury fast
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
