@@ -1,7 +1,7 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 5 July 2026
-# Blueprint : RNode-Only Node, transport disabled.
+# Updated   : 16 July 2026
+# Blueprint : RNode-Only Node; transport disabled.
 # Purpose   : This confguration is a blueprint for an RNode-only node. 
 
 
@@ -82,7 +82,7 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = No
+    enabled = no
 
   [[RNode LoRa Interface]]
     type = RNodeInterface

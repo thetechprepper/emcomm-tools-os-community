@@ -1,6 +1,6 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 28 June 2026
+# Updated   : 16 July 2026
 # Blueprint : Radio-Only Node, transport disabled
 # Purpose   : This confguration is a blueprint for a radio-only node.
 #             It uses an AX.25 KISS radio interface. If a supported
@@ -84,7 +84,7 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = No
+    enabled = no
 
   [[Packet Radio AX.25 KISS]]
     type = AX25KISSInterface
