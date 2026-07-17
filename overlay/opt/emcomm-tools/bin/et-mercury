@@ -16,6 +16,11 @@
 # keep usage simple, only three modulation settings have been configured
 # that map to a combination of reliability and speed for most general
 # purpose applications.
+#
+# The DATAC17 and QAM16C2 modes are documented on the RETICULUM.md
+# documenation on the mercury GitHub project, but are not yet supported
+# in version 1.9.9. Disabling these options from now.
+
 
 usage() {
   echo "usage: $(basename $0) <mode>"
@@ -39,9 +44,13 @@ case "${MODE}" in
   ;;
   balanced)
     MODE_INDEX="9"
+    et-log "Mode not yet supported."
+    exit 1
   ;;
   fast)
     MODE_INDEX="10"
+    et-log "Mode not yet supported."
+    exit 1
   ;;
   *)
     et-log "Can't started Mercury modem. Mode not supported."

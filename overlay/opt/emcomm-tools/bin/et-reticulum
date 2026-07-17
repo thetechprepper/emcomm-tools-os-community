@@ -111,8 +111,11 @@ if [[ $? -eq 0 ]]; then
   HAS_MERCURY_CONFIG=`grep "Mercury HF" ~/.reticulum/config`
   if [[ $? -eq 0 ]]; then
     modem_options+=("mercury-reliability" "Max reliability (Slower Speed) [DATAC1]")
-    modem_options+=("mercury-balanced" "Balanced (Reliability and Speed) [DATAC17]")
-    modem_options+=("mercury-fast" "Fast (Low Reliability) [QAM16C2]")
+    # The modes below, DATAC17 and QAM16C2, are documented on the RETICULUM.md
+    # documenation on the mercury GitHub project, but are not yet supported in
+    # version 1.9.9. Disabling these options from the UI for now.
+    #modem_options+=("mercury-balanced" "Balanced (Reliability and Speed) [DATAC17]")
+    #modem_options+=("mercury-fast" "Fast (Low Reliability) [QAM16C2]")
   fi
 
   modem_choice=$(dialog \

@@ -93,5 +93,6 @@
 
     # Index  Mode     Payload Rate (bps)
     # 0      DATAC1   980
-    # 9      DATAC17  1410
+    # 9      DATAC17  1410 (not yet supported)
+    # 10     QAM16C2  3100 (not yet supported)
     bitrate = 980             
