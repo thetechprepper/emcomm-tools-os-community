@@ -125,6 +125,14 @@ if [[ $? -eq 0 ]]; then
     13 70 10 \
     "${modem_options[@]}" \
     2>&1 >/dev/tty)
+  EXIT_STATUS=$?
+
+  tput sgr0 && clear
+
+  if [[ ${EXIT_STATUS} -ne 0 ]]; then
+    et-log "No modem selected"
+    exit ${EXIT_STATUS}
+  fi
 
   dialog \
     --title "Note on Reticulum" \
