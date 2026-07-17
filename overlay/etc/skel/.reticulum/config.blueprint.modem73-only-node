@@ -1,9 +1,9 @@
 # Author    : Gaston Gonzalez
 # Date      : 28 June 2026
+# Updated   : 16 July 2026
 # Blueprint : Radio-Only Node, transport disabled
 # Purpose   : This confguration is a blueprint for a radio-only node.
-#             It uses modem73 as the radio interface. If a supported
-#             et-lora device is detected, it will be enabled, too.
+#             It uses modem73 as the radio interface.
 
 [reticulum]
   
@@ -82,50 +82,8 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = No
+    enabled = no
 
-  [[RNode LoRa Interface]]
-    type = RNodeInterface
-    mode = roaming
-    enabled = {{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}
-
-    port = /dev/et-lora
-
-    # Set frequency to 915 MHz
-    frequency = 915000000
-    #frequency = {{ET_RETICULUM_INTERFACE_RNODE_FREQUENCY}}
-
-    # Set LoRa bandwidth to 125 KHz
-    bandwidth = 125000
-    #bandwidth = {{ET_RETICULUM_INTERFACE_RNODE_BANDWIDTH}}
-
-    # Set TX power in dBm
-    #
-    #  7 dBm =    5 mW
-    # 10 dBm =   10 mW
-    # 14 dBm =   25 mW
-    # 17 dBm =   50 mW
-    # 20 dBm =  100 mW
-    # 22 dBm =  158 mW
-    # 24 dBm =  251 mW
-    # 27 dBm =  501 mW
-    # 28 dBm =  631 mW
-    # 30 dBm = 1000 mW (1 W)
-    txpower = {{ET_RETICULUM_INTERFACE_RNODE_TXPOWER}}
-
-    # Select spreading factor 8. Valid
-    # range is 7 through 12, with 7
-    # being the fastest and 12 having
-    # the longest range.
-    spreadingfactor = 9
-    #spreadingfactor = {{ET_RETICULUM_INTERFACE_RNODE_SPREADINGFACTOR}}
-
-    # Select coding rate 5. Valid range
-    # is 5 throough 8, with 5 being the
-    # fastest, and 8 the longest range.
-    codingrate = 5
-    #codingrate = {{ET_RETICULUM_INTERFACE_RNODE_CODINGRATE}}
-    
   [[modem73]]
     type = Modem73Interface
     mode = roaming

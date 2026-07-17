@@ -1,5 +1,6 @@
 # Author    : Gaston Gonzalez
 # Date      : 14 June 2026
+# Updated   : 16 July 2026
 # Blueprint : Local network only
 # Purpose   : This configuration is a blueprint for running a node that
 #             only interacts with other nodes on the local Ethernet or
@@ -112,4 +113,4 @@
   
   [[Default Interface]]
     type = AutoInterface
-    enabled = Yes
+    enabled = yes

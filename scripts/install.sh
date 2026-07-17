@@ -2,7 +2,8 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 5 July 2026 # Purpose : Main installer for EmComm Tools Community (ETC)
+# Updated : 16 July 2026
+# Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
 . ./functions.sh
@@ -121,6 +122,7 @@ exitIfNotRoot
 ./install-reticulum.sh
 ./install-meshchat.sh
 ./install-modem73.sh
+./install-mercury.sh
 ./install-offline-rnode-firmware.sh
 
 # Debrand Ubuntu
