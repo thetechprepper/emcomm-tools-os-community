@@ -86,6 +86,7 @@
   # See https://github.com/Rhizomatica/mercury/blob/mercuryv2/docs/RETICULUM.md
   [[Mercury HF]]
     type = TCPClientInterface
+    mode = roaming
     interface_enabled = {{ET_RETICULUM_INTERFACE_MERCURY_ENABLED}}
     kiss_framing = yes 
     target_host = 127.0.0.1
