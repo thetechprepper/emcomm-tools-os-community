@@ -143,7 +143,8 @@ if [[ $? -eq 0 ]]; then
   tput sgr 0 && clear
 
   if [[ ${EXIT_STATUS} -ne 0 ]]; then
-    et-log "User canceled modem selection. Packet modem will not be started and interface will not be enabled."
+    et-log "User does not want to start modem given required use of encryption."
+    exit ${EXIT_STATUS}
   else
     case ${modem_choice} in
       300-packet)
