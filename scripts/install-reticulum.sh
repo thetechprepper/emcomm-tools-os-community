@@ -1,10 +1,10 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 13 February 2026
-# Updated : 13 July 2026
+# Updated : 19 July 2026
 # Purpose : Install Reticulum
 
-RNS_VERSION=1.3.8
+RNS_VERSION=1.3.9
 
 et-log "Installing Python3..."
 apt install \
