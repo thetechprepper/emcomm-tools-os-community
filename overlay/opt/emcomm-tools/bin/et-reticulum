@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
-# Updated : 17 July 2026
+# Updated : 21 July 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -117,22 +117,22 @@ if [[ $? -eq 0 ]]; then
     # version 1.9.9. Disabling these options from the UI for now.
     #modem_options+=("mercury-balanced" "Balanced (Reliability and Speed) [DATAC17]")
     #modem_options+=("mercury-fast" "Fast (Low Reliability) [QAM16C2]")
-  fi
 
-  modem_choice=$(dialog \
-    --clear \
-    --title "Reticulum Configuration" \
-    --menu "Select a modem" \
-    13 70 10 \
-    "${modem_options[@]}" \
-    2>&1 >/dev/tty)
-  EXIT_STATUS=$?
+    modem_choice=$(dialog \
+      --clear \
+      --title "Reticulum Configuration" \
+      --menu "Select a modem" \
+      13 70 10 \
+      "${modem_options[@]}" \
+      2>&1 >/dev/tty)
+    EXIT_STATUS=$?
 
-  tput sgr0 && clear
+    tput sgr0 && clear
 
-  if [[ ${EXIT_STATUS} -ne 0 ]]; then
-    et-log "No modem selected"
-    exit ${EXIT_STATUS}
+    if [[ ${EXIT_STATUS} -ne 0 ]]; then
+      et-log "No Mercuy modem selected"
+      exit ${EXIT_STATUS}
+    fi
   fi
 
   dialog \
@@ -187,9 +187,6 @@ if [[ $? -eq 0 ]]; then
       mercury-fast)
         et-log "Starting mercury in fast mode"
         start_and_wait_for_service et-service-mercury-fast
-      ;;
-      *)
-        et-log "No modem specified"
       ;;
     esac
   fi
