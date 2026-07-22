@@ -117,7 +117,9 @@ if [[ $? -eq 0 ]]; then
     # version 1.9.9. Disabling these options from the UI for now.
     #modem_options+=("mercury-balanced" "Balanced (Reliability and Speed) [DATAC17]")
     #modem_options+=("mercury-fast" "Fast (Low Reliability) [QAM16C2]")
+  fi
 
+  if [[ ${#modem_options[@]} -gt 0 ]]; then
     modem_choice=$(dialog \
       --clear \
       --title "Reticulum Configuration" \
@@ -130,7 +132,7 @@ if [[ $? -eq 0 ]]; then
     tput sgr0 && clear
 
     if [[ ${EXIT_STATUS} -ne 0 ]]; then
-      et-log "No Mercuy modem selected"
+      et-log "No modem selected"
       exit ${EXIT_STATUS}
     fi
   fi
