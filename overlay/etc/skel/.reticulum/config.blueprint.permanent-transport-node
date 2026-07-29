@@ -140,17 +140,14 @@
     codingrate = 5
     #codingrate = {{ET_RETICULUM_INTERFACE_RNODE_CODINGRATE}}
 
-   # EmComm Tools is designed to be an offline platform, so the 
-   # TCP Client interface is left as an example that user must
-   # configure.
-#  [[TCP Client]]
-#    type = TCPClientInterface
-#    enabled = yes
-#    mode = boundary
-#    # Set the IP address to the remote TCP Server
-#    target_host = IP_ADDRESS_HERE
-#    target_port = 4242
-#    # If the remote TCP Server uses IFAC (Interface Access Codes),
-#    # set the network_name and passphrase.
-#    #network_name = NETWORK_NAME_HERE
-#    #passphrase = PASSPHRASE_HERE
+  # EmComm Tools is designed to be an offline platform, so the 
+  # TCP Client interface is left as an example that user must
+  # configure.
+  [[TCP Client to TTP Gateway]]
+    type = TCPClientInterface
+    mode = boundary
+    enabled = yes
+    target_host = rns.thetechprepper.com
+    target_port = 11312
+    network_name = ttp_internal
+    passphrase = resistance202606
