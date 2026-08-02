@@ -1,0 +1,9 @@
+(sample format)
+K7ABC  Lenny     ID (NCS)
+K6XYZ  Squiggy   ID (ANCS)
+W3DEF  Richie    WA 
+K7GHI  Potsie    OR
+A5JK   Fonz      TX RELAY (or RLY)
+N7LMN  Ralph     WY
+N7OPQ  Laverne   ID RRR TFC
+N6RST  Shirley   MT

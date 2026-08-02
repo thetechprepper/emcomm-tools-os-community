@@ -1,0 +1,42 @@
+[
+  {
+    "url": "https://www.arrl.org/files/file/Regulatory/Band%20Chart/Hambands4_Color_11x8_5.pdf",
+    "file": "Hambands4_Color_11x8_5.pdf",
+    "dir": "bands/ham-radio"
+  },
+  {
+    "url": "https://ham.packet-radio.net/packet/bpq32/bpq32-guide/bpq-user-and-sysop-commands.pdf",
+    "file": "bpq-user-and-sysop-commands.pdf",
+    "dir": "bbs/bpq"
+  },
+  {
+    "url": "https://www.icomamerica.com/api/download.php?page_id=171&fl=JTJGdXBsb2FkcyUyRlVTQV9CYW5kX1BsYW4lMkZCYW5kX1BsYW5fTWFwJTJGQW1hdHVlckdyaWRTcXVhcmVNYXBfVVNBJTVCMTMlNUQucGRm",
+    "file": "icom-us-grid.pdf",
+    "dir": "geo/maidenhead"
+  },
+  {
+    "url": "https://amrron.com/wp-content/uploads/2024/03/AmRRON-Intelligence-Brief-White-Paper_MAR_2024.pdf",
+    "file": "AmRRON-Intelligence-Brief-White-Paper_MAR_2024.pdf",
+    "dir": "nets/amrron"
+  },
+  {
+    "url": "https://amrron.com/wp-content/uploads/2023/02/GPG-PGP_Signature_Verification_Guidance_5-25-23.pdf",
+    "file": "GPG-PGP_Signature_Verification_Guidance_5-25-23.pdf",
+    "dir": "nets/amrron"
+  },
+  {
+    "url": "https://amrron.com/wp-content/uploads/2023/02/AmRRON_Actual_ECC_PUBLIC.asc",
+    "file": "AmRRON_Actual_ECC_PUBLIC.asc",
+    "dir": "nets/amrron"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/s2underground/GhostNet/1a2d08d579813e54967af06f1a871e7fa0ce583f/GhostNet_Version_1.5.pdf",
+    "file": "GhostNet_Version_1.5.pdf",
+    "dir": "nets/ghostnet"
+  },
+  {
+    "url": "https://www.swpc.noaa.gov/sites/default/files/images/NOAAscales.pdf",
+    "file": "NOAAscales.pdf",
+    "dir": "space-weather"
+  }
+]

@@ -1,5 +1,60 @@
 # EmComm Tools OS Community Release
 
+## 2026.04.01.R6 (6.0.0) Release Notes
+
+* Tier 1 radio PnP support
+  * Updated notes for IC-7200 and automatically set ALSA audio levels
+  * Updated notes for IC-7300 and automatically set ALSA audio levels
+* Tier 2 radio PnP support
+  * Added Xiegu X6200 support
+* SDR
+  * Added SDR++ application
+* HF Prediction
+  * Added et-winlink-find - Locate Winlink stations near a geographic area
+  * Updated et-voacap - Add support for VARA HF 500, 2300, and 2750 modes
+* et-predict-app 1.5.2
+  * Added VARA HF modes
+  * Fixed dark mode
+  * Added 24-hour prediction
+  * Added Maidenhead grid search
+  * Changed default zoom level to work better with global maps
+* Fldigi suite
+  * Added flmsg and flamp
+  * Added AmRRON forms to fldigi
+  * Added zero configuration and PnP support for flmsg and flamp
+* et-api - Updated version 1.3.0
+* Winlink
+  * Enabled listener by default for all modes to support P2P
+* WSJT-X
+  * Added PnP support for WSJT-X
+* WINE
+  * Updated add-on script to set registry keys
+* SIGINT
+  * Added Artemis (offline signal database)
+* Misc
+  * Added minimodem
+  * Added Ventoy
+* Security
+  * Added GNU Privacy Agent (gpg)
+  * Added AmRRON's public key
+  * Added Paranoia File & Text Encryption
+* Data Sets
+  * Offline FCC data set updated as of March 2026
+  * Offline SSN data set updated as of February 2026
+  * Offline Winlink RMS data set updated as of February 2026
+  * Added support offline Canadian callsigns (if address available)
+* Offline Reference
+  * S2 Underground - GhostNet
+  * AmRRON - AIB resources
+  * U.S. Maidenhead grid square
+  * BPQ cheatsheet and U.S. node list
+  * gpg quick reference
+  * NATO phonetics quick reference
+  * NOAA Weather Radio quick reference
+  * Steganography quick reference
+* Bug fixes
+  * et-[uv-pro|vr-n76|th-d74] - Added better check for MAC address
+
 ## 2025.11.28.R5 (5.0.0) Release Notes
 
 * Tier 1 radio PnP support
@@ -13,7 +68,7 @@
   * dump1090 - ADS-B server
   * et-aircraft-app 1.1.0 - Offline aircraft tracking
   * SDR PnP support  - RTL-SDR v2, v3 and v4, ADS-B SDR
-* Offline Raseter Map Engine
+* Offline Raster Map Engine
   * mbtileserver 0.11.0 - Map tile server
   * mbutil 0.3.0 - Tool for creating raster tilesets in `.mbtiles` format
   * Open Street Maps tileset for US (zoom level 0 through 11)

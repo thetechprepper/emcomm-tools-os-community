@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 2 October 2025
-# Updated : 5 October 2025
+# Updated : 15 March 2026
 # Purpose : Wrapper script for starting fldigi with PnP support
 #
 # Preconditions
@@ -65,8 +65,7 @@ update-config () {
 
     if [[ ! -e ${FLDIGI_CONF_DIR} ]]; then
       et-log "${FLDIGI_CONF_DIR} does not exist. Creating it from template."
-      mkdir -v ${FLDIGI_CONF_DIR}
-      cp -v /etc/skel/.fldigi/fldigi_def.xml ${FLDIGI_CONF_DIR}
+      cp -r -v /etc/skel/.fldigi ${HOME}
     fi
 
     [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"

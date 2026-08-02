@@ -1,0 +1,352 @@
+<!-- --------	Begin file header ----------
+Created:	20231228
+Modified:	20241126
+Author: 	OBH
+Revision:	5.1
+Change Log:
+	v5.0 - Update for v5 SOI
+	v5.1 - Fix so that green status isn't transmitted by default, fix map pin default, general cleanup for readability, significantly reduced instructions for each field
+-----------		End file header   ---------- -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AmRRON Status Report 5.1 </title>
+<meta name="EDITABLE" content="true">
+<meta name="Menu_Item" content="AmRRON_Statrep_V5.1">
+<body dir="LTR" lang="en-US">
+<form>
+  <!----------------------- First table - mostly text input----------------------->
+  <table width="760" cellspacing="0" cellpadding="2" border=".5">
+	<tbody><tr valign="top"> 
+      <td colspan="3" valign="top" > <p style="margin-right: 0in" align="CENTER"> <font size="5" face="Arial, Helvetica, sans-serif"><b>AmRRON Status Report <font size="2">
+        </b><br>
+        <em><font size="2">  v5.1 Use this form to report general conditions at a specified location or region based on personal or reliable sources.
+          </b><br>
+          <em><font size="2">   Sample file naming protocol: "CALL-ST-RR-YYMMDD-HHMMZ-REPORT"                   
+          </font> 
+        </em></font></td>
+    </tr>
+	<!----------------------- Start of first row in table ----------------------->
+    <tr valign="top">
+		<!----------------------- To field----------------------->
+			<td width="242"><span style="background: #e0e0e0"> <font face="Arial, Helvetica, sans-serif"> 
+			<b><font size="3">1a. To: </font></b><em><font size="2">(Recipient)</font></em><br>
+			<input name="L01a" type="TEXT" id="L01a" size="25">
+			</font></span></td>
+		<!----------------------- From field----------------------->
+			<td width="242"> <span style="background: #e0e0e0">
+				<font face="Arial, Helvetica, sans-serif"> <b><font size="3">1b. From:</font></b> <em><font size="2">(Sender)</font></em><br>	
+				<input name="L01b" type="TEXT" id="L01b" size="25">
+			</font></span></td>
+		<!----------------------- Size and Scope dropdown field----------------------->
+			<td width="243"><span style="background: #e0e0e0"> <font face="Arial, Helvetica, sans-serif"> 
+				<b><font size="3">2. Size and Scope:</font></b><br>        
+				</font><font face="Arial, serif"><font face="Arial, serif"><font style="font-size: 11pt;"> 
+				<select name="L02" id="L02">		  
+					<option value=""selected="selected">My Location</option>
+					<option value="C">My Community</option>
+					<option value="N">My County</option>
+					<option value="R">My Region</option>
+					<option value="O">Other Locaton</option>          
+				</select>
+        </font></font></font>
+		<font face="Arial, Helvetica, sans-serif"> </font></span></td>
+    </tr> 
+    <!----------------------- End of first row in table ----------------------->
+	
+    <!----------------------- Start of second row in table ----------------------->	
+    <tr valign="top">
+		<!----------------------- DTG Field ----------------------->
+		<td width="242"><span style="background: #e0e0e0"> <font face="Arial, Helvetica, sans-serif"> 
+			<b><font size="3">3. DTG: </font></b><em><font size="2">(YYMMDD-HHMMz)</font></em><br>
+			<input name="L03" type="TEXT" id="L03" size="25">
+		</font></span></td>
+		<!----------------------- State Field ----------------------->
+		<td width="242"> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"> <b><font size="3">
+			4. State:</font></b> <em><font size="2">(State)</font></em><br>	
+			<input name="L04" type="TEXT" id="L04" size="10">
+			</font></span></td>
+		<!----------------------- Grid Field ----------------------->    
+		<td width="242"> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"> <b><font size="3">
+			5. Grid:</font></b> <em><font size="2">(Of reported locaton)</font></em><br>	
+			<input name="L05" type="TEXT" id="L05" size="10">
+			</font></span>
+	</tr>
+  </tbody></table>
+	<!----------------------- End of first table ----------------------->
+	
+	<!----------------------- Start of second table ----------------------->
+	<table width="760px" cellspacing="0" cellpadding="4" border="1">
+    <tbody>
+	<!----------------------- Start of first row in table ----------------------->
+	<tr valign="top"> 
+		<!----------------------- Map Pin Color Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">6. Map Pin:</font></b> <em><font size="2"></font></em><br>
+			<select name="L06" id="L06">
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>
+			</select>
+        </font></span></td>
+		<!----------------------- Commercial Power Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">7. Commercial Power:</font></b><br>
+			<select name="L07" id="L07">
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>  
+				<option value="U">Unknown</option> 
+			</select>
+        </font></span></td>
+		<!----------------------- Public Water Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">8. Public Water:</font></b><br>
+			<select name="L08" id="L08"> 
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>  
+				<option value="U">Unknown</option> 
+			</select>
+        </font></span></td>
+    </tr>
+	<!----------------------- End of first row in table ----------------------->
+	<!----------------------- Start of second row in table ----------------------->
+    <tr valign="top"> 
+		<!----------------------- Medical Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">9. 
+        Medical:</font></b><em><font size="2"> </font></em><br>
+			<select name="L09" id="L09">
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>   
+				<option value="U">Unknown</option> 
+			</select>          
+        </font></span></td>
+		<!----------------------- OTA Comms Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">10. Over Air Comms:</font></b><font size="2">
+		</font></em><br>
+        <select name="L10" id="L10">
+			<option value=""selected="selected">Green</option>
+			<option value="Y">Yellow</option>
+			<option value="R">Red</option>  
+			<option value="U">Unknown</option> 		  
+        </select>
+        </font></span></td>
+		<!----------------------- Travel Conditions Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">11. Travel Conditions:</font></b><br>
+			<select name="L11" id="L11">
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>  
+				<option value="U">Unknown</option> 		  
+			</select>
+        </font></span></td>
+    </tr>
+	<!----------------------- End of second row in table ----------------------->
+	<!----------------------- Start of third row in table ----------------------->
+	<tr valign="top">
+		<!----------------------- Internet Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">12. Internet:</font></b><br>
+        <select name="L12" id="L12">
+			<option value=""selected="selected">Green</option>
+			<option value="Y">Yellow</option>
+			<option value="R">Red</option>  
+			<option value="U">Unknown</option> 
+        </select>
+        </font></span></td>
+		<!----------------------- Fuel Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">13. Fuel:</font></b><font size="2"></font></em><br>
+        <select name="L13" id="L13">
+			<option value=""selected="selected">Green</option>
+			<option value="Y">Yellow</option>
+			<option value="R">Red</option>  
+			<option value="U">Unknown</option> 
+        </select>
+        </font></span></td>
+		<!----------------------- Food Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">14. Food:</font></b><br>
+			<select name="L14" id="L14">          
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>  
+				<option value="U">Unknown</option>   
+			</select>
+        </font></span></td>
+    </tr>
+	<!----------------------- End of third row in table ----------------------->
+	<!----------------------- Start of fourth row in table ----------------------->
+    <tr valign="top">
+		<!----------------------- Criminal Activity Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">15. Criminal Activity:</font></b><br>
+			<select name="L15" id="L15">          
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>  
+				<option value="U">Unknown</option> 
+		    </select>
+        </font></span></td>
+		<!----------------------- Civil Field ----------------------->
+		<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">16. Civil:</font></b></b><font size="2"></font></em><br>
+			<select name="L16" id="L16">           
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option>  
+				<option value="U">Unknown</option> 
+		    </select>
+        </font></span></td>
+		<!----------------------- Political Field ----------------------->
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">17. Political:</font></b></b><font size="2"></font></em><br>
+			<select name="L17" id="L17">
+				<option value=""selected="selected">Green</option>
+				<option value="Y">Yellow</option>
+				<option value="R">Red</option> 
+				<option value="U">Unknown</option> 
+			</select>
+        </font></span></td>
+    </tr>
+	<!----------------------- End of fourth row in table ----------------------->
+	</tbody></table>
+	<!----------------------- End of second table ----------------------->
+	<!----------------------- Start of third table ----------------------->
+	<table width="760px" cellspacing="0" cellpadding="4" border="1">
+	<tbody>
+		<tr valign="top"> 
+			<td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">18. Brief remarks:</font></b> <em><font size="2">(If reporting conditions other than your own location, enter the City and State before any remarks.)</font></em><br>
+			<textarea name="L18" cols="99" rows="8" id="L18" wrap="SOFT"></textarea>
+			</font></span></td>
+		</tr>
+		<tr valign="top"> 
+		<td><font face="Arial, Helvetica, sans-serif"><b><font size="4">End of Report</font></b><br>
+			<font size="1"> Revised 20241127 OBH</font></font></td>
+		</tr>
+	</tbody></table>
+ <!----------------------- End of third table ----------------------->
+</form>
+<br>
+<p style="page-break-after: always;">&nbsp;</p>
+
+<!----------------------- Start of fourth table ----------------------->
+<table width="760px" cellspacing="0" cellpadding="4" border="1">
+  <!----------------------- Start of first row ----------------------->
+  	<tbody>
+	<tr>
+		<td colspan="4" valign="TOP"> <p style="margin-right: 0in" align="CENTER"> <font size="5" face="Arial, sans-serif"> 
+          <b>Instructions</b></font> </p>
+		  
+		</td>
+	</tr>
+	<!----------------------- End of first row ----------------------->
+	<!----------------------- Start of second row ----------------------->
+	<!----------------------- Start of color descriptions ----------------------->
+	<tr>    	
+    <td> <ol>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+			Category or service is available, and/or not deviating from the norm.   
+		</font>
+		<BR> 		 		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+          Interruption expected, Moderate, Caution, Not Ideal relative to the norm.   
+		</font>
+		<BR>		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+          Complete disruption of service or disastrous condition of service or functionality, and failure relative to the norm.
+		</font>
+		<BR>            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          Unknown, Unable to determine, Information not available
+		</font> 
+		<BR>
+		<BR>
+	<!----------------------- End of color descriptions ----------------------->	  
+	<!----------------------- Start of field descriptions ----------------------->
+	<!----------------------- Start of numbered list ----------------------->
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>TO (Recipient)</strong>: 
+          Call sign, unit, or party intended to be the recipient.
+		</font><BR>
+        <strong><font size="3" face="Arial, Helvetica, sans-serif">FROM (Sender):</font></strong> 
+          <font size="3" face="Arial, Helvetica, sans-serif">Call sign, unit, or party generating the report. 
+		  </font>
+	</li>
+	<li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Message Precedence:</strong>
+          Select option which best reflects priority or urgency.</font>
+	</li>
+    <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>DTG (Date Time Group):</strong>
+          YYMMDD-HHMMz. (Example: 230929-0100z)</font>
+	</li>
+	<li><font size="3" face="Arial, Helvetica, sans-serif"><strong>State:</strong>
+          2 digit abbreviation of the State for which the StatRep is referring.
+		</font>
+	</li>
+     <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Grid:</strong>
+          Maiden Head grid of location being reported.
+		  </font>
+	</li>
+	<li>
+		<strong><font size="3" face="Arial, Helvetica, sans-serif">Map Pin: </font></strong><font size="3" face="Arial, Helvetica, sans-serif">Should reflect the most degraded (yellow or red) category in your STATREP, to reflect partial or total disruption in one of the categories/services. If reporting a location other than your own, include the City and State in the remarks field. 
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Commercial Power:</strong>
+          Select to reflect status electrical grid in the location you are reporting.
+		</font>
+	</li>
+    <li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Public Water:</strong>
+          Select to describe status of public water utilities.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Medical:</strong>
+          Select to describe availability of medical support. Doctors, hospitals, etc.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Over Air Comms:</strong>
+          Select to describe availability of public communications such as Cellphone, TV and radio.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Travel Conditions:</strong>
+          Select to describe ability for road travel and transport of goods at reported location. 
+		</font>
+	</li>	  
+    <li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Internet:</strong>
+          Select to describe availability of internet service at reported location.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Fuel:</strong>
+          Select to describe the availability of fuel (gasoline, diesel, propane, etc) in the reported area.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Food Availability:</strong>
+          Select to describe the availability of food at the reported location.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Criminal Activity:</strong>
+          Select to describe the level of criminal activity in the reported location.
+		</font>
+	</li>
+	<li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Civil:</strong>
+          Select to describe the mindset and actions of the general population at the reported location.
+		</font>
+	</li> 
+    <li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Political:</strong>
+          Select to describe the mindset and actions of politicians at the reported location.
+		</font>
+	</li>
+    <li>
+		<font size="3" face="Arial, Helvetica, sans-serif"><strong>Brief "NECESSARY" clarifying remarks:</strong>
+          For brevity this space is typically blank. If necessary to add text please keep it succinct. If significant details are required, submit a separate SitRep. If this SitRep is reporting on a location other than your own, include the City and State in these remarks<br>
+          <br>
+		</font>
+	</li>
+      </ol></td>
+	</tr>
+	</tbody></table>
+</body></html>

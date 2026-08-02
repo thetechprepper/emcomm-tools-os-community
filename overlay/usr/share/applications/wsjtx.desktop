@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=wsjtx
+Comment=Amateur Radio Weak Signal Operating
+Exec=/opt/emcomm-tools/bin/et-wsjtx start
+Icon=wsjtx_icon
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=AudioVideo;Audio;HamRadio;
+StartupNotify=true

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Artemis
+Comment=Artemis Application
+Exec=/opt/artemis/app.bin
+Icon=/opt/artemis/images/artemis_icon.svg
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupNotify=true

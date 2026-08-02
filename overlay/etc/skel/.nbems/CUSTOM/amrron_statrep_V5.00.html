@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AmRRON Status Report 5.00 </title>
+<meta name="EDITABLE" content="true">
+<meta name="Menu_Item" content="AmRRON_Statrep_V5.00">
+<body dir="LTR" lang="en-US">
+<form>
+  <!-- Form Input Tables -->
+  <table width="760" cellspacing="0" cellpadding="2" border=".5">
+    <!--DWLayoutTable-->
+    <tbody><tr valign="top"> 
+      <td colspan="3" valign="top" > <p style="margin-right: 0in" align="CENTER"> <font size="5" face="Arial, Helvetica, sans-serif"><b>AmRRON Status Report <font size="2">
+        </b><br>
+        <em><font size="2">  v5.00 Use this form to report general conditions at a specified location or region based on personal or reliable sources.
+          </b><br>
+          <em><font size="2">   Sample file naming protocol: "CALL-ST-RR-YYMMDD-HHMMZ-REPORT"</
+                    
+          </font> 
+        </em></font></td>
+    </tr>
+    <tr valign="top"> 
+      <td width="242"><span style="background: #e0e0e0"> <font face="Arial, Helvetica, sans-serif"> 
+        <b><font size="3">1a. To: </font></b><em><font size="2">(Recipient)</font></em><br>
+        <input name="L01a" type="TEXT" id="L01a" size="25">
+        </font></span></td>
+		<td width="242"> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"> <b><font size="3">
+	  	1b. From:</font></b> <em><font size="2">(Sender)</font></em><br>	
+        <input name="L01b" type="TEXT" id="L01b" size="25">
+        </font>
+		</span>
+		</td>
+	  <td width="243"><span style="background: #e0e0e0"> <font face="Arial, Helvetica, sans-serif"> 
+        <b><font size="3">2. Size and Scope:</font></b><br>        
+        </font><font face="Arial, serif"><font face="Arial, serif"><font style="font-size: 11pt;"> 
+        <select name="L02" id="L02">
+		
+		  
+          <option value="L"selected="selected">My Location</option>
+          <option value="C">My Community</option>
+          <option value="N">My County</option>
+          <option value="R">My Region</option>
+          <option value="O">Other Locaton</option>          
+        </select>
+        </font></font></font><font face="Arial, Helvetica, sans-serif"> </font></span></td>
+    </tr>
+      
+      
+      
+      
+          <tr valign="top"> 
+      <td width="242"><span style="background: #e0e0e0"> <font face="Arial, Helvetica, sans-serif"> 
+        <b><font size="3">3. DTG: </font></b><em><font size="2">(YYMMDD-HHMMz)</font></em><br>
+        <input name="L03" type="TEXT" id="L03" size="25">
+        </font>
+        </span>
+            </td>
+		<td width="242"> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"> <b><font size="3">
+	  	4. State:</font></b> <em><font size="2">(State)</font></em><br>	
+        <input name="L04" type="TEXT" id="L04" size="10">
+        </font>
+		</span>
+		</td>
+          		<td width="242"> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"> <b><font size="3">
+	  	5. Grid:</font></b> <em><font size="2">(Of reported locaton)</font></em><br>	
+        <input name="L05" type="TEXT" id="L05" size="10">
+        </font>
+		</span>  
+
+
+
+    </tr>
+  </tbody></table>
+  <table width="760px" cellspacing="0" cellpadding="4" border="1">
+    <tbody><tr valign="top"> 
+	
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">6. 
+        Map Pin:</font></b> <em><font size="2"></font></em><br>
+        <select name="L06" id="L06">
+		
+		  
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>
+           
+        </font></span></td>
+		
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">7. 
+        Commercial Power:</font></b><br>
+        <select name="L07" id="L07">
+		
+        
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+        </font></span></td>
+		
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">8. Public Water:</font></b><br>
+        <select name="L08" id="L08">
+		
+         
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+        </font></span></td>
+		
+    </tr>
+    <tr valign="top"> 
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">9. 
+        Medical:</font></b><em><font size="2"> </font></em><br>
+        <select name="L09" id="L09">
+			
+         
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>   
+          <option value="U">Unknown</option> 
+        
+          
+        </font></span></td>
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">10. 
+        Over Air Comms:</font></b><font size="2">
+		</font></em><br>
+        <select name="L10" id="L10">
+		
+         
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">11. Travel Conditions:</font></b><br>
+        <select name="L11" id="L11">
+		
+       
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+    </tr>
+	
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">12. 
+        Internet:</font></b><br>
+        <select name="L12" id="L12">
+		
+              
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">13. 
+        Fuel:</font></b><font size="2"> </font></em><br>
+        <select name="L13" id="L13">
+		
+          
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">14. Food:</font></b><br>
+        <select name="L14" id="L14">
+		
+          
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+    </tr>
+    <tr valign="top"> 
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">15. Criminal Activity:</font></b><br>
+        <select name="L15" id="L15">
+		
+          
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">16. 
+        Civil:</font></b></b><font size="2"></font></em><br>
+        <select name="L16" id="L16">
+		
+           
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option>  
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">17. Political:</font></b></b><font size="2">
+	  </font></em><br>
+        <select name="L17" id="L17">
+		
+          
+          <option value="G"selected="selected">Green</option>
+          <option value="Y">Yellow</option>
+          <option value="R">Red</option> 
+          <option value="U">Unknown</option> 
+		  
+        </select>
+        </font></span></td>
+    </tr>
+	    </tr>
+  </tbody></table>
+  <table width="760px" cellspacing="0" cellpadding="4" border="1">
+    <tbody><tr valign="top"> 
+      <td> <span style="background: #e0e0e0"><font face="Arial, Helvetica, sans-serif"><b><font size="3">18. Brief remarks:</font></b> <em><font size="2">(If reporting conditions other than your own location, enter the City and State before any remarks.)</font></em><br>
+        <textarea name="L18" cols="99" rows="3" id="L18" wrap="SOFT"></textarea>
+        </font></span></td>
+    </tr>
+	<tr valign="top"> 
+      <td><font face="Arial, Helvetica, sans-serif"><b><font size="4">End of Report</font></b><br>
+        <font size="1"> Revised 20231024 PRW</font></font></td>
+    </tr>
+ </tbody></table>
+</form>
+<br>
+<p style="page-break-after: always;">&nbsp;</p>
+
+<table width="760px" cellspacing="0" cellpadding="4" border="1">
+  <!-- Instruction Table -->
+  	<tbody><tr>
+		<td colspan="4" valign="TOP"> <p style="margin-right: 0in" align="CENTER"> <font size="5" face="Arial, sans-serif"> 
+          <b>Instructions</b></font> </p>
+		  
+		</td>
+	</tr>
+	<tr>
+    	
+    <td> <ol>
+    <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    Category or service is available, and/or not deviating from the norm.   </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+          Interruption expected, Moderate, Caution, Not Ideal relative to the norm.   </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+          Complete disruption of service or disastrous condition of service or functionality, and failure relative to the norm. </font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          Unknown, Unable to determine, Information not available   </font></li> <BR> <BR>
+		  
+		
+		<li><font size="3" face="Arial, Helvetica, sans-serif"><strong>TO (Recipient)</strong>: 
+          Call sign, unit, or party intended to be the recipient.</font></li>
+        <strong><font size="3" face="Arial, Helvetica, sans-serif">FROM (Sender):</font></strong> 
+          <font size="3" face="Arial, Helvetica, sans-serif">
+          Call sign, unit, or party generating the report. </font></li>
+		  <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Message Precedence:</strong>
+          Select option which best reflects priority or urgency.</font></li>
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>
+          DTG (Date Time Group):</strong>
+          YYMMDD-HHMMz. (Example: 230929-0100z)
+          .</font></li>
+            
+           <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>State:</strong>
+          2 digit abbreviation of the State for which the StatRep is referring.</font></li>
+		  
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Grid:</strong>
+          Maiden Head grid of location being reported.</font></li>
+		  
+      		  
+        <li><strong><font size="3" face="Arial, Helvetica, sans-serif">Map Pin: </font></strong><font size="3" face="Arial, Helvetica, sans-serif">Should reflect the most degraded (yellow or red) category in your STATREP, to reflect partial or total disruption in one of the categories/services. If reporting a location other than your own, include the City and State in the remarks field. </font></li>
+		  
+		  
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Commercial Power:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow,</strong>” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” 
+          to reflect status electrical grid in the location you are reporting.
+          </font></li>
+      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates commercial power is up at time of report.   </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+          indicates intermittent or expected outages.   </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+          indicates loss of commercial power at the time of the report.</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+		  
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Public Water:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe status of public water utilities.</font></li>
+		  
+       <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates public water is available at the time of the report.   </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+          indicates water is available, but treatment, boiling, or other method is necessary to make water safe to drink. </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+          indicates total disruption of public water at the location being reported, at the time of the report.</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+		  
+      
+ 		  
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Medical:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe availability of medical support. Doctors, hospitals, etc.</font></li>
+		  
+             <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates all normal medical services are available and functional. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+          indicates some disruptions from the community norm.  For example, clinics and hospitals are open, but no ambulance services.  Clinics may be closed requiring traveling farther distances to clinics which are operating normally.  Or services/facilities available, but overwhelmed and long wait times due to shortage of staff or mass casualty care. </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        indicates total disruption of medical services, with confirmed reports that clinics and hospitals are not available or functioning..</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+      
+      
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Over Air Comms:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>”to describe availability of public communications such as Cellphone, TV and radio.</font></li>
+		  
+                   <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates all services are functioning as normal.  Any over-air comms which is functioning as normal.  Your local radio or TV station may sign off at midnight every night.  This is normal, and not a disruption, and this category would be green. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+           may indicate some but not all are disrupted, or expected to be disrupted in the near future.  For example, two radio stations may be off the air, but two others remain operational.  You may experience your nearest cell tower is not functional, but you’re able to drive down the road a mile and connect to a different cell tower.  </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        indicates the total disruption of service to one or more.
+(You may specify Cell, TV, Radio) in Field #18 ‘Brief Remarks’) .</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+      
+      
+		  		  
+		  <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Travel Conditions:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe ability for road travel and transport of goods at reported location. </font></li>
+		  
+		      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates no disruptions, damage, or obstacles to travel.  No deviation from the norm.. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+           indicates some disruptions to the ability to travel, deviating from the norm.  Not ideal.  However, remediation methods or alternate routes available.  Not prevented from travel if needed.  For example, trees down in the road, but able to be cleared with chainsaws and/or winches.  Deep, heavy snow may slow travel.  A bridge may be out, but with multiple alternative routes.  Law enforcement checkpoints or road construction may cause significant delays, but roads are passable.   </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        Unable to travel due to conditions, or unable to reach intended destination.  Indicates significant disruption in the ability to travel by road.  Significant deviation from the norm. .</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+		  
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Internet:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe availability of internet service at reported location.</font></li>
+
+		  		  
+		      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates internet functional as normal. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+            indicates a deviation from the norm or disruptions are expected.  For example, your internet service provider (ISP) is unavailable, but you still have cellular data access to the internet (or visa versa).   Your ISP may alert you of limited fuel for their backup generator and to expect service to be disrupted at some point.    </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        indicates complete loss of internet connectivity, with no workaround or alternative available..</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+			  
+		  <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Fuel:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>”to describe the availability of fuel (gasoline, diesel, propane, etc) in the reported area..</font></li>
+
+      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates no disruptions in availability of fuel, or otherwise no deviation from the norm.  . </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+            indicates some disruptions to normal availability.  May include delayed shipments, panic buying resulting in long wait lines, or fuel stations may only be accepting cash due to credit card service disruptions, etc.      </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        indicates total disruption of fuel supply, or fuel contaminated.  Fuel unavailable or no resupply is expected.  
+(Affected fuel type may be listed in Block #18 ‘Brief Remarks’, especially if other fuels unaffected).</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+		  
+		   <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Food Availability:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe the availability of food at the reported location.</font></li>
+	
+      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates no food supply disruptions outside the norm. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+            indicates some disruptions compared to normal food availability.  Nobody will starve, but disruptions are noticeable.  For example, empty store shelves of a particular kind of food, but adequate supply of alternatives or other kinds of food.  Perhaps there are no beans and no hamburger, but there is canned chili.  Perhaps there is a recall of a certain brand, but there are alternatives.   Your local grocery store cannot be resupplied, but the local farmers market has abundant food supply.  This is a report of food availability coming in to your community, not your personal food storage.      </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        Normal food supply is disrupted, complete deviation from the norm.  Example:  store shelves are empty(ing), at the time of the report, and/or no resupply expected, or food dangerously tainted (radioactivity, spoilage, etc.). .</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+
+		  <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Criminal Activity:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe the level of criminal activity in the reported location.</font></li>
+		
+      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    indicates very low or no criminal activity.  Community activities continue as normal.  Adequate security/law enforcement. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+            indicates increased criminal activity, deviating from the community norm.  May also indicate <strong>anticipated</strong>  increase in criminal activity, due to lack of security/law enforcement, social unrest or social group agitation indicators, an expected court decision, the new presence of groups associated with criminal activity, etc. .      </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        indicates sharp increase in crime, significantly deviating from the norm, resulting in major disruptions in normal community activity.  Citizens sheltering in place or unable to travel  and/or businesses closing due to criminal activity, and law enforcement inadequate or unavailable to stop or deter crime.</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+
+		  <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Civil:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe the mindset and actions of the general population at the reported location.</font></li>
+		  
+      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+    No deviation from the norm.  Generally stable civil and peaceful in the community. </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+             Unrest or limited agitation.  Mostly civil with some outbursts expressing grievances.      </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        Extreme agitation among the civilian populace.  Civilian population resorting to civil unrest, refusing to follow instructions from local law enforcement, confrontational, and may include riots or targeting of political, ethnic, or ideological adversaries.  .</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+
+		  <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Political:</strong>
+          Select “<strong>Green</strong>,” “<strong>Yellow</strong>,” 
+          , “<strong>Red</strong>” or “<strong>Unknown</strong>” to describe the mindset and actions of politicians at the reported location.</font></li>
+		
+      <font size="3" face="Arial, Helvetica, sans-serif"><strong>Green</strong>: 
+   indicates no deviation from the norm, peaceful competition between ideologies, and no overt corruption.  Legitimacy of political positions, or lawfulness of political procedures and processes not in question.  </font></li> <BR>
+		  
+		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Yellow</strong>: 
+    indicates signs of hostility between ideologies, and/or articulable suspicion of corruption or questionable practices;  lawfulness of political procedures and process in question.      </font></li> <BR>
+		  		  
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Red</strong>: 
+        indicates overt political corruption or unlawful procedures and processes, conducted under the color of law, or; instability due to abrupt violent or non-violent changes in government offices or administrative positions, or; a coup, or;  no apparent functioning government body and/or administrative services – no one is in charge.  .</font></li> <BR>
+            
+        <font size="3" face="Arial, Helvetica, sans-serif"><strong>Unknown</strong>: 
+          indicates condition unknown.   </font></li>
+		  
+        <li><font size="3" face="Arial, Helvetica, sans-serif"><strong>Brief "NECESSARY" clarifying remarks:</strong>
+          For brevity this space is typically blank. If necessary to add text please keep it succinct. If significant details are required, submit a separate SitRep. If this SitRep is reporting on a location other than your own, include the City and State in these remarks<br>
+          <br>
+          </font> </li>
+      </ol>
+		</td>
+	</tr>
+</tbody></table>
+
+
+</body></html>
