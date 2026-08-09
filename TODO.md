@@ -1,7 +1,9 @@
 # To-Do
 
+* [ ] Add NomadNet
+* [ ] Update MeshChat 2.4.0 fork
+* [ ] Upgrade RNS to version 1.4.2
 * [ ] Add Reticulum
-  * [ ] Add solution for handling first start
   * [ ] et-user-backup
     * [ ] ~/.reticulum/storage/identities
     * [ ] ~/.nomadnetwork/storage
@@ -16,4 +18,3 @@
 * Add radio support
   * [ ] TX500MP + LINK500MP
   * [ ] IC-7300 MkII
-* [ ] Thunderbird (Optional)
