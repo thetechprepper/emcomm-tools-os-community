@@ -1,7 +1,11 @@
-# ETC Regression Tests 
+# EmComm Tools  Regression Tests 
 
 - **Build**: ETC R7 Build 15
 - **Date**: 8 August 2026
+
+## First Login
+
+* [ ] User configuration presented
 
 ## Desktop/Launcher Icons
 

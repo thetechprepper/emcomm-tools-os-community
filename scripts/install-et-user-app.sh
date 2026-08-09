@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 8 August 2026
+# Updated : 9 August 2026
 # Purpose : Builds and installs et-user-app
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -10,7 +11,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ../overlay/opt/emcomm-tools/bin/et-common
 
 APP="et-user-app"
-VERSION="1.0.1"
+VERSION="1.0.2"
 APP_AND_VERSION="${APP}-${VERSION}"
 GIT_TAG="${VERSION}"
 GIT_URL="https://github.com/thetechprepper/et-user-app.git"
@@ -49,3 +50,5 @@ stow -v -d /opt ${APP} -t /usr/local
 cd ${CWD_DIR}
 
 cp -v ../overlay/usr/share/applications/et-user.desktop /usr/share/applications
+cp -v ../overlay/etc/xdg/autostart/et-user-first-login.desktop \
+  /etc/xdg/autostart
