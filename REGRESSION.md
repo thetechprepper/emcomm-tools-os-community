@@ -1,7 +1,7 @@
 # ETC Regression Tests 
 
-- **Build**: ETC R7 Build 12
-- **Date**: 16 July 2026
+- **Build**: ETC R7 Build 15
+- **Date**: 8 August 2026
 
 ## Desktop/Launcher Icons
 
@@ -12,6 +12,7 @@
 * [ ] Terminal
 * [ ] Navit
 * [ ] Min web browser
+* [ ] et-user-app
 
 ## et-predict
 

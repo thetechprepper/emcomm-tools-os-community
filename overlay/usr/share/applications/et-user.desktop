@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=et-user
+Comment=EmComm Tools user configuration
+Exec=/opt/et-user-app/bin/et-user-app
+Icon=emcomm-tools-icon-black-192
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=HamRadio;
+StartupNotify=true

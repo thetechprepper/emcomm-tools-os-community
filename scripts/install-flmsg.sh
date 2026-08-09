@@ -50,4 +50,4 @@ cp -v /opt/flmsg/share/applications/flmsg.desktop /usr/share/applications/flmsg.
 
 stow -v -d /opt ${APP} -t /usr/local
 
-cd ${CWD}
+cd ${CWD_DIR}

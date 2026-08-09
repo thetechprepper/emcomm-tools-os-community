@@ -7,6 +7,7 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
+. ../overlay/opt/emcomm-tools/bin/et-common
 
 APP="et-user-app"
 VERSION="1.0.0"
@@ -45,4 +46,6 @@ ln -v -s ${INSTALL_DIR} ${LINK_PATH}
 
 stow -v -d /opt ${APP} -t /usr/local
 
-cd ${CWD}
+cd ${CWD_DIR}
+
+cp -v ../overlay/usr/share/applications/et-user.desktop /usr/share/applications
