@@ -88,12 +88,12 @@
     type = TCPClientInterface
     mode = roaming
     interface_enabled = {{ET_RETICULUM_INTERFACE_MERCURY_ENABLED}}
-    kiss_framing = yes 
+    kiss_framing = yes
     target_host = 127.0.0.1
-    target_port = 8100        
+    target_port = 8100
 
     # Index  Mode     Payload Rate (bps)
     # 0      DATAC1   980
     # 9      DATAC17  1410 (not yet supported)
     # 10     QAM16C2  3100 (not yet supported)
-    bitrate = 980             
+    bitrate = 980

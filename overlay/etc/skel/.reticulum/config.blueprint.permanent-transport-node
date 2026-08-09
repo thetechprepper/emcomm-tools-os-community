@@ -1,6 +1,6 @@
 # Author    : Gaston Gonzalez
 # Date      : 7 June 2026
-# Updated   : 16 July 2026
+# Updated   : 6 August 2026
 # Blueprint : Permament Transport Node
 # Purpose   : This configuration is a blueprint for running a
 #             node that runs as a 24x7 transport node with
@@ -83,12 +83,12 @@
   
   [[Default Interface]]
     type = AutoInterface
-    mode = ap
+    mode = internal
     enabled = yes
 
   [[Packet Radio AX.25 KISS]]
     type = AX25KISSInterface
-    mode = ap
+    mode = internal
     enabled = {{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}
   
     callsign = {{ET_CALLSIGN}}
@@ -99,7 +99,7 @@
 
   [[RNode LoRa Interface]]
     type = RNodeInterface
-    mode = ap
+    mode = internal
     enabled = {{ET_RETICULUM_INTERFACE_RNODE_ENABLED}}
     
     port = /dev/et-lora
@@ -107,11 +107,9 @@
 
     # Set frequency to 915 MHz
     frequency = 915000000
-    #frequency = {{ET_RETICULUM_INTERFACE_RNODE_FREQUENCY}}
 
     # Set LoRa bandwidth to 125 KHz
     bandwidth = 125000
-    #bandwidth = {{ET_RETICULUM_INTERFACE_RNODE_BANDWIDTH}}
     
     # Set TX power in dBm
     #
@@ -132,25 +130,20 @@
     # being the fastest and 12 having
     # the longest range.
     spreadingfactor = 9
-    #spreadingfactor = {{ET_RETICULUM_INTERFACE_RNODE_SPREADINGFACTOR}}
 
     # Select coding rate 5. Valid range
     # is 5 throough 8, with 5 being the
     # fastest, and 8 the longest range.
     codingrate = 5
-    #codingrate = {{ET_RETICULUM_INTERFACE_RNODE_CODINGRATE}}
 
-   # EmComm Tools is designed to be an offline platform, so the 
-   # TCP Client interface is left as an example that user must
-   # configure.
-#  [[TCP Client]]
-#    type = TCPClientInterface
-#    enabled = yes
-#    mode = boundary
-#    # Set the IP address to the remote TCP Server
-#    target_host = IP_ADDRESS_HERE
-#    target_port = 4242
-#    # If the remote TCP Server uses IFAC (Interface Access Codes),
-#    # set the network_name and passphrase.
-#    #network_name = NETWORK_NAME_HERE
-#    #passphrase = PASSPHRASE_HERE
+  # EmComm Tools is designed to be an offline platform, so the 
+  # TCP Client interface is left as an example that user must
+  # configure.
+  [[TCP Client to TTP Gateway]]
+    type = TCPClientInterface
+    mode = boundary
+    enabled = yes
+    target_host = rns.thetechprepper.com
+    target_port = 11312
+    network_name = ttp_internal
+    passphrase = resistance202606

@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 July 2026
+# Updated : 17 July 2026
 # Purpose : Wrapper script for starting Mercury with PnP support
 #
 # Preconditions:
@@ -75,7 +76,12 @@ start() {
   
     ALSA_DEVICE=$(et-system-info et-audio-card) 
 
-    CMD="mercury -m ${MODE_INDEX} -i plughw:${ALSA_DEVICE} -o plughw:${ALSA_DEVICE} -A 127.0.0.1:4532"
+    # Mercury implemented support for rigctld oddly. Even though the rigctld IP and port are
+    # specified with the -A option, the code will not trigger the PTT unless a rig model
+    # is specified. We can specify model '2' (network mode) with the -R option to ensure that
+    # the PTT conditional code blocks for hamlib are called. This explains why earlier tests
+    # only worked with the DigiRig Lite as it has an internal VOX circuit.
+    CMD="mercury -m ${MODE_INDEX} -i plughw:${ALSA_DEVICE} -o plughw:${ALSA_DEVICE} -A 127.0.0.1:4532 -R 2"
 
     et-log "Starting Mercury in mode ${MODE} with: '${CMD}'"
     echo
