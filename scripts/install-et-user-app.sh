@@ -10,7 +10,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ../overlay/opt/emcomm-tools/bin/et-common
 
 APP="et-user-app"
-VERSION="1.0.0"
+VERSION="1.0.1"
 APP_AND_VERSION="${APP}-${VERSION}"
 GIT_TAG="${VERSION}"
 GIT_URL="https://github.com/thetechprepper/et-user-app.git"

@@ -5,6 +5,7 @@
 
 ## Desktop/Launcher Icons
 
+* [ ] EmComm Tools icon (et-user-app)
 * [ ] JS8Call icon
 * [ ] fldigi icon
 * [ ] et-predict
@@ -12,7 +13,6 @@
 * [ ] Terminal
 * [ ] Navit
 * [ ] Min web browser
-* [ ] et-user-app
 
 ## et-predict
 
