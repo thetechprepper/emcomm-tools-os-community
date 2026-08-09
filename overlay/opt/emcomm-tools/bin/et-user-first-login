@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Author : Gaston Gonzalez
+# Date   : 8 Agust 2026
+# Purpose: Wrapper for running et-user-app on first login.
+
+FIRST_LOGIN_FILE="${HOME}/.config/emcomm-tools/first-login-complete"
+
+if [[ ! -e "${FIRST_LOGIN_FILE}" ]]; then
+
+   GDK_BACKEND=x11 /opt/et-user-app/bin/et-user-app
+
+   if [[ $? -eq 0 ]]; then
+     touch "${FIRST_LOGIN_FILE}"
+   fi
+fi

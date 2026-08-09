@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 16 July 2026
+# Updated : 9 August 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -130,3 +130,6 @@ exitIfNotRoot
 
 # Email
 ./install-thunderbird.sh
+
+# EmComm Tools PnP GUI apps
+./install-et-user-app.sh
