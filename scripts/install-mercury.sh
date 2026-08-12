@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
-# Date    : 17 July 2025
+# Date    : 17 July 2026
+# Updated : 12 August 2026
 # Purpose : Builds and installs the Mercury HF modem
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -9,7 +10,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 
 APP="mercury"
-VERSION="1.9.9"
+VERSION="1.9.11"
 APP_AND_VERSION="${APP}-${VERSION}"
 GIT_TAG="v${VERSION}"
 GIT_URL="https://github.com/Rhizomatica/mercury.git"
