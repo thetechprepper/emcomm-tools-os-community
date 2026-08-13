@@ -1,0 +1,19 @@
+# Author  : Gaston Gonzalez
+# Date    : 12 August 2026
+# Purpose : User systemd unit file for EmComm Tools Winlink over Mercury HF
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-winlink-mercury
+#  Start service      : systemctl --user start et-service-winlink-mercury
+#  Stop service       : systemctl --user stop et-service-winlink-mercury
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools Winlink ARDOP service
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-winlink start-mercury-hf
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
