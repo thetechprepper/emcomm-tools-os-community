@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 15
-- **Date**: 8 August 2026
+- **Build**: ETC R7 Build 18
+- **Date**: 23 August 2026
 
 ## First Login
 
@@ -87,8 +87,19 @@
   * [ ] RMS station listed
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
+* [ ] winlink-mercury (P2P)
 * [ ] wwv
-* [ ] reticulum
+
+## Reticulum
+  * [ ] Blueprints
+    * [ ] Rnode
+    * [ ] Packet
+    * [ ] Modem73
+    * [ ] Mercury
+    * [ ] Local network
+    * [ ] Internet
+    * [ ] Transport
+  * [ ] MeshChat
 
 ## Bluetooth TNC
 
@@ -161,6 +172,7 @@
 * [ ] modem73
 * [ ] mercury
 
-## Email
+## Email/Internet
 
 * [ ] Thunderbird installed
+* [ ] et-mode: winlink-telnet
