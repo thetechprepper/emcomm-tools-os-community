@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 4 November 2024
-# Updated : 12 August 2026
+# Updated : 23 August 2026
 # Purpose : Wrapper script for starting YAAC with PnP support
 #
 # Preconditions:
@@ -27,6 +27,7 @@ usage() {
   echo "    start-vara-fm       - Start Pat Winlink in VARA FM mode"
   echo "    start-vara-hf       - Start Pat Winlink in VARA HF mode"
   echo "    start-mercury-hf    - Start Pat Winlink in Mercury HF mode"
+  echo "    start-telnet        - Start Pat Winlink in telnet mode"
 }
 
 if [ $# -ne 1 ]; then
@@ -123,6 +124,17 @@ start_mercury_hf() {
   ${CMD}
 }
 
+start_telnet () {
+ 
+  update_config telnet
+
+  CMD="pat http"
+  et-log "Starting Pat with: ${CMD}"
+
+  ${CMD}
+}
+
+
 update_config () {
 
   [ -z "$ET_USER_CONFIG" ] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
@@ -155,6 +167,9 @@ update_config () {
     mercury-hf)
       PAT_CONF_FILE_TEMPLATE=/opt/emcomm-tools/conf/template.d/winlink/config.vara-hf.json
       ;;
+    telnet)
+      PAT_CONF_FILE_TEMPLATE=/opt/emcomm-tools/conf/template.d/winlink/config.telnet.json
+      ;;
   esac
 
   et-log "Updating Pat configuration file: ${PAT_CONF_FILE}..."
@@ -183,6 +198,9 @@ case $1 in
     ;;
   start-mercury-hf)
     start_mercury_hf
+    ;;
+  start-telnet)
+    start_telnet
     ;;
   *)
     echo "Invalid command."

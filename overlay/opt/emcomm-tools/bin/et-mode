@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 12 August 2026
+# Updated  : 23 August 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -24,6 +24,7 @@ MODE_ID_WINLINK_MERCURY="winlink-mercury"
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 MODE_ID_WINLINK_VARA_HF="winlink-vara-hf" 
 MODE_ID_WINLINK_VARA_FM="winlink-vara-fm" 
+MODE_ID_WINLINK_TELNET="winlink-telnet" 
 MODE_ID_TIME_WWV="time-wwv" 
 
 # Default to 1200 baud packet for terminal sessions
@@ -158,6 +159,7 @@ if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
 fi
 
+options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
 options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
 
 # Prompt user for option and save exit status
@@ -277,6 +279,10 @@ if [ $exit_status -eq 0 ]; then
       start_and_wait_for_vara et-vara-hf
       et-winlink start-vara-hf &
       sleep 1
+      min http://localhost:8080 2>/dev/null
+    ;;
+    ${MODE_ID_WINLINK_TELNET})
+      start_and_wait_for_service et-service-winlink-telnet
       min http://localhost:8080 2>/dev/null
     ;;
     ${MODE_ID_TIME_WWV})
