@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 12 November 2024
-# Updated  : 16 July 2026
+# Updated  : 23 August 2026
 # Purpose  : Stops all EmComm Tools soundcard-based services (i.e. modems)
 #            and radio applications to ensure a clean start for the next mode.
 
@@ -19,8 +19,10 @@ stop_pat() {
 # 2. Stop the applications first, then the modems.
 stop_all_services() {
   systemctl --user stop et-service-winlink-ardop
+  systemctl --user stop et-service-winlink-mercury
   systemctl --user stop et-service-winlink-packet
   systemctl --user stop et-service-winlink-native-packet
+  systemctl --user stop et-service-winlink-telnet
   systemctl --user stop et-service-ardop
   systemctl --user stop et-service-direwolf-300
   systemctl --user stop et-service-direwolf-9600
@@ -41,6 +43,8 @@ stop_all_services() {
   systemctl --user stop et-service-mercury-balanced
   systemctl --user stop et-service-mercury-reliability
   systemctl --user stop et-service-mercury-fast
+  systemctl --user stop et-service-mercury-winlink
+  pkill mercury
 
   # Stop VARA with a sledge hammer
   pkill et-winlink

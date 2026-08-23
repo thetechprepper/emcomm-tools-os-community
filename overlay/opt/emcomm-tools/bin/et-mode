@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 14 June 2026
+# Updated  : 23 August 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -20,9 +20,11 @@ MODE_ID_BBS_SERVER="bbs-server"
 MODE_ID_CHAT_CLIENT="chat-chattervox" 
 MODE_ID_PACKET_DIGIPEATER="packet-digipeater" 
 MODE_ID_WINLINK_ARDOP="winlink-ardop" 
+MODE_ID_WINLINK_MERCURY="winlink-mercury" 
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 MODE_ID_WINLINK_VARA_HF="winlink-vara-hf" 
 MODE_ID_WINLINK_VARA_FM="winlink-vara-fm" 
+MODE_ID_WINLINK_TELNET="winlink-telnet" 
 MODE_ID_TIME_WWV="time-wwv" 
 
 # Default to 1200 baud packet for terminal sessions
@@ -150,12 +152,14 @@ if [ -e "${HOME}/.wine32/drive_c/VARA FM/VARAFM.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_FM}" "Winlink over VHF/UHF (VARA FM)")
 fi
 
+options+=("${MODE_ID_WINLINK_MERCURY}" "Winlink over HF  (Mercury)")
 options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
 
 if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
 fi
 
+options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
 options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
 
 # Prompt user for option and save exit status
@@ -250,6 +254,12 @@ if [ $exit_status -eq 0 ]; then
       start_and_wait_for_service et-service-winlink-ardop
       min http://localhost:8080
     ;;
+    ${MODE_ID_WINLINK_MERCURY}) 
+      et-log "Using Mercury as the modem."
+      start_and_wait_for_service et-service-mercury-winlink
+      start_and_wait_for_service et-service-winlink-mercury
+      min http://localhost:8080
+    ;;
     ${MODE_ID_WINLINK_PACKET})
       start_and_wait_for_service et-service-direwolf-simple 
       start_and_wait_for_service et-service-winlink-packet
@@ -269,6 +279,10 @@ if [ $exit_status -eq 0 ]; then
       start_and_wait_for_vara et-vara-hf
       et-winlink start-vara-hf &
       sleep 1
+      min http://localhost:8080 2>/dev/null
+    ;;
+    ${MODE_ID_WINLINK_TELNET})
+      start_and_wait_for_service et-service-winlink-telnet
       min http://localhost:8080 2>/dev/null
     ;;
     ${MODE_ID_TIME_WWV})
