@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 23 August 2026
+# Updated  : 26 August 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -256,7 +256,7 @@ if [ $exit_status -eq 0 ]; then
     ;;
     ${MODE_ID_WINLINK_MERCURY}) 
       et-log "Using Mercury as the modem."
-      start_and_wait_for_service et-service-mercury-winlink
+      start_and_wait_for_service et-service-mercury-arq
       start_and_wait_for_service et-service-winlink-mercury
       min http://localhost:8080
     ;;

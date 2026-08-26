@@ -1,0 +1,21 @@
+# Author  : Gaston Gonzalez
+# Date    : 16 July 2026
+# Updated : 26 August 2026
+# Purpose : User systemd unit file for EmComm Tools that starts mercury
+#         : in an ARQ configuration.
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-mercury-arq
+#  Start service      : systemctl --user start et-service-mercury-arq
+#  Stop service       : systemctl --user stop et-service-mercury-arq
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools Mercury HF service for ARQ mode
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-mercury arq
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
