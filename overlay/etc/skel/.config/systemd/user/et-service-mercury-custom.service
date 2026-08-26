@@ -1,7 +1,8 @@
 # Author  : Gaston Gonzalez
 # Date    : 12 August 2026
+# Updated : 26 August 2026
 # Purpose : User systemd unit file for EmComm Tools that starts mercury
-#         : in a Winlink configuration.
+#         : in a custom, user-defined configuration.
 #
 # Usage: 
 #  Check status       : systemctl --user status et-service-mercury-winlink
@@ -10,10 +11,10 @@
 #  Reload this config : systemctl --user daemon-reload
 
 [Unit]
-Description=EmComm Tools mercury default service for winlink performance
+Description=EmComm Tools Mercury HF service in a custom mode
 
 [Service]
-ExecStart=/opt/emcomm-tools/bin/et-mercury winlink
+ExecStart=/opt/emcomm-tools/bin/et-mercury custom
 Restart=no
 
 [Install]

@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 12 May 2026
-# Updated : 21 July 2026
+# Updated : 26 August 2026
 # Purpose : Wrapper script for starting Reticulum with PnP support
 #
 # Preconditions:
@@ -111,12 +111,7 @@ if [[ $? -eq 0 ]]; then
 
   HAS_MERCURY_CONFIG=`grep "Mercury HF" ~/.reticulum/config`
   if [[ $? -eq 0 ]]; then
-    modem_options+=("mercury-reliability" "Max reliability (Slower Speed) [DATAC1]")
-    # The modes below, DATAC17 and QAM16C2, are documented on the RETICULUM.md
-    # documenation on the mercury GitHub project, but are not yet supported in
-    # version 1.9.9. Disabling these options from the UI for now.
-    #modem_options+=("mercury-balanced" "Balanced (Reliability and Speed) [DATAC17]")
-    #modem_options+=("mercury-fast" "Fast (Low Reliability) [QAM16C2]")
+    modem_options+=("mercury-broadcast" "Mercury Broadcast Mode")
   fi
 
   if [[ ${#modem_options[@]} -gt 0 ]]; then
@@ -178,17 +173,9 @@ if [[ $? -eq 0 ]]; then
         et-log "Starting modem73 in fastest mode"
         start_and_wait_for_service et-service-modem73-fastest
       ;;
-      mercury-reliability)
-        et-log "Starting mercury in reliability mode"
-        start_and_wait_for_service et-service-mercury-reliability
-      ;;
-      mercury-balanced)
-        et-log "Starting mercury in balanced mode"
-        start_and_wait_for_service et-service-mercury-balanced
-      ;;
-      mercury-fast)
-        et-log "Starting mercury in fast mode"
-        start_and_wait_for_service et-service-mercury-fast
+      mercury-broadcast)
+        et-log "Starting mercury in broadcast mode"
+        start_and_wait_for_service et-service-mercury-broadcast
       ;;
     esac
   fi
