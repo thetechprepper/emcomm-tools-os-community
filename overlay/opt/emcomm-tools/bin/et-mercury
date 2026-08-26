@@ -32,15 +32,15 @@ MODE="$1"
 
 case "${MODE}" in
   arq)
-    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.arq.ini"
+    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.ini.arq"
     OPTS=""
   ;;
   broadcast)
-    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.broadcast.ini"
+    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.ini.broadcast"
     OPTS="-m 0 -b 8100"
   ;;
   custom)
-    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.custom.ini"
+    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.ini.custom"
     OPTS=""
   ;;
   *)
