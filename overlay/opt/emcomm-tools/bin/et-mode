@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 26 August 2026
+# Updated  : 29 August 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -104,6 +104,7 @@ select_term_mode () {
   term_mode+=("1200" "1200 baud (default for VHF/UHF)")
   term_mode+=("9600" "9600 baud (VHF/UHF)")
   term_mode+=("300" "300 baud (HF)")
+  term_mode+=("mercury" "Mercury (HF)")
 
   # Only allow VARA terminal modes when using QtTermTCP
   if [[ "${SELECTED_MODE}" == "${MODE_ID_BBS_CLIENT2}" ]]; then
@@ -228,6 +229,11 @@ if [ $exit_status -eq 0 ]; then
           sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
           sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
           start_and_wait_for_vara et-vara-hf
+        ;;
+        "mercury")
+          sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-mercury-arq
         ;;
       esac
 
