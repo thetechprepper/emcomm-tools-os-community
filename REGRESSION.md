@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 18
-- **Date**: 23 August 2026
+- **Build**: ETC R7 Build 19
+- **Date**: 31 August 2026
 
 ## First Login
 
@@ -118,6 +118,11 @@
 * [ ] et-mode VARA FM (Winlink)
 * [ ] et-mode VARA HF (Winlink)
 
+## Mercury HF
+
+* [ ] et-mode Mercury HF (Winlink)
+* [ ] et-mercury-stats
+
 ## Security
 
 * [ ] gpa
@@ -170,7 +175,6 @@
 ## Modems
 
 * [ ] modem73
-* [ ] mercury
 
 ## Email/Internet
 
