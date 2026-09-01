@@ -10,7 +10,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 
 APP=mercury-stats
-VERSION=0.2.0
+VERSION=0.2.1
 APP_AND_VERSION="${APP}-${VERSION}"
 DOWNLOAD_FILE="${APP}-${VERSION}.tar.gz"
 URL="https://github.com/thetechprepper/mercury-stats/archive/refs/tags/${VERSION}.tar.gz"
