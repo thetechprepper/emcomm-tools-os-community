@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 31 August 2026
+# Updated : 31 August 2026
 # Purpose : Install Mercury Stats
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -9,7 +10,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 
 APP=mercury-stats
-VERSION=0.1.0
+VERSION=0.2.0
 APP_AND_VERSION="${APP}-${VERSION}"
 DOWNLOAD_FILE="${APP}-${VERSION}.tar.gz"
 URL="https://github.com/thetechprepper/mercury-stats/archive/refs/tags/${VERSION}.tar.gz"
