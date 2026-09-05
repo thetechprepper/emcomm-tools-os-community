@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 July 2026
-# Updated : 26 August 2026
+# Updated : 31 August 2026
 # Purpose : Wrapper script for starting Mercury with PnP support
 #
 # Preconditions:
@@ -12,7 +12,7 @@
 # 1. Mercury started with sane defaults
 
 ET_MERCURY_HOME="${HOME}/.local/share/emcomm-tools/mercury"
-ET_MERCURY_LOG="${ET_MERCURY_HOME}/session.log"
+ET_MERCURY_LOG="${ET_MERCURY_HOME}/session.json"
 
 usage() {
   echo "usage: $(basename $0) <mode>"
@@ -73,7 +73,7 @@ start() {
   
     ALSA_DEVICE=$(et-system-info et-audio-card) 
 
-    CMD="mercury -C ${ET_MERCURY_INI} -L ${ET_MERCURY_LOG} -i plughw:${ALSA_DEVICE} -o plughw:${ALSA_DEVICE} ${OPTS}"
+    CMD="mercury -C ${ET_MERCURY_INI} -J -L ${ET_MERCURY_LOG} -i plughw:${ALSA_DEVICE} -o plughw:${ALSA_DEVICE} ${OPTS}"
 
     et-log "Starting Mercury in mode ${MODE} with: '${CMD}'"
     echo
