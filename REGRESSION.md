@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 19
-- **Date**: 31 August 2026
+- **Build**: ETC R7 Build 23
+- **Date**: 5 September 2026
 
 ## First Login
 
@@ -100,6 +100,8 @@
     * [ ] Internet
     * [ ] Transport
   * [ ] MeshChat
+  * [ ] NomadNet
+  * [ ] lxmd -p
 
 ## Bluetooth TNC
 

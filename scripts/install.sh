@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 31 August 2026
+# Updated : 5 September 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -120,6 +120,7 @@ exitIfNotRoot
 
 # Install Reticulum and related applications
 ./install-reticulum.sh
+./install-nomadnet.sh
 ./install-meshchat.sh
 ./install-modem73.sh
 ./install-mercury.sh
