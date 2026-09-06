@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 5 September 2026
+# Updated : 6 September 2026
 # Purpose : Generate 36 PNG images for use as a spinner for Plymouth
 #
 # throbber-xxxx.png is the looping animation on startup
@@ -12,8 +13,10 @@
 SIZE=64x64
 SPINNER_PNG="et-${SIZE}-icon.png"
 
-convert ../../overlay/usr/share/icons/emcomm-tools-icon-black-512.png \
-  -transparent black et-512x512-icon.png
+# This is step is no longer needed. I created a new version of the
+# 512x512 icon with the "E" and "T" removed in GIMP.
+#convert ../../overlay/usr/share/icons/emcomm-tools-icon-black-512.png \
+#  -transparent black et-512x512-icon.png
 
 convert et-512x512-icon.png \
   -resize ${SIZE} ${SPINNER_PNG}
