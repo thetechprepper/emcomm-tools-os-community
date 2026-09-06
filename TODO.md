@@ -1,13 +1,10 @@
 # To-Do
 
-* [ ] Add NomadNet
 * [ ] Update MeshChat 2.4.0 fork
-* [ ] Upgrade RNS to version 1.4.2
 * [ ] Add Reticulum
   * [ ] et-user-backup
     * [ ] ~/.reticulum/storage/identities
     * [ ] ~/.nomadnetwork/storage
-  * [ ] Add PnP support for LoRa devices
   * [ ] Add support for Bluetooth devices (et-uv-pro)
 * [ ] et-mail
 * [ ] et-debug
