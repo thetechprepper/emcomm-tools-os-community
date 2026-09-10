@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 23
-- **Date**: 5 September 2026
+- **Build**: ETC R7 Build 26
+- **Date**: 9 September 2026
 
 ## First Login
 
@@ -127,8 +127,10 @@
 
 ## Security
 
+* [ ] GNU Privacy Guard (OpenPGP)
 * [ ] gpa
 * [ ] Paranoia File & Text Encryption
+* [ ] VeraCrypt
 
 ## fldigi/flmsg/flamp
 
