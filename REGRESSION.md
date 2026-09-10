@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
 - **Build**: ETC R7 Build 26
-- **Date**: 9 September 2026
+- **Date**: 10 September 2026
 
 ## First Login
 
@@ -184,3 +184,7 @@
 
 * [ ] Thunderbird installed
 * [ ] et-mode: winlink-telnet
+
+## Multimedia
+
+* [ ] VLC & DVD playback
