@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 8 November 2024
-# Updated : 12 November 2025
+# Updated : 13 November 2026
 # Purpose : Install Linbpq
 #
 # Notes:
@@ -15,8 +15,8 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ../overlay/opt/emcomm-tools/bin/et-common
 
 
-VERSION=latest
-FILE=linbpq
+VERSION=6.0.25
+FILE="linbpq${VERSION}"
 LINK_PATH=/opt/linbpq
 INSTALL_DIR=/opt/linbpq-${VERSION}
 INSTALL_BIN_DIR=${INSTALL_DIR}/bin
@@ -73,7 +73,7 @@ if [ ! -e ${FILE} ]; then
 fi
 
 [ ! -e ${INSTALL_BIN_DIR} ] && mkdir -v -p ${INSTALL_BIN_DIR}
-chmod 755 ${FILE} && mv -v ${FILE} ${INSTALL_BIN_DIR}
+chmod 755 ${FILE} && mv -v ${FILE} ${INSTALL_BIN_DIR}/linbpq
 
 CWD_DIR=$(pwd)
 
