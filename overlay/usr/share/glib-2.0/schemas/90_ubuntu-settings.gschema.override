@@ -37,3 +37,4 @@ screen-keyboard-enabled = true
 sleep-inactive-ac-type = 'nothing'
 sleep-inactive-battery-type = 'nothing'
 power-saver-profile-on-low-battery = false
+idle-dim = false
