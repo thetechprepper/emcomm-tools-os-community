@@ -25,14 +25,17 @@ idle-delay = 0
 text-scaling-factor = 1.25
 enable-animations = false
 show-battery-percentage = true
+toolkit-accessibility = true
+color-scheme = 'prefer-dark'
+gtk-theme = 'Yaru-dark'
+icon-theme = 'Yaru-dark'
 
 [org.gnome.desktop.a11y.applications]
 screen-keyboard-enabled = true
-
-[org.gnome.desktop.interface]
-toolkit-accessibility = true
 
 [org.gnome.settings-daemon.plugins.power]
 sleep-inactive-ac-type = 'nothing'
 sleep-inactive-battery-type = 'nothing'
 power-saver-profile-on-low-battery = false
+idle-dim = false
+ambient-enabled = false
