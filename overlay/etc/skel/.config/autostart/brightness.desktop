@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Exec=/opt/emcomm-tools/bin/et-brightness
+Name=Screen Brightness
+Comment=Set screen brightness to 100% on login
+Terminal=false
