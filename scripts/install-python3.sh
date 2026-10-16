@@ -19,7 +19,14 @@ LINK_PATH="/opt/${APP}"
 
 et-log "Installing dependencies for ${APP}..."
 apt install \
-   tk-dev \
+  libssl-dev \
+  libbz2-dev \
+  libffi-dev \
+  liblzma-dev \
+  libreadline-dev \
+  libsqlite3-dev \
+  zlib1g-dev \
+  tk-dev \
   -y
 
 et-log "Installing ${APP} ${VERSION}"
