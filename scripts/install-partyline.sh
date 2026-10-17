@@ -20,3 +20,5 @@ PYTHONUSERBASE=/etc/skel/.local \
   "${PYTHON}" -m pip install --user \
   --no-index --find-links=wheelhouse \
   "${APP}==${VERSION}"
+
+cp -v ../overlay/usr/share/applications/partyline.desktop /usr/share/applications

@@ -1,11 +1,13 @@
 # To-Do
 
-* [ ] Update MeshChat 2.4.0 fork
-* [ ] Add Reticulum
+* [ ] Reticulum
+  * [ ] partyline
+    * [ ] Add sample client configuration
+    * [ ] Add sample server configuration
+    * [ ] Add to et-user-backup
+  * [ ] Add support for Bluetooth devices (et-uv-pro|kenwood)
   * [ ] et-user-backup
-    * [ ] ~/.reticulum/storage/identities
-    * [ ] ~/.nomadnetwork/storage
-  * [ ] Add support for Bluetooth devices (et-uv-pro)
+    * [ ] ~/.nomadnetwork
 * [ ] et-mail
 * [ ] et-debug
 * [ ] et-index
