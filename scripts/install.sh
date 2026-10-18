@@ -142,4 +142,4 @@ exitIfNotRoot
 ./install-media-player.sh
 
 # Install Veracrypt
-./install-veracrypt.sh
+#./install-veracrypt.sh
