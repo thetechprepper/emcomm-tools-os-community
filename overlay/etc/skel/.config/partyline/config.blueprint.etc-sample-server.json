@@ -1,0 +1,62 @@
+{
+  "name": "EmCommTools Example LXST server",
+  "motd": "Welcome to an example Partyline LXST server for EmComm Tools.",
+  "profile": "opus-med",
+  "max_members": 16,
+  "require_identity": true,
+  "_comment_access_": "An optional server-wide password, an allow list of identity hashes, or both. 'hidden' keeps the server out of browsers.",
+  "password": null,
+  "hidden": false,
+  "allow": [],
+  "allowed_file": null,
+  "_comment_ops_": "Operators can kick, ban, mute, move and promote users from their client. More can be promoted at run time.",
+  "ops": [
+    "0123456789abcdef0123456789abcdef"
+  ],
+  "_comment_dialin_": "Answer rnphone calls to this server's identity hash and put callers in a room.",
+  "dialin": {
+    "enabled": false,
+    "room": "Lobby",
+    "name": "phone",
+    "allow": [],
+    "gate_db": -50
+  },
+  "_comment_profiles_": "Codec profiles are: opus-high, opus-med, opus-low, c2-3200, c2-2400, c2-1200, c2-700, music-low, music-med, music-high",
+  "rooms": [
+    {
+      "name": "Lobby",
+      "description": "Open to everyone, default room"
+    },
+    {
+      "name": "Low bandwidth room",
+      "profile": "c2-1200",
+      "description": "Low bitrate room for slow links"
+    },
+    {
+      "name": "Guests",
+      "require_identity": false,
+      "description": "Non-identified guest users"
+    },
+    {
+      "name": "Ops",
+      "allow": [
+        "0123456789abcdef0123456789abcdef"
+      ],
+      "description": "Allow-listed identities only"
+    },
+    {
+      "name": "Private",
+      "password": "hunter2",
+      "description": "Password protected",
+      "max_members": 4
+    },
+    {
+      "name": "Broadcast",
+      "profile": "music-med",
+      "music": [
+        "0123456789abcdef0123456789abcdef"
+      ],
+      "description": "Music/broadcast room. Only listed identities in music, seperated by comma, may broadcast"
+    }
+  ]
+}

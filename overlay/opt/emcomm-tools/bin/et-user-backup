@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 14 January 2025
-# Updated : 3 July 2026
+# Updated : 18 October 2026
 # Purpose : Back up select files from the user's home directory.
 #
 # The backups are limited to the following:
@@ -9,6 +9,7 @@
 # 2. Winlink email
 # 3. Reticulum
 # 4. Meshchat
+# 5. Partyline
 
 TODAY=$(date +"%Y%m%d")
 BACKUP_FILE="${HOME}/etc-user-backup-${HOSTNAME}-${TODAY}.tar.gz"
@@ -30,6 +31,7 @@ fi
 # All paths are relative to $HOME.
 BACKUP_DIRS=(
   ".config/emcomm-tools"
+  ".config/partyline"
   ".local/share/emcomm-tools"
   ".local/share/pat"
   ".reticulum"
