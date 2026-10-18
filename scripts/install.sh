@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 16 October 2026
+# Updated : 18 October 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -140,3 +140,6 @@ exitIfNotRoot
 
 # Offline Multimedia (DVD)
 ./install-media-player.sh
+
+# Install Veracrypt
+./install-veracrypt.sh
