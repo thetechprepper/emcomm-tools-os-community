@@ -3,5 +3,5 @@
 # Date     : 18 October 2026
 # Purpose  : Test et-partyline-server installation
 
-OUT=$(which et-partyline-server)
+OUT=$(ls /opt/emcomm-tools/bin/et-partyline-server)
 exit $?
