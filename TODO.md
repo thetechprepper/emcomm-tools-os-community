@@ -1,13 +1,18 @@
 # To-Do
 
 * [ ] Reticulum
-  * [ ] partyline
-    * [ ] Add sample client configuration
-    * [ ] Add sample server configuration
-    * [ ] Add to et-user-backup
-  * [ ] Add support for Bluetooth devices (et-uv-pro|kenwood)
+  * [ ] Add support for Bluetooth devices (i.e. et-uv-pro)
   * [ ] et-user-backup
     * [ ] ~/.nomadnetwork
+  * [ ] man page: et-reticulum
+  * [ ] man page: et-partyline-server
+* [ ] Update data sets
+    * [ ] SSN
+    * [ ] US callsigns
+    * [ ] CA callsigns
+    * [ ] FAA
+* [ ] addons
+    * [] VARA scripts
 * [ ] et-mail
 * [ ] et-debug
 * [ ] et-index
