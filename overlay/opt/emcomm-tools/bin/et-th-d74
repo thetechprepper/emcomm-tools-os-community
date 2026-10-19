@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 1 January 2025
-# Updated  : 20 March 2025
+# Updated  : 19 October 2026
 # Purpose  : Utility for accessing the Bluetooth TNC on the Kenwood TH-D74.
 source /opt/emcomm-tools/bin/et-common
 
@@ -148,7 +148,7 @@ case $1 in
   p|pair)
 
     MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
-    if [[ "{$MAC}" != "" ]]; then
+    if [[ "${MAC}" != "" ]]; then
       PAIR_STATUS=$(bluetoothctl info "${MAC}" | grep "Paired:" | awk '{print $2}')
       if [ "${PAIR_STATUS}" == "yes" ]; then
          echo "Device with MAC ${MAC} is already paired."
