@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 26
-- **Date**: 10 September 2026
+- **Build**: ETC R7 Build 30
+- **Date**: 16 October 2026
 
 ## First Login
 
@@ -91,6 +91,7 @@
 * [ ] wwv
 
 ## Reticulum
+  * Python 3.11.17
   * [ ] Blueprints
     * [ ] Rnode
     * [ ] Packet
@@ -99,9 +100,10 @@
     * [ ] Local network
     * [ ] Internet
     * [ ] Transport
-  * [ ] MeshChat
+  * [ ] MeshChat (launcher)
   * [ ] NomadNet
   * [ ] lxmd -p
+  * [ ] partyline (launcher)
 
 ## Bluetooth TNC
 

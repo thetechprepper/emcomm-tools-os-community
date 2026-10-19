@@ -1,11 +1,18 @@
 # To-Do
 
-* [ ] Update MeshChat 2.4.0 fork
-* [ ] Add Reticulum
+* [ ] Reticulum
+  * [ ] Add support for Bluetooth devices (i.e. et-uv-pro)
   * [ ] et-user-backup
-    * [ ] ~/.reticulum/storage/identities
-    * [ ] ~/.nomadnetwork/storage
-  * [ ] Add support for Bluetooth devices (et-uv-pro)
+    * [ ] ~/.nomadnetwork
+  * [ ] man page: et-reticulum
+  * [ ] man page: et-partyline-server
+* [ ] Update data sets
+    * [ ] SSN
+    * [ ] US callsigns
+    * [ ] CA callsigns
+    * [ ] FAA
+* [ ] addons
+    * [] VARA scripts
 * [ ] et-mail
 * [ ] et-debug
 * [ ] et-index
