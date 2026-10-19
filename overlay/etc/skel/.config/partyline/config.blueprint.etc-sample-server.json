@@ -1,5 +1,5 @@
 {
-  "name": "EmCommTools Example LXST server",
+  "name": "EmComm Tools Example LXST server",
   "motd": "Welcome to an example Partyline LXST server for EmComm Tools.",
   "profile": "opus-med",
   "max_members": 16,
