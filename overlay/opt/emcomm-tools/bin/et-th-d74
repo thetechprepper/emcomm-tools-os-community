@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 1 January 2025
-# Updated  : 20 March 2025
+# Updated  : 19 October 2026
 # Purpose  : Utility for accessing the Bluetooth TNC on the Kenwood TH-D74.
 source /opt/emcomm-tools/bin/et-common
 
@@ -60,7 +60,7 @@ exit_if_no_active_radio () {
 }
 
 get_mac_or_exit () {
-  MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
+  MAC=$(jq -e -r '.bluetooth.mac | select(length > 0)' "${ACTIVE_RADIO}")
   if [ $? -ne 0 ]; then
     echo "No MAC address found in ${ACTIVE_RADIO}."
     exit 1
@@ -148,7 +148,7 @@ case $1 in
   p|pair)
 
     MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
-    if [[ "{$MAC}" != "" ]]; then
+    if [[ "${MAC}" != "" ]]; then
       PAIR_STATUS=$(bluetoothctl info "${MAC}" | grep "Paired:" | awk '{print $2}')
       if [ "${PAIR_STATUS}" == "yes" ]; then
          echo "Device with MAC ${MAC} is already paired."
@@ -211,11 +211,7 @@ EOF
 
     ;;
   u|unpair)
-    MAC=$(cat ${ACTIVE_RADIO} | jq -e -r .bluetooth.mac)
-    if [ $? -ne 0 ]; then
-      echo "No MAC found in radio configuration file."
-      exit 1
-    fi 
+    get_mac_or_exit
 
     PAIR_STATUS=$(bluetoothctl info "${MAC}")
     if [ $? -ne 0 ]; then
@@ -274,7 +270,7 @@ EOF
     stop_all_services
 
     echo -e "\nSelect a packet application to start:"
-    options=("axcall" "QtTermTCP" "Winlink" "YAAC" "Exit")
+    options=("axcall" "Reticulum" "QtTermTCP" "Winlink" "YAAC" "Exit")
 
     select opt in "${options[@]}"
     do
@@ -291,6 +287,34 @@ EOF
 
           # We can't have the rfcomm and kiss processes killed.
           CLEAN_UP=0
+          break
+          ;;
+        "Reticulum")
+          RETICULUM_CONF_DIR="${HOME}/.reticulum"
+          RETICULUM_CONF_FILE="${RETICULUM_CONF_DIR}/config"
+          RETICULUM_CONF_FILE_PACKET="${RETICULUM_CONF_DIR}/config.blueprint.packet-only-node"
+
+          if [[ -e "${RETICULUM_CONF_FILE}" ]]; then
+            et-log "Removing previous Reticulum configuration: ${RETICULUM_CONF_FILE}"
+            rm -v "${RETICULUM_CONF_FILE}"
+          fi
+
+          cp -v "${RETICULUM_CONF_FILE_PACKET}" "${RETICULUM_CONF_FILE}"
+
+          # Enable AX.25 interface
+          sed -i "s|{{ET_RETICULUM_INTERFACE_AX25KISS_ENABLED}}|yes|g" ${RETICULUM_CONF_FILE}
+
+          # Update callsign
+          [[ -z "${ET_USER_CONFIG}" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+          CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+          sed -i "s|{{ET_CALLSIGN}}|${CALLSIGN}|g" ${RETICULUM_CONF_FILE}
+
+          # Replace port
+          sed -i "s|/tmp/kisstnc|/dev/rfcomm0|g" ${RETICULUM_CONF_FILE}
+
+          # Start RNS daemon 
+          rnsd
+
           break
           ;;
         "QtTermTCP")

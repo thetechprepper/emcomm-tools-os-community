@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 30
-- **Date**: 16 October 2026
+- **Build**: ETC R7 Build 33
+- **Date**: 19 October 2026
 
 ## First Login
 
@@ -110,6 +110,7 @@
 * [ ] et-uv-pro
   * [ ] pair
   * [ ] connect
+  * [ ] Reticulum
   * [ ] Winlink
   * [ ] QtTermTCP
   * [ ] YAAC
