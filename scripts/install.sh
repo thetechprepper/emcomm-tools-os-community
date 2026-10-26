@@ -141,8 +141,9 @@ exitIfNotRoot
 # Offline Multimedia (DVD)
 ./install-media-player.sh
 
-# Install xara and Rust (root-only)
+# Install Rust (root-only) and the xara modem
 ./install-rust.sh
+./install-xara.sh
 
 # Install Veracrypt
 #./install-veracrypt.sh
