@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 12 November 2024
-# Updated  : 26 August 2026
+# Updated  : 26 October 2026
 # Purpose  : Stops all EmComm Tools soundcard-based services (i.e. modems)
 #            and radio applications to ensure a clean start for the next mode.
 
@@ -23,12 +23,14 @@ stop_all_services() {
   systemctl --user stop et-service-winlink-packet
   systemctl --user stop et-service-winlink-native-packet
   systemctl --user stop et-service-winlink-telnet
+  systemctl --user stop et-service-winlink-xara-hf.service
   systemctl --user stop et-service-ardop
   systemctl --user stop et-service-direwolf-300
   systemctl --user stop et-service-direwolf-9600
   systemctl --user stop et-service-direwolf-simple
   systemctl --user stop et-service-direwolf-aprs-digipeater
   systemctl --user stop et-service-direwolf-packet-digipeater
+  systemctl --user stop et-service-xara-hf.service
 
   # Stop modem73 with a sledge hammer (belt and suspenders) as the current
   # 1.0.7 version can hang on exit.
@@ -49,6 +51,10 @@ stop_all_services() {
   pkill et-winlink
   pkill et-vara
   pkill VARA 
+
+  # Stop xara with a sledge hammer
+  pkill et-xara
+  pkill xara
 
   stop_pat
 }

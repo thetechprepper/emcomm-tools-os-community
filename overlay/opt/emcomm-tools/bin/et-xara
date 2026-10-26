@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 26 October 2026
+# Purpose : Wrapper script for starting xara modem
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. Audio settings updated
+# 2. xara modem started
+
+# TODO
+# - Check for supported devices or bail
+# - Replace callsign
+# - Replace sound card
+# - Update et-kill-all
+# - Add systemd services
+# - Update et-mode
+#   - Winlink
+#   - BBS
+# - Update audio settings
+# - Update regression
+
+xara --call KT7RUN \
+  --hf 2300 \
+  --audio alsa \
+  --capture plughw:CARD=1,DEV=0 \
+  --playback plughw:CARD=1,DEV=0 \
+  --radio \
+  --ptt rigctld:127.0.01:4532
