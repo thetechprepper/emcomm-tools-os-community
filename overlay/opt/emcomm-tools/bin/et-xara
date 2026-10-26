@@ -15,12 +15,6 @@
 # - Check for supported devices or bail
 # - Replace callsign
 # - Replace sound card
-# - Update et-kill-all
-# - Add systemd services
-# - Update et-mode
-#   - Winlink
-#   - BBS
-# - Update audio settings
 # - Update regression
 
 xara --call KT7RUN \
