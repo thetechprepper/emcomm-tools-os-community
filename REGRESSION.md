@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 33
-- **Date**: 19 October 2026
+- **Build**: ETC R7 Build 34
+- **Date**: 27 October 2026
 
 ## First Login
 
@@ -88,7 +88,10 @@
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
 * [ ] winlink-mercury (P2P)
+* [ ] winlink-xara (RMS)
 * [ ] wwv
+* [ ] bbs-client (1200 baud)
+* [ ] bbs-client2 (xara-hf)
 
 ## Reticulum
   * Python 3.11.17

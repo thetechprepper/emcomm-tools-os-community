@@ -2,6 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 26 October 2026
+# Updated : 27 October 2026
 # Purpose : Wrapper script for starting xara modem
 #
 # Preconditions:
@@ -14,7 +15,6 @@
 # TODO
 # - Make more robust
 # - Check for supported devices or bail
-# - Update regression
 
 [[ -z "${ET_USER_CONFIG}" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
