@@ -11,10 +11,28 @@
 # Postconditions:
 # 1. Audio settings updated
 # 2. xara modem started
-
+#
 # TODO
-# - Make more robust
-# - Check for supported devices or bail
+# - Add support for starting xara HF and FM
+source /opt/emcomm-tools/bin/et-common
+
+# Ensure we have an EmComm Tools audio device connected and detected.
+if [[ -e /dev/et-audio ]]; then
+
+  # Check that this device was properly tagged with the ET_AUDIO 
+  # environment variable with a udev rule
+  APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+  if [[ $? -eq 0 ]]; then
+    # Configure ALSA settings for sound card
+    /opt/emcomm-tools/bin/et-audio update-config
+  else
+    echo -e "${RED}No ET_AUDIO device detected.${NC}"
+    exit 1
+  fi
+else
+  echo -e "${RED}No ET_AUDIO device plugged in.${NC}"
+  exit 1
+fi
 
 [[ -z "${ET_USER_CONFIG}" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
 
