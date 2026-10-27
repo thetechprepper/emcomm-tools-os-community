@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 33
-- **Date**: 19 October 2026
+- **Build**: ETC R7 Build 34
+- **Date**: 27 October 2026
 
 ## First Login
 
@@ -87,6 +87,7 @@
   * [ ] RMS station listed
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
+* [ ] winlink-xara (RMS)
 * [ ] winlink-mercury (P2P)
 * [ ] wwv
 
@@ -115,6 +116,12 @@
   * [ ] QtTermTCP
   * [ ] YAAC
   * [ ] unpair
+
+## xara
+
+* [ ] bbs-client (1200 baud)
+* [ ] bbs-client2 (xara-hf: 500)
+* [ ] DigiRig Lite & winlink-xara-hf (2300)
 
 ## VARA
 

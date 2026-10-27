@@ -1,7 +1,6 @@
 # To-Do
 
 * [ ] Reticulum
-  * [ ] Add support for Bluetooth devices (i.e. et-uv-pro)
   * [ ] et-user-backup
     * [ ] ~/.nomadnetwork
   * [ ] man page: et-reticulum

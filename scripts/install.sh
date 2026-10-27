@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 18 October 2026
+# Updated : 26 October 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -140,6 +140,10 @@ exitIfNotRoot
 
 # Offline Multimedia (DVD)
 ./install-media-player.sh
+
+# Install Rust (root-only) and the xara modem
+./install-rust.sh
+./install-xara.sh
 
 # Install Veracrypt
 #./install-veracrypt.sh

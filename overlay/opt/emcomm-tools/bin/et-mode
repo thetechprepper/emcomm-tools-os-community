@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 5 September 2026
+# Updated  : 27 October 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -24,6 +24,8 @@ MODE_ID_WINLINK_MERCURY="winlink-mercury"
 MODE_ID_WINLINK_PACKET="winlink-packet" 
 MODE_ID_WINLINK_VARA_HF="winlink-vara-hf" 
 MODE_ID_WINLINK_VARA_FM="winlink-vara-fm" 
+MODE_ID_WINLINK_XARA_HF="winlink-xara-hf" 
+MODE_ID_WINLINK_XARA_FM="winlink-xara-fm" 
 MODE_ID_WINLINK_TELNET="winlink-telnet" 
 MODE_ID_TIME_WWV="time-wwv" 
 
@@ -117,12 +119,53 @@ select_term_mode () {
     fi
   fi
 
+  term_mode+=("xara-fm-narrow" "xara FM (narrow)")
+  term_mode+=("xara-fm-wide" "xara FM (wide)")
+  term_mode+=("xara-hf-500" "xara HF (500)")
+  term_mode+=("xara-hf-2300" "xara HF (2300)")
+  term_mode+=("xara-hf-2750" "xara HF (2750)")
+
   TERM_MODE=$(dialog --clear --menu "Select a modem" 13 60 10 "${term_mode[@]}" 3>&1 1>&2 2>&3)
   exit_status=$?
 
   if [ "${TERM_MODE}" == "9600" ]; then
     dialog --title "Note on 9600 Baud" --msgbox "9600 baud is only supported on limited radios and typically requires a special cable.\n\nDon't forget to set the packet settings to 9600 on the radio." 0 0
   fi 
+
+  tput sgr 0 && clear
+
+  if [ ${exit_status} -ne 0 ]; then
+    et-log "No modem selected. Mode will not be started."
+    exit 1
+  fi  
+}
+
+select_xara_hf_mode () {
+  xara_hf_mode=()
+
+  xara_hf_mode+=("xara-hf-500" "xara HF (500)")
+  xara_hf_mode+=("xara-hf-2300" "xara HF (2300)")
+  xara_hf_mode+=("xara-hf-2750" "xara HF (2750)")
+
+  XARA_HF_MODE=$(dialog --clear --menu "Select a xara bandwidth" 13 60 10 "${xara_hf_mode[@]}" 3>&1 1>&2 2>&3)
+  exit_status=$?
+
+  tput sgr 0 && clear
+
+  if [ ${exit_status} -ne 0 ]; then
+    et-log "No modem selected. Mode will not be started."
+    exit 1
+  fi  
+}
+
+select_xara_fm_mode () {
+  xara_fm_mode=()
+
+  xara_fm_mode+=("xara-fm-narrow" "xara FM (narrow)")
+  xara_fm_mode+=("xara-fm-wide" "xara FM (wide)")
+
+  XARA_FM_MODE=$(dialog --clear --menu "Select a xara bandwidth" 13 60 10 "${xara_fm_mode[@]}" 3>&1 1>&2 2>&3)
+  exit_status=$?
 
   tput sgr 0 && clear
 
@@ -141,27 +184,29 @@ wwv_mode () {
 options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
 options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
+options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_BBS_CLIENT}" "BBS Client (Paracon)")
 options+=("${MODE_ID_BBS_CLIENT2}" "BBS Client (QtTermTCP)")
 options+=("${MODE_ID_BBS_SERVER}" "BBS Server (LinBPQ)")
 options+=("${MODE_ID_CHAT_CLIENT}" "Chat (chattervox)")
-options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_PACKET_DIGIPEATER}" "Packet Digipeater")
+options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
+
+options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
+options+=("${MODE_ID_WINLINK_MERCURY}" "Winlink over HF (Mercury)")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink over VHF/UHF (AX.25 Packet)")
+options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
 
 if [ -e "${HOME}/.wine32/drive_c/VARA FM/VARAFM.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_FM}" "Winlink over VHF/UHF (VARA FM)")
 fi
 
-options+=("${MODE_ID_WINLINK_MERCURY}" "Winlink over HF  (Mercury)")
-options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
-
 if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
 fi
 
-options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
-options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
+options+=("${MODE_ID_WINLINK_XARA_FM}" "Winlink over HF (xara FM)")
+options+=("${MODE_ID_WINLINK_XARA_HF}" "Winlink over HF (xara HF)")
 
 # Prompt user for option and save exit status
 SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
@@ -230,6 +275,31 @@ if [ $exit_status -eq 0 ]; then
           sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
           start_and_wait_for_vara et-vara-hf
         ;;
+        "xara-fm-narrow")
+          sed -i "s|^VARAFM=.*|VARAFM=1|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=0|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-fm-narrow
+        ;;
+        "xara-fm-wide")
+          sed -i "s|^VARAFM=.*|VARAFM=1|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=0|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-fm-wide
+        ;;
+        "xara-hf-500")
+          sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-hf-500
+        ;;
+        "xara-hf-2300")
+          sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-hf-2300
+        ;;
+        "xara-hf-2750")
+          sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-hf-2750
+        ;;
         "mercury")
           sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
           sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
@@ -284,6 +354,43 @@ if [ $exit_status -eq 0 ]; then
       tput sgr 0 && clear
       start_and_wait_for_vara et-vara-hf
       et-winlink start-vara-hf &
+      sleep 1
+      min http://localhost:8080 2>/dev/null
+    ;;
+    ${MODE_ID_WINLINK_XARA_HF})
+      select_xara_hf_mode
+      et-log "Using ${XARA_HF_MODE} as the modem."
+
+      case "${XARA_HF_MODE}" in
+        "xara-hf-500")
+          start_and_wait_for_service et-service-xara-hf-500
+        ;;
+        "xara-hf-2300")
+          start_and_wait_for_service et-service-xara-hf-2300
+        ;;
+        "xara-hf-2750")
+          start_and_wait_for_service et-service-xara-hf-2750
+        ;;
+      esac
+
+      et-winlink start-xara-hf &
+      sleep 1
+      min http://localhost:8080 2>/dev/null
+    ;;
+    ${MODE_ID_WINLINK_XARA_FM})
+      select_xara_fm_mode
+      et-log "Using ${XARA_FM_MODE} as the modem."
+
+      case "${XARA_FM_MODE}" in
+        "xara-fm-narrow")
+          start_and_wait_for_service et-service-xara-fm-narrow
+        ;;
+        "xara-fm-wide")
+          start_and_wait_for_service et-service-xara-fm-wide
+        ;;
+      esac
+
+      et-winlink start-xara-fm &
       sleep 1
       min http://localhost:8080 2>/dev/null
     ;;
