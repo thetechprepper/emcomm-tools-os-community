@@ -1,6 +1,8 @@
 # To-Do
 
-* [ ] Add support for xara FM
+* [ ] xara
+  * [ ] Update et-mode to include xara HF bandwidth sub menu
+  * [ ] Add support for xara FM
 * [ ] Reticulum
   * [ ] et-user-backup
     * [ ] ~/.nomadnetwork
