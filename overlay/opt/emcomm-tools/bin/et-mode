@@ -184,20 +184,22 @@ wwv_mode () {
 options=()
 options+=("${MODE_ID_NONE}" "No mode selected")
 options+=("${MODE_ID_APRS_CLIENT}" "APRS Client (YAAC)")
+options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_BBS_CLIENT}" "BBS Client (Paracon)")
 options+=("${MODE_ID_BBS_CLIENT2}" "BBS Client (QtTermTCP)")
 options+=("${MODE_ID_BBS_SERVER}" "BBS Server (LinBPQ)")
 options+=("${MODE_ID_CHAT_CLIENT}" "Chat (chattervox)")
-options+=("${MODE_ID_APRS_DIGIPEATER}" "APRS Digipeater")
 options+=("${MODE_ID_PACKET_DIGIPEATER}" "Packet Digipeater")
+options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
+
+options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
+options+=("${MODE_ID_WINLINK_MERCURY}" "Winlink over HF (Mercury)")
 options+=("${MODE_ID_WINLINK_PACKET}" "Winlink over VHF/UHF (AX.25 Packet)")
+options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
 
 if [ -e "${HOME}/.wine32/drive_c/VARA FM/VARAFM.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_FM}" "Winlink over VHF/UHF (VARA FM)")
 fi
-
-options+=("${MODE_ID_WINLINK_MERCURY}" "Winlink over HF  (Mercury)")
-options+=("${MODE_ID_WINLINK_ARDOP}" "Winlink over HF (ARDOP)")
 
 if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
@@ -205,8 +207,6 @@ fi
 
 options+=("${MODE_ID_WINLINK_XARA_FM}" "Winlink over HF (xara FM)")
 options+=("${MODE_ID_WINLINK_XARA_HF}" "Winlink over HF (xara HF)")
-options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
-options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
 
 # Prompt user for option and save exit status
 SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
