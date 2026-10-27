@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 12 November 2024
-# Updated  : 26 October 2026
+# Updated  : 27 October 2026
 # Purpose  : Stops all EmComm Tools soundcard-based services (i.e. modems)
 #            and radio applications to ensure a clean start for the next mode.
 
@@ -30,7 +30,12 @@ stop_all_services() {
   systemctl --user stop et-service-direwolf-simple
   systemctl --user stop et-service-direwolf-aprs-digipeater
   systemctl --user stop et-service-direwolf-packet-digipeater
-  systemctl --user stop et-service-xara-hf.service
+
+  systemctl --user stop et-service-xara-fm-narrow.service
+  systemctl --user stop et-service-xara-fm-wide.service
+  systemctl --user stop et-service-xara-hf-500.service
+  systemctl --user stop et-service-xara-hf-2300.service
+  systemctl --user stop et-service-xara-hf-2750.service
 
   # Stop modem73 with a sledge hammer (belt and suspenders) as the current
   # 1.0.7 version can hang on exit.

@@ -139,6 +139,41 @@ select_term_mode () {
   fi  
 }
 
+select_xara_hf_mode () {
+  xara_hf_mode=()
+
+  xara_hf_mode+=("xara-hf-500" "xara HF (500)")
+  xara_hf_mode+=("xara-hf-2300" "xara HF (2300)")
+  xara_hf_mode+=("xara-hf-2750" "xara HF (2750)")
+
+  XARA_HF_MODE=$(dialog --clear --menu "Select a xara bandwidth" 13 60 10 "${xara_hf_mode[@]}" 3>&1 1>&2 2>&3)
+  exit_status=$?
+
+  tput sgr 0 && clear
+
+  if [ ${exit_status} -ne 0 ]; then
+    et-log "No modem selected. Mode will not be started."
+    exit 1
+  fi  
+}
+
+select_xara_fm_mode () {
+  xara_fm_mode=()
+
+  xara_fm_mode+=("xara-fm-narrow" "xara FM (narrow)")
+  xara_fm_mode+=("xara-fm-wide" "xara FM (wide)")
+
+  XARA_FM_MODE=$(dialog --clear --menu "Select a xara bandwidth" 13 60 10 "${xara_fm_mode[@]}" 3>&1 1>&2 2>&3)
+  exit_status=$?
+
+  tput sgr 0 && clear
+
+  if [ ${exit_status} -ne 0 ]; then
+    et-log "No modem selected. Mode will not be started."
+    exit 1
+  fi  
+}
+
 wwv_mode () {
     dialog --title "Note on WWV" --msgbox "Manually set your radio to AM and tune it to one of the WWV frequencies appropriate for this operating time.\n\nTry: 2.5, 5, 10, 15 or 20 MHz." 0 0
     tput sgr 0 && clear
@@ -321,8 +356,21 @@ if [ $exit_status -eq 0 ]; then
       min http://localhost:8080 2>/dev/null
     ;;
     ${MODE_ID_WINLINK_XARA_HF})
-      tput sgr 0 && clear
-      start_and_wait_for_service et-service-xara-hf
+      select_xara_hf_mode
+      et-log "Using ${XARA_HF_MODE} as the modem."
+
+      case "${XARA_HF_MODE}" in
+        "xara-hf-500")
+          start_and_wait_for_service et-service-xara-hf-500
+        ;;
+        "xara-hf-2300")
+          start_and_wait_for_service et-service-xara-hf-2300
+        ;;
+        "xara-hf-2750")
+          start_and_wait_for_service et-service-xara-hf-2750
+        ;;
+      esac
+
       et-winlink start-xara-hf &
       sleep 1
       min http://localhost:8080 2>/dev/null
