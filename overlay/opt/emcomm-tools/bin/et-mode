@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 26 October 2026
+# Updated  : 27 October 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -118,7 +118,11 @@ select_term_mode () {
     fi
   fi
 
-  term_mode+=("xara-hf" "xara HF")
+  term_mode+=("xara-fm-narrow" "xara FM (narrow)")
+  term_mode+=("xara-fm-wide" "xara FM (wide)")
+  term_mode+=("xara-hf-500" "xara HF (500)")
+  term_mode+=("xara-hf-2300" "xara HF (2300)")
+  term_mode+=("xara-hf-2750" "xara HF (2750)")
 
   TERM_MODE=$(dialog --clear --menu "Select a modem" 13 60 10 "${term_mode[@]}" 3>&1 1>&2 2>&3)
   exit_status=$?
@@ -234,10 +238,30 @@ if [ $exit_status -eq 0 ]; then
           sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
           start_and_wait_for_vara et-vara-hf
         ;;
-        "xara-hf")
+        "xara-fm-narrow")
+          sed -i "s|^VARAFM=.*|VARAFM=1|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=0|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-fm-narrow
+        ;;
+        "xara-fm-wide")
+          sed -i "s|^VARAFM=.*|VARAFM=1|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=0|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-fm-wide
+        ;;
+        "xara-hf-500")
           sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
           sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
-          start_and_wait_for_service et-service-xara-hf
+          start_and_wait_for_service et-service-xara-hf-500
+        ;;
+        "xara-hf-2300")
+          sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-hf-2300
+        ;;
+        "xara-hf-2750")
+          sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
+          sed -i "s|^VARAHF=.*|VARAHF=1|g" ${QTTERMTCP_CONF_FILE}
+          start_and_wait_for_service et-service-xara-hf-2750
         ;;
         "mercury")
           sed -i "s|^VARAFM=.*|VARAFM=0|g" ${QTTERMTCP_CONF_FILE}
