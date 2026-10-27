@@ -25,6 +25,7 @@ MODE_ID_WINLINK_PACKET="winlink-packet"
 MODE_ID_WINLINK_VARA_HF="winlink-vara-hf" 
 MODE_ID_WINLINK_VARA_FM="winlink-vara-fm" 
 MODE_ID_WINLINK_XARA_HF="winlink-xara-hf" 
+MODE_ID_WINLINK_XARA_FM="winlink-xara-fm" 
 MODE_ID_WINLINK_TELNET="winlink-telnet" 
 MODE_ID_TIME_WWV="time-wwv" 
 
@@ -202,6 +203,7 @@ if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
 fi
 
+options+=("${MODE_ID_WINLINK_XARA_FM}" "Winlink over HF (xara FM)")
 options+=("${MODE_ID_WINLINK_XARA_HF}" "Winlink over HF (xara HF)")
 options+=("${MODE_ID_WINLINK_TELNET}" "Winlink over telnet (Internet)")
 options+=("${MODE_ID_TIME_WWV}" "Sync clock to WWV")
@@ -372,6 +374,23 @@ if [ $exit_status -eq 0 ]; then
       esac
 
       et-winlink start-xara-hf &
+      sleep 1
+      min http://localhost:8080 2>/dev/null
+    ;;
+    ${MODE_ID_WINLINK_XARA_FM})
+      select_xara_fm_mode
+      et-log "Using ${XARA_FM_MODE} as the modem."
+
+      case "${XARA_FM_MODE}" in
+        "xara-fm-narrow")
+          start_and_wait_for_service et-service-xara-fm-narrow
+        ;;
+        "xara-fm-wide")
+          start_and_wait_for_service et-service-xara-fm-wide
+        ;;
+      esac
+
+      et-winlink start-xara-fm &
       sleep 1
       min http://localhost:8080 2>/dev/null
     ;;
