@@ -12,15 +12,21 @@
 # 2. xara modem started
 
 # TODO
+# - Make more robust
 # - Check for supported devices or bail
-# - Replace callsign
-# - Replace sound card
 # - Update regression
 
-xara --call KT7RUN \
+[[ -z "${ET_USER_CONFIG}" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+CARD=$(et-system-info et-audio-card | cut -d"," -f 1)
+DEVICE=$(et-system-info et-audio-card | cut -d"," -f 2)
+
+xara --call ${CALLSIGN} \
   --hf 2300 \
   --audio alsa \
-  --capture plughw:CARD=1,DEV=0 \
-  --playback plughw:CARD=1,DEV=0 \
+  --capture plughw:CARD=${CARD},DEV=${DEVICE} \
+  --playback plughw:CARD=${CARD},DEV=${DEVICE} \
   --radio \
   --ptt rigctld:127.0.01:4532
