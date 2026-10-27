@@ -81,7 +81,17 @@ CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
 CARD=$(et-system-info et-audio-card | cut -d"," -f 1)
 DEVICE=$(et-system-info et-audio-card | cut -d"," -f 2)
 
-et-log "Starting zara in mode ${MODE} with bandwidth ${BANDWIDTH}"
+# xara does not handle VOX properly via rigctld like the other applications.
+# Therefore, let's test for an EmComm Tools VOX device and explicitly set
+# th PTT option.
+IS_VOX=$(ps -ef | grep '[r]igctld -m 1 -P NONE')
+if [[ $? -eq 0 ]]; then
+  PTT="vox"
+else
+  PTT="rigctld:127.0.01:4532"
+fi
+
+et-log "Starting zara in mode ${MODE} with bandwidth ${BANDWIDTH} and PTT using ${PTT}"
 
 xara --call ${CALLSIGN} \
   ${MODE} ${BANDWIDTH} \
@@ -89,4 +99,4 @@ xara --call ${CALLSIGN} \
   --capture plughw:CARD=${CARD},DEV=${DEVICE} \
   --playback plughw:CARD=${CARD},DEV=${DEVICE} \
   --radio \
-  --ptt rigctld:127.0.01:4532
+  --ptt ${PTT}

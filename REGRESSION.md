@@ -87,11 +87,9 @@
   * [ ] RMS station listed
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
-* [ ] winlink-mercury (P2P)
 * [ ] winlink-xara (RMS)
+* [ ] winlink-mercury (P2P)
 * [ ] wwv
-* [ ] bbs-client (1200 baud)
-* [ ] bbs-client2 (xara-hf)
 
 ## Reticulum
   * Python 3.11.17
@@ -118,6 +116,12 @@
   * [ ] QtTermTCP
   * [ ] YAAC
   * [ ] unpair
+
+## xara
+
+* [ ] bbs-client (1200 baud)
+* [ ] bbs-client2 (xara-hf: 500)
+* [ ] DigiRig Lite & winlink-xara-hf (2300)
 
 ## VARA
 

@@ -1,7 +1,5 @@
 # To-Do
 
-* [ ] xara
-  * [ ] rigctl does not work with the DigiRig lite
 * [ ] Reticulum
   * [ ] et-user-backup
     * [ ] ~/.nomadnetwork
