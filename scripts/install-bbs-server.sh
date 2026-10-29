@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 8 November 2024
-# Updated : 13 November 2026
+# Updated : 28 October 2026
 # Purpose : Install Linbpq
 #
 # Notes:
@@ -14,7 +14,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 . ../overlay/opt/emcomm-tools/bin/et-common
 
-
+ETC_TAG=emcomm-tools-os-community-20261027-r7-build34
 VERSION=6.0.25
 FILE="linbpq${VERSION}"
 LINK_PATH=/opt/linbpq
@@ -28,7 +28,7 @@ et-log "Installing Linbpq..."
 
 # Install the web interface for LinBPQ
 HTML_ZIP_FILE=HTMLPages.zip
-HTML_ZIP_URL="http://www.cantab.net/users/john.wiseman/Downloads/Beta/${HTML_ZIP_FILE}"
+HTML_ZIP_URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/${ETC_TAG}/${HTML_ZIP_FILE}"
 BBS_HOME="/etc/skel/.local/share/emcomm-tools/bbs-server"
 BBS_HOME_FILES="${BBS_HOME}/Files"
 
@@ -65,7 +65,7 @@ dpkg --add-architecture i386 &&  apt update && apt install \
   zlib1g:i386 \
   -y
 
-URL="https://www.cantab.net/users/john.wiseman/Downloads/${FILE}"
+URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/${ETC_TAG}/${FILE}"
 
 if [ ! -e ${FILE} ]; then
   et-log "Downloading Linbpq: ${URL}"
