@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 3 February 2025
-# Updated : 28 October 2026
+# Updated : 29 October 2026
 # Purpose : Install QtTermTCP
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -41,7 +41,7 @@ if [ ! -e ${ET_DIST_DIR}/${DOWNLOAD_FILE} ]; then
   URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/${ETC_TAG}/${DOWNLOAD_FILE}"
 
   et-log "Downloading QtTermTCP: ${URL}"
-  download_with_retries ${DOWNLOAD_FILE} ${URL}
+  download_with_retries ${URL} ${DOWNLOAD_FILE}
 
   chmod 755 ${DOWNLOAD_FILE}
   mv -v ${DOWNLOAD_FILE} ${ET_DIST_DIR}
