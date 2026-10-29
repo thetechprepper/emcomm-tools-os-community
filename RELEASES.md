@@ -1,5 +1,12 @@
 # EmComm Tools OS Community Release
 
+## 2026.11.26.R7 (7.0.0) Release Notes
+
+REMINDERS:
+* [ ] Update `ETC_TAG` to reflect offical R7 branch or tag:
+  * [ ] install-bbs-server.sh 
+  * [ ] install-qttermtcp.sh 
+
 ## 2026.04.01.R6 (6.0.0) Release Notes
 
 * Tier 1 radio PnP support
