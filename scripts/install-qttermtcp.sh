@@ -1,12 +1,16 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 3 February 2025
+# Updated : 28 October 2026
 # Purpose : Install QtTermTCP
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 . ./env.sh
+. ../overlay/opt/emcomm-tools/bin/et-common
+
+ETC_TAG=emcomm-tools-os-community-20261027-r7-build34
 
 APP=qttermtcp
 VERSION=latest
@@ -34,10 +38,10 @@ apt install \
 
 if [ ! -e ${ET_DIST_DIR}/${DOWNLOAD_FILE} ]; then
 
-  URL=http://www.cantab.net/users/john.wiseman/Downloads/${DOWNLOAD_FILE}
+  URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/${ETC_TAG}/${DOWNLOAD_FILE}"
 
   et-log "Downloading QtTermTCP: ${URL}"
-  curl -s -L -o ${DOWNLOAD_FILE} --fail ${URL}
+  download_with_retries ${DOWNLOAD_FILE} ${URL}
 
   chmod 755 ${DOWNLOAD_FILE}
   mv -v ${DOWNLOAD_FILE} ${ET_DIST_DIR}
