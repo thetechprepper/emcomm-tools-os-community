@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 27 October 2026
+# Updated  : 31 October 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -205,7 +205,7 @@ if [ -e "${HOME}/.wine32/drive_c/VARA/VARA.exe" ]; then
   options+=("${MODE_ID_WINLINK_VARA_HF}" "Winlink over HF (VARA HF)")
 fi
 
-options+=("${MODE_ID_WINLINK_XARA_FM}" "Winlink over HF (xara FM)")
+options+=("${MODE_ID_WINLINK_XARA_FM}" "Winlink over FM (xara FM)")
 options+=("${MODE_ID_WINLINK_XARA_HF}" "Winlink over HF (xara HF)")
 
 # Prompt user for option and save exit status
