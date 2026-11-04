@@ -1,5 +1,6 @@
 # Author  : Gaston Gonzalez
 # Date    : 26 October 2026
+# Updated : 4 November 2026
 # Purpose : Build xara from source
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -8,7 +9,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 
 APP=xara
-VERSION=0.1.1
+VERSION=0.1.3
 APP_AND_VERSION="${APP}-${VERSION}"
 GIT_TAG="v${VERSION}"
 GIT_URL="https://github.com/x0rro/xara.git"
