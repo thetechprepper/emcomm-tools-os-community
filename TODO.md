@@ -6,7 +6,6 @@
   * [ ] man page: et-reticulum
   * [ ] man page: et-partyline-server
 * [ ] Update data sets
-    * [ ] SSN
     * [ ] US callsigns
     * [ ] CA callsigns
     * [ ] FAA

@@ -1,7 +1,7 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 34
-- **Date**: 27 October 2026
+- **Build**: ETC R7 Build 35
+- **Date**: 5 November 2026
 
 ## First Login
 
@@ -198,3 +198,7 @@
 ## Multimedia
 
 * [ ] VLC & DVD playback
+
+## Documentation
+
+* [ ] man et-user
