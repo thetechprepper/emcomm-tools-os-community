@@ -1,31 +1,27 @@
-# To-Do
+# TODO
 
-# R7
+## R7
 
-* [ ] Upgrade mercury modem
 * [ ] man pages
-  * [ ] et-user-backup
-  * [ ] et-user-retore
-* [ ] Reticulum
-  * [ ] et-user-backup
-    * [ ] ~/.nomadnetwork
-  * [ ] man page: et-reticulum
-  * [ ] man page: et-partyline-server
+  * [ ] et-reticulum
+  * [ ] et-partyline-server
 * [ ] Update data sets
     * [ ] US callsigns
     * [ ] CA callsigns
     * [ ] FAA
 * [ ] addons
     * [] VARA scripts
-* [ ] et-index
+* [ ] modem73
+    * [ ] test new ALSA support
+    * [ ] Add standalone modem
 
-# R8
+## R8
 
 * [ ] et-mail
-* [ ] et-debug
-* [ ] See email: "Found on Discord GPS issue"
   * [ ] Fix dial frequency
   * [ ] Update rmslist.csv (et-data-winlink)
+* [ ] et-debug
+* [ ] See email: "Found on Discord GPS issue"
 * Add radio support
   * [ ] TX500MP + LINK500MP
   * [ ] IC-7300 MkII
