@@ -1,10 +1,8 @@
 # To-Do
 
-# R7
+## R7
 
-* [ ] Upgrade mercury modem
 * [ ] man pages
-  * [ ] et-user-backup
   * [ ] et-user-retore
 * [ ] Reticulum
   * [ ] et-user-backup
@@ -22,13 +20,13 @@
     * [ ] test new ALSA support
     * [ ] Add standalone modem
 
-# R8
+## R8
 
 * [ ] et-mail
-* [ ] et-debug
-* [ ] See email: "Found on Discord GPS issue"
   * [ ] Fix dial frequency
   * [ ] Update rmslist.csv (et-data-winlink)
+* [ ] et-debug
+* [ ] See email: "Found on Discord GPS issue"
 * Add radio support
   * [ ] TX500MP + LINK500MP
   * [ ] IC-7300 MkII
