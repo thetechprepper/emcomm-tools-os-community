@@ -1,8 +1,9 @@
-# To-Do
+# TODO
 
 ## R7
 
 * [ ] man pages
+  * [ ] et-index
   * [ ] et-reticulum
   * [ ] et-partyline-server
 * [ ] Update data sets
@@ -11,7 +12,6 @@
     * [ ] FAA
 * [ ] addons
     * [] VARA scripts
-* [ ] et-index
 * [ ] modem73
     * [ ] test new ALSA support
     * [ ] Add standalone modem
