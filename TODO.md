@@ -18,6 +18,9 @@
 * [ ] addons
     * [] VARA scripts
 * [ ] et-index
+* [ ] modem73
+    * [ ] test new ALSA support
+    * [ ] Add standalone modem
 
 # R8
 
