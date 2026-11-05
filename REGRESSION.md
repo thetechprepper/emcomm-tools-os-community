@@ -1,6 +1,6 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 35
+- **Build**: ETC R7 Build 36
 - **Date**: 5 November 2026
 
 ## First Login
