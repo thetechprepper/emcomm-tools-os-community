@@ -3,7 +3,6 @@
 ## R7
 
 * [ ] man pages
-  * [ ] et-index
   * [ ] et-reticulum
   * [ ] et-partyline-server
 * [ ] Update data sets

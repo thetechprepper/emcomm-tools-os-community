@@ -202,3 +202,8 @@
 ## Documentation
 
 * [ ] man et-user
+
+
+## Maintenance
+
+* [ ] et-index
