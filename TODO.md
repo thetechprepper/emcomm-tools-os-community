@@ -3,12 +3,8 @@
 ## R7
 
 * [ ] man pages
-  * [ ] et-user-retore
-* [ ] Reticulum
-  * [ ] et-user-backup
-    * [ ] ~/.nomadnetwork
-  * [ ] man page: et-reticulum
-  * [ ] man page: et-partyline-server
+  * [ ] et-reticulum
+  * [ ] et-partyline-server
 * [ ] Update data sets
     * [ ] US callsigns
     * [ ] CA callsigns
