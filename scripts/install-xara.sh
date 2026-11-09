@@ -1,7 +1,8 @@
+#!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 26 October 2026
-# Updated : 4 November 2026
-# Purpose : Build xara from source
+# Updated : 9 November 2026
+# Purpose : Build xara from user-provided source tarball
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
@@ -9,24 +10,42 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 . ./env.sh
 
 APP=xara
-VERSION=0.1.3
+
+et-log "Checking for ${APP} source tarball..."
+if ! ls xara-*.tar.gz >/dev/null 2>&1; then
+  et-log "xara source package not found. Skipping install. See xara.md"
+  exit 1
+fi
+
+TARBALL=$(ls xara-*.tar.gz | head -1)
+
+# Extract X.Y.Z version number (i.e., 0.1.3)
+VERSION=${TARBALL#xara-}
+VERSION=${VERSION%.tar.gz}
+
 APP_AND_VERSION="${APP}-${VERSION}"
-GIT_TAG="v${VERSION}"
-GIT_URL="https://github.com/x0rro/xara.git"
-GIT_WORKSPACE=xara
 INSTALL_DIR="/opt/${APP_AND_VERSION}"
 INSTALL_BIN_DIR="${INSTALL_DIR}/bin"
 LINK_PATH="/opt/${APP}"
 
-et-log "Installing ${APP} ${VERSION}"
+et-log "Installing ${APP} ${VERSION}..."
+
+cp -v ${TARBALL} "${ET_DIST_DIR}/"
 
 CWD_DIR=`pwd`
 
 cd ${ET_SRC_DIR}
-[[ ! -e ${GIT_WORKSPACE} ]] && git clone ${GIT_URL} ${GIT_WORKSPACE}
 
-cd ${GIT_WORKSPACE}
-git checkout ${GIT_TAG}
+tar -xzf "${ET_DIST_DIR}/${TARBALL}"
+
+if [[ ! -d "${APP}" ]]; then
+  et-log "${TARBALL} is not properly structured. Expected top-level directory: ${APP}"
+  cd ${CWD_DIR}
+  exit 1
+fi
+
+et-log "Compiling ${APP} ${VERSION}..."
+cd ${APP}
 
 # We only need Rust during the Cubic build.
 # Source the install in # root's home directory.
