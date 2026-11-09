@@ -14,7 +14,7 @@ APP=xara
 et-log "Checking for ${APP} source tarball..."
 if ! ls xara-*.tar.gz >/dev/null 2>&1; then
   et-log "xara source package not found. Skipping install. See xara.md"
-  exit 1
+  exit 0
 fi
 
 TARBALL=$(ls xara-*.tar.gz | head -1)
@@ -30,25 +30,25 @@ LINK_PATH="/opt/${APP}"
 
 et-log "Installing ${APP} ${VERSION}..."
 
-cp -v ${TARBALL} "${ET_DIST_DIR}/"
+cp -v "${TARBALL}" "${ET_DIST_DIR}/"
 
-CWD_DIR=`pwd`
+CWD_DIR=$(pwd)
 
-cd ${ET_SRC_DIR}
+cd "${ET_SRC_DIR}"
 
 tar -xzf "${ET_DIST_DIR}/${TARBALL}"
 
 if [[ ! -d "${APP}" ]]; then
   et-log "${TARBALL} is not properly structured. Expected top-level directory: ${APP}"
-  cd ${CWD_DIR}
+  cd "${CWD_DIR}"
   exit 1
 fi
 
 et-log "Compiling ${APP} ${VERSION}..."
-cd ${APP}
+cd "${APP}"
 
 # We only need Rust during the Cubic build.
-# Source the install in # root's home directory.
+# Source the install in root's home directory.
 source "$HOME/.cargo/env"
 
 # Compile with support for higher speeds (registered)
@@ -57,7 +57,7 @@ cargo build \
   --locked \
   --features registered
 
-[[ ! -e ${INSTALL_BIN_DIR} ]] && mkdir -v -p ${INSTALL_BIN_DIR}
+[[ ! -e "${INSTALL_BIN_DIR}" ]] && mkdir -v -p "${INSTALL_BIN_DIR}"
 
 # Manually install binaries
 cargo metadata --no-deps --format-version 1 |
@@ -67,9 +67,9 @@ cargo metadata --no-deps --format-version 1 |
      cp "target/release/${bin}" "${INSTALL_BIN_DIR}"
    done
 
-[[ -e ${LINK_PATH} ]] && rm -v ${LINK_PATH}
-ln -v -s ${INSTALL_DIR} ${LINK_PATH}
+[[ -e "${LINK_PATH}" ]] && rm -v "${LINK_PATH}"
+ln -v -s "${INSTALL_DIR}" "${LINK_PATH}"
 
-stow -v -d /opt ${APP} -t /usr/local
+stow -v -d /opt "${APP}" -t /usr/local
 
-cd ${CWD_DIR}
+cd "${CWD_DIR}"
