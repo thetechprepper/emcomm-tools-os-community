@@ -2,21 +2,19 @@
 
 ## R7
 
-* [ ] man pages
-  * [ ] et-reticulum
-  * [ ] et-partyline-server
-* [ ] Update data sets
-    * [ ] US callsigns
-    * [ ] CA callsigns
-    * [ ] FAA
 * [ ] addons
     * [] VARA scripts
 * [ ] modem73
-    * [ ] test new ALSA support
+    * [ ] Test new ALSA support
     * [ ] Add standalone modem
+* [ ] man pages
+  * [ ] et-reticulum
+  * [ ] et-partyline-server
 
 ## R8
 
+* [ ] Update data sets
+    * [ ] FAA
 * [ ] et-mail
   * [ ] Fix dial frequency
   * [ ] Update rmslist.csv (et-data-winlink)
