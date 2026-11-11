@@ -3,21 +3,19 @@
 ## R7
 
 * [ ] addons
-    * [] VARA scripts
-* [ ] modem73
-    * [ ] Test new ALSA support
-    * [ ] Add standalone modem
+    * [ ] VARA scripts
 * [ ] man pages
-  * [ ] et-reticulum
   * [ ] et-partyline-server
 
 ## R8
 
+* [ ] et-mail
+* [ ] modem73
+    * [ ] Test new ALSA support
+    * [ ] Add standalone mode
+* [ ] Data2g
 * [ ] Update data sets
     * [ ] FAA
-* [ ] et-mail
-  * [ ] Fix dial frequency
-  * [ ] Update rmslist.csv (et-data-winlink)
 * [ ] et-debug
 * [ ] See email: "Found on Discord GPS issue"
 * Add radio support
