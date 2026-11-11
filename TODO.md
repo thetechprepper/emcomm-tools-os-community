@@ -2,13 +2,12 @@
 
 ## R7
 
+* [ ] Update `RELEASES.md`
 * [ ] Update `ETC_TAG`
   * [ ] install-bbs-server.sh
   * [ ] install-qttermtcp.sh
   * [ ] 02-install-vara-hf.sh
   * [ ] 03-install-vara-fm.sh
-* [ ] man pages
-  * [ ] et-partyline-server
 
 ## R8
 
@@ -18,7 +17,6 @@
     * [ ] Add standalone mode
 * [ ] Data2g
 * [ ] Update data sets
-    * [ ] FAA
 * [ ] et-debug
 * [ ] See email: "Found on Discord GPS issue"
 * Add radio support
