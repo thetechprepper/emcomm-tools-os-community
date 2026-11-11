@@ -3,7 +3,7 @@
 ## 2026.11.26.R7 (7.0.0) Release Notes
 
 * Tier 1 radio PnP support
-  * Added full plug-and-play support for Heltec v4 LoRA board
+  * Added full plug-and-play support for the Heltec V4 LoRa board
 * et-index
   * List and rebuild EmComm Tools offline indices
 * et-mode
@@ -12,11 +12,11 @@
   * Added winlink-telnet mode
   * Added winlink-xara-fm mode
   * Added winlink-xara-hf mode
-  * Added Mercury HF support to BBS client 2 (i.e. QtTermTCP)
-  * Cleaned up order of menu items
-  * Suppressed warning messages from min when starting Winlink modes
+  * Added Mercury HF support to BBS client 2 (i.e., QtTermTCP)
+  * Cleaned up the order of menu items
+  * Suppressed warning messages from Min when starting Winlink modes
 * et-modem73
-  * Plug-and-play wrapper around modem73 
+  * Plug-and-play wrapper around modem73
 * et-user-app
   * Added graphical version of et-user
   * Launch app on initial login
@@ -25,22 +25,22 @@
   * Added ~/.lxmd
   * Added ~/.reticulum
   * Added ~/.reticulum-meshchat
-  * Added ~/.nomadnet
+  * Added ~/.nomadnetwork
 * et-wwv
-  *  Sets the system clock to the top of the minute via WWV/WWVH
-* linbpq 
-  * Fixed retry (10) for the 1200 baud packet port
+  * Synchronizes the system clock to the top of the minute using WWV/WWVH
+* linbpq
+  * Fixed retry count (10) for the 1200 baud packet port
 * Man Pages
   * et-index
   * et-mode
   * et-partyline-server
   * et-radio
-  * et-reticulum 
+  * et-reticulum
   * et-user
   * et-user-backup
   * et-user-restore
 * Mercury HF Modem
-  * Added mercury 1.9.22
+  * Added Mercury HF 1.9.22
   * Added support to et-reticulum
 * Modem73
   * Added modem73 (TTP fork)
@@ -48,11 +48,11 @@
 * Reticulum
   * lxmd
   * rnsd 1.6.0
-  * MeshChat (TTP fork) 
+  * MeshChat (TTP fork)
     * Paper message import/export support
   * NomadNet
-  * partyline - group voice application
-  * et-partyline-server - plug-and-play tool for starting a partyline server
+  * Partyline - group voice application
+  * et-partyline-server - plug-and-play tool for starting a Partyline server
   * et-reticulum - plug-and-play tool for starting a Reticulum shared instance
   * et-rnode-flash-heltec-v4 - flash RNode firmware offline
   * et-rnode-flash-rak4631 - flash RNode firmware offline
@@ -62,17 +62,17 @@
 * Winlink
   * Upgraded Pat Winlink to version 1.0.0
 * xara
-  * Added the ability for a user to install xara version 0.1.x (see scripts/xara.md)
+  * Added the ability for users to install xara version 0.1.x (see scripts/xara.md)
 * Data Sets
   * Offline FCC data set updated as of November 2026
   * Offline SSN data set updated as of November 2026
   * Offline Winlink RMS data set updated as of November 2026
-  * Added support offline Canadian callsigns (if address available)
+  * Added offline support for Canadian callsigns (if address available)
 * Offline Reference
   * Added NWS FTPmail TTP post
-  * Added 2025 NiFOG
+  * Added 2025 NIFOG
   * Added Reticulum 1.6.0 manual
-  * Added Heltec v4 datasheet
+  * Added Heltec V4 datasheet
 * Development
   * Added Python 3.11.17
   * Added Rust
@@ -80,23 +80,23 @@
   * Added R7 installer icon
   * Added R7 features to Ubiquity slideshow
   * Added EmComm Tools boot spinner
-* Bluetooth TNC support
+* Bluetooth TNC Support
   * Added support for Reticulum
   * Fixed empty string evaluation bug in `get_mac_or_exit`
-  * Fixed bug preventing Bluetooth pairing due to env typo
+  * Fixed bug preventing Bluetooth pairing due to environment variable typo
 * Screen Brightness Enhancements
-  * Always set screen to 100% on login
+  * Always set screen brightness to 100% on login
   * Disabled automatic screen brightness
   * Disabled screen dimming
-  * Enabled Dark Mode as default
+  * Enabled Dark Mode by default
 * Security
   * Disabled the `algif_aead` module (CVE-2026-31431)
 * Misc
   * Added support for VLC and DVD playback
   * Added Thunderbird email application
-  * Upgrade Min web browser to 1.35.6
+  * Upgraded Min web browser to 1.35.6
 * Removed Applications
-  * Artemis - Caused dependency issues for platform
+  * Artemis - caused platform dependency issues
 
 
 ## 2026.04.01.R6 (6.0.0) Release Notes
