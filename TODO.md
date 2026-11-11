@@ -2,8 +2,11 @@
 
 ## R7
 
-* [ ] addons
-    * [ ] VARA scripts
+* [ ] Update `ETC_TAG`
+  * [ ] install-bbs-server.sh
+  * [ ] install-qttermtcp.sh
+  * [ ] 02-install-vara-hf.sh
+  * [ ] 03-install-vara-fm.sh
 * [ ] man pages
   * [ ] et-partyline-server
 
