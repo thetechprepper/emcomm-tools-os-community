@@ -2,117 +2,70 @@
 
 ## 2026.11.26.R7 (7.0.0) Release Notes
 
+* et-index
+  * List and rebuild EmComm Tools offline indices
 * et-mode
   * Added time-wwv mode (see et-wwv)
   * Added winlink-telnet mode
   * Added winlink-xara-fm mode
   * Added winlink-xara-hf mode
-  * Added man page
   * Cleaned up order of menu items
+  * Suppressed warning messages from min when starting Winlink modes
 * et-user-backup
   * Added NomadNet to backup
-  * Added man page
 * et-wwv
   *  Sets the system clock to the top of the minute via WWV/WWVH
-* HF Prediction
-  * Updated solar sunspot smoothing numbers through October 2027
+* Man Pages
+  * et-index
+  * et-mode
+  * et-partyline-server
+  * et-radio
+  * et-reticulum 
+  * et-user
+  * et-user-backup
+  * et-user-restore
+* Mercury
+* Reticulum
+  * lxmd
+  * rnsd 1.6.0
+  * MeshChat (TTP Fork) 
+    * Paper message import/export support
+  * NomadNet
+  * partyline - group voice application
+  * et-partyline-server - plug-and-play tool for starting a partyline server
+  * et-reticulum - plug-and-play tool for starting a Reticulum shared instance
 * VARA
   * Fixed add-on script to install VARA FM 4.4.1
   * Fixed add-on script to install VARA HF 4.9.1
 * Winlink
   * Upgraded Pat Winlink to version 1.0.0
-  * Updated Winlink RMS list for 11/10/26
+* xara
+  * Added the ability for a user to install xara version 0.1.x (see scripts/xara.md)
+* Data Sets
+  * Offline FCC data set updated as of November 2026
+  * Offline SSN data set updated as of November 2026
+  * Offline Winlink RMS data set updated as of November 2026
+  * Added support offline Canadian callsigns (if address available)
+* Offline Reference
+  * Added FTPmail TTP post
+* Development
+  * Added Python 3.11.17
+  * Added Rust
+* Debranding
+  * Added R7 installer icon
+  * Added EmComm Tools boot spinner
+* Bluetooth TNC support
+  * Added support for Reticulum
+  * Fixed empty string evaluation bug in `get_mac_or_exit`
+  * Fixed bug preventing Bluetooth pairing due to env typo
+* Screen Brightness Enhancements
+  * Always set screen to 100% on login
+  * Disabled automatic screen brightness
+  * Disabled screen dimming
+  * Enabled Dark Mode as default
+* Misc
+  * Added support for VLC and DVD playback
 
-
-cd63ecf man - Added initial draft of et-partyline-server
-d3db90d vara - Updated VARA add-on scripts to pull the latest version of VARA HF and FM. This is needed as Cloudfare is blocking cURL. The VARA license allows for unmodified redistribution of the installers.
-577e971 man - Added initial draft for et-reticulum
-7d4adbe reticulum - Upgraded from 1.5.7 to 1.6.0
-c3350bf Merge pull request #124 from thetechprepper/feature/xara-user-build
-861deb4 xara - Enable xara modem in et-mode only if xara is installed
-df84a09 xara - Changed exit status to zero if source tarball not present; applied consistent quotation marks for variable expansion; finally switched to modern command substituion.
-18333b9 xara - Updated xara installer to use user-provided source package if available
-c46ca8a xara - Add instructions for providing a source package when building the EmComm Tools ISO.
-e00e623 Merging misc/pre-r7-build36-updates to release/r7
-92fd3fc et-index - Added man page for et-index
-db62e2d et-index - Initial command to help with rebuilding EmComm Tools indexes if needed
-c9397cd man - Initial draft of et-user-restore command
-558e72e man - Initial draft of et-user-backup command
-2ef2601 regression - Bumped build to 36
-af5f332 mercury - Bumped version 1.9.13 to 1.9.22
-bd5893e Merge pull request #123 from thetechprepper/docs/r7-man-pages
-1026486 man - Initial draft of et-mode command
-16982dd man - Initial draft of et-radio command
-1d7492c man - Added test case, regression item, and man page installation
-013a529 man - Initial draft of et-user command
-fb37b2d man - Initial man page for et-user
-1ee1806 Merge misc/pre-r7-build35-updates to release/r7
-dba59ed xara - Enabled full modem speeds
-9162878 xara - Upgrade from version 0.1.1 to 0.1.3
-d19140d ttp-blog - Adding an NWS weather post that I wrote for my internal blog and public BBS.
-47c3417 debranding - Adjusted EmComm Tools logo alignment
-d702cf0 qttermtcp - Correct argument order for download_with_retries
-768bf8e r7 - Added strawman for R7 release with critical pre-release reminders
-0815ecd Merge pull request #122 from thetechprepper/fix/cantab-net
-cfc14ed qttermtcp - Moved QtTermTCP artifact to GitHub release given cantab.net outage.
-78d298b linbpq - Moved LinBPQ artifacts to GitHub release given cantab.net outage.
-175c5f5 Merge pull request #121 from thetechprepper/feature/xara
-4a90506 xara - Implemented workaround so that xara works with VOX devices
-ab25457 xara - Updated to-do. Found issue with the xara and VOX devices (DigiRig Lite) via rigctld
-29841fb xara - Updated et-mode to support all xara modes for the QtTermTCP application (bbs-client2)
-0248caf xara - Added individual user-level systemd unit files for all combinations of xara modes and bandwidth options
-83d58f7 xara - Updated et-vara to include CLI arg for xara HF and FM with corresponding bandwidth options
-85c4dbb xara - Added standard ET audio subsystem checks before starting modem
-c14b92f xara - Updated regression
-e11b67a xara - Added intial support for replacing the user's callsign and audio card and device numbers.
-09a7f69 xara - Updated comments to reflect finished to-do items
-0f97747 xara - Fixed typo in xara test case
-d114cb4 xara - Added initial support to et-mode for QtTermTCP and Winlink
-339c081 xara - Initial installer for xara
-e995c8a xara - Install Rust for root only for use during the Cubic build.
-dac85ef Merge pull request #120 from thetechprepper/feature/reticulum-bluetooth
-bcddd58 regression - Updated manual tests
-8d1b82a bluetooth - Add Reticulum AX.25 support for supported Bluetooth TNCs
-0b607f7 bluetooth - Fixed empty string evaluation bug in get_mac_or_exit
-ad3ca3a bluetooth - Fixed bug preventing Bluetooth pairing due to env typo
-8c34939 Merge pull request #119 from thetechprepper/feature/partyline
-0918677 partyline - Fixed typo
-6e24482 veracrypt - Removing test case since it is not currently be installed
-4645f6f veracrypt - Disabling as it is preventing the live USB installer from completing
-4ba5d7b party-line - Added an example audio/music bot wrapper based on my SWL with TTP channel
-94a2bf0 partyline - Fixed partlyline-server test following Cubic build
-8d44a6f partyline - Fixed et-partlyline-server test following Cubic build
-d198dd8 veracrypt - Added Veracrypt to main installer
-31cf484 partyline - Added test case for et-partyline-server
-c81ab3b partyline - Added initial support for et-partyline-server wrapper script for PnP
-925e2f7 partyline - Added launcher for partyline
-fc67829 partyline - Added test case for partyline installation
-896d252 python - Updated Python 3.11.17 build to enable optional C extension modules
-d75ceae python3 - Added test case for Python 3.11.17 custom install
-bffb9b1 partyline - Initial attempt to install partyline, but it required an upgrade to Python 3.11.x or newer. I opted to install it from source under opt and explicitly reference it for the Reticulum ecosystem. Unlike the other optional software, I did not want to symlink it back to /usr/local with stow.
-20d87c8 Merge pull request #118 from thetechprepper/misc/pre-r7-build28-updates
-c296f56 display - Always set screen to 100% on login
-9af0f40 power - Prevent automatic screen brightness. Not ideal for field operations
-6dfa7c9 power - Prevent screen from dimming. Not ideal for field operations
-5a08317 linbpq - Fixed linbpq installer following removal of linbpq 32-bit download file by the developer. This version in ETC is now version pinned.
-6b684c3 Enabled dark mode as default
-b51b7bd meshchat - Upgraded to TTP fork version 2.4.0-R7B27. Includes minor UI updates tfor the paper message feature
-e0b63fa meshchat - Upgraded to TTP fork version 2.4.0-R7B26. Includes initial support for paper messages
-426e9b2 reticulum - Upgraded rnsd to 1.5.2
-0813f94 dvd - Added support for VLC and DVD playback
-abf1288 Merge pull request #117 from thetechprepper/feature/veracrypt
-10a9b8d veracrypt - Added latest release of VeraCrypt
-6697bca Merge pull request #116 from thetechprepper/misc/pre-r7-build23-updates
-e1905f4 ubiquity - Added R7 installer icon
-8bf71e3 debranding - Added .gitignore
-a929ad3 debranding - Removed the E and T from the spinner. No headaches!
-e45c905 debranding - Removed original spinner design and script
-67ff657 debranding - Experimenting with a larger spinner based on the EmComm Tools main icon
-e922cfe debranding - Replaced Plymouth spinners with EmComm Tools spinner
-d46e605 nomadnet - Added NomadNet 1.2.0
-47ce4da reticulum - Upgrade Reticulum from version 1.3.9. to 1.5.1
-6e225a4 et-mode - Suppressed warning messages from min when starting Winlink modes
-37b2fbc Merge pull request #115 from thetechprepper/feature/mercury-enhancements
 ee9cc15 et-mercury-stats - Bumped version to 0.2.2 following over-the-air testing
 a0a03c0 et-mercury-stats - Bumped version to 0.2.1 following over-the-air testing
 2e46758 et-mercury-stats - Bumped version to 0.2.0 following over-the-air testing
