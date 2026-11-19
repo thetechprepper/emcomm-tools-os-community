@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 6 April 2023
-# Updated : 24 October 2024
+# Updated : 29 May 2026
 # Purpose : Install JS8Call
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -11,7 +11,7 @@ trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
 VERSION="2.2.0"
 FILE="js8call_${VERSION}_20.04_amd64.deb"
-URL="http://files.js8call.com/${VERSION}/${FILE}"
+URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/emcomm-tools-os-community-20260401-r6-final-6.0.0/js8call_2.2.0_20.04_amd64.deb"
 
 et-log "Installing JS8Call dependencies..."
 apt install \

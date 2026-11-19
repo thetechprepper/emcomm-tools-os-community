@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 18 October 2026
+# Purpose : Wrapper script for starting a partyline server
+#
+# Preconditions:
+# 1. Local, shared rnsd instance is running
+#
+# Postconditions:
+# 1. Partyline server started using blueprint configuration
+
+APP="partyline-server"
+PARTYLINE_CONF_DIR="${HOME}/.config/partyline"
+PARTYLINE_CONF_FILE="${PARTYLINE_CONF_DIR}/server.json"
+
+IS_PARTYLINE_RUNNING=`ps -ef | grep -v et-partyline-server | grep [p]artyline-server`
+if [[ $? -eq 0 ]]; then
+  et-log "${APP} is already running. Please stop it before starting another instance." 
+  exit 1
+fi
+
+options=()
+files=()
+index=1
+
+while IFS= read -r file; do
+  name=$(basename "$file")
+  files[$index]="$name"
+  options+=("$index" "$name")
+  ((index++))
+done < <(find "${PARTYLINE_CONF_DIR}" -type f -name 'config.blueprint.*' | sort)
+
+choice=$(dialog \
+  --title "Partyline Server Configuration" \
+  --menu "Choose a blueprint:" \
+  15 60 10 \
+  "${options[@]}" \
+  2>&1 >/dev/tty)
+EXIT_STATUS=$?
+
+tput sgr0 && clear
+
+if [[ ${EXIT_STATUS} -ne 0 ]]; then
+  et-log "No blueprint configuration selected"
+  exit ${EXIT_STATUS}
+fi
+
+SELECTED_CONF="${files[$choice]}"
+
+if [[ ! -e "${PARTYLINE_CONF_DIR}" ]]; then
+  et-log "Creating missing configuration directory: ${PARTYLINE_CONF_DIR}"
+  mkdir -p "${PARTYLINE_CONF_DIR}"
+fi
+
+ACTIVE_CONF_FILE="${PARTYLINE_CONF_DIR}/${SELECTED_CONF}"
+if [[ ! -e ${ACTIVE_CONF_FILE} ]]; then
+  et-log "${ACTIVE_CONF_FILE} does not exist."
+  exit 1
+fi
+
+et-log "Using ${ACTIVE_CONF_FILE}"
+
+if [[ -e "${PARTYLINE_CONF_FILE}" ]]; then
+  et-log "Removing previous ${APP} configuration: ${PARTYLINE_CONF_FILE}"
+  rm "${PARTYLINE_CONF_FILE}"
+fi
+
+et-log "Linking new configuration..."
+ln -v -s "${ACTIVE_CONF_FILE}" "${PARTYLINE_CONF_FILE}"
+
+IS_RNSD_RUNNING=`ps -ef | grep [r]nsd`
+if [[ $? -ne 0 ]]; then
+  tput sgr 0 && clear
+  et-log "rnsd not running. Please start it in another with: "et-reticulum" first." 
+  exit 1
+fi
+
+CMD="partyline-server"
+et-log "Starting ${APP}: ${CMD}"
+
+${CMD}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=EmComm Tools User Configuration
+Comment=EmComm Tools user configuration
+Exec=/opt/emcomm-tools/bin/et-user-first-login
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

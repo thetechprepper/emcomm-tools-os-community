@@ -1,0 +1,158 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 30 June 2026
+# Purpose : Wrapper script for starting modem73 with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. modem73 started with sane defaults
+#
+# Notes:
+#
+# modem73 supports many modulation types and configuration options. To
+# keep usage simple, only five modulation settings have been configured
+# that map to a combination of reliability and speed for most general
+# purpose applications.
+#
+# In all cases, normal frames and 1/2 coding rate is used.
+#
+# There are faster speeds, but EmComm Tools has the design goal of 
+# getting the message through and favoring delivery over speed..
+
+MODEM73_CONF_FILE="${HOME}/.config/modem73/settings"
+
+usage() {
+  echo "usage: $(basename $0) <mode> [options]"
+  echo "  <mode>"
+  echo "    reliability - Max reliability (Slower Speed) [BPSK]"
+  echo "    balanced    - Balanced (Reliability and Speed) [QPSK] RECOMMENDED"
+  echo "    fast        - Fast (Low Reliability) [8PSK]"
+  echo "    faster      - Faster (Lower Reliability) [QAM16]"
+  echo "    fastest     - Fastest (Lowest Reliability) [QAM64]"
+  echo ""
+  echo "  [options]"
+  echo "    --headless  - Run modem73 headless"
+}
+
+HEADLESS=""
+MODE=""
+MODE_ARGS=""
+CALLSIGN="N0CALL"
+
+for arg in "$@"; do
+  case "$arg" in
+    --headless)
+      HEADLESS="--headless"
+    ;;
+    reliability|balanced|fast|faster|fastest)
+      if [[ -n "${MODE}" ]]; then
+        et-log "Only one mode may be specified."
+        usage
+        exit 1
+      fi
+      MODE="$arg"
+    ;;
+    *)
+      echo "Unknown argument: $arg"
+      usage
+      exit 1
+    ;;
+  esac
+done
+
+if [[ -z "${MODE}" ]]; then
+  et-log "Can't started modem73. Mode not specified."
+  usage
+  exit 1
+fi
+
+case "${MODE}" in
+  reliability)
+    MODE_ARGS="--modulation BPSK --normal --rate 1/2"
+  ;;
+  balanced)
+    MODE_ARGS="--modulation QPSK --normal --rate 1/2"
+  ;;
+  fast)
+    MODE_ARGS="--modulation 8PSK --normal --rate 1/2"
+  ;;
+  faster)
+    MODE_ARGS="--modulation QAM16 --normal --rate 1/2"
+  ;;
+  fastest)
+    MODE_ARGS="--modulation QAM64 --normal --rate 1/2"
+  ;;
+esac
+
+[[ -z ${ET_LOG_DIR} ]] && ET_LOG_DIR="${HOME}/.local/share/emcomm-tools"
+[[ ! -e ${ET_LOG_DIR} ]] && mkdir -p ${ET_LOG_DIR}
+
+start() {
+  update_config
+  
+  if [[ $? -eq 0 ]]; then
+
+    systemctl is-active --quiet rigctld
+    if [[ $? -ne 0 ]]; then
+      et-log "Can't start modem73. rigctld not running. Ensure radio is selected."
+      notify_user "Can't start modem73. rigctld not running."
+      exit 1
+    fi
+  
+    ALSA_DEVICE=$(et-system-info et-audio-card) 
+    INPUT_AUDIO=$(modem73 --list-audio | grep input | grep $ALSA_DEVICE | cut -d":" -f3)
+    OUTPUT_AUDIO=$(modem73 --list-audio | grep output| grep $ALSA_DEVICE | cut -d":" -f3)
+
+    CMD="modem73 --input-device ${INPUT_AUDIO} --output-device ${OUTPUT_AUDIO} --ptt rigctl --callsign ${CALLSIGN} ${MODE_ARGS} ${HEADLESS}"
+    et-log "Starting modem73 in mode ${MODE} with: '${CMD}'"
+    echo
+    ${CMD}
+  else 
+    et-log "Error configurating modem. Can't start modem73"
+    exit 1
+  fi
+}
+
+update_config () {
+
+    # The modem73 configuration file causes issues when using it in combination with
+    # command line arguments during manual runs. It is best to remove it before each
+    # run and drive the modem using only command line arguments.
+    if [[ -e "${MODEM73_CONF_FILE}" ]]; then
+      et-log "Removing previous configuration file: ${MODEM73_CONF_FILE}"
+      rm -v ${MODEM73_CONF_FILE}
+    fi
+
+    et-log "Attempting to start modem73 in mode: '${MODE}'"
+
+    [[ -z "$ET_USER_CONFIG" ]] && ET_USER_CONFIG="${HOME}/.config/emcomm-tools/user.json"
+
+    CALLSIGN=$(cat ${ET_USER_CONFIG} | jq -r .callsign)
+
+    # 1. Check if the symlink was created by the udev rules
+    if [[ -e /dev/et-audio ]]; then
+
+       # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+       APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+       if [[ $? -eq 0 ]]; then
+
+         # Configure ALSA settings for sound card
+         /opt/emcomm-tools/bin/et-audio update-config
+
+       else
+         et-log "No ET_AUDIO device detected."
+         notify_user "Can't start modem73. No ET_AUDIO device detected."
+         exit 1
+       fi
+    else
+      et-log "No ET_AUDIO device plugged in."
+      notify_user "Can't start modem73. No supported audio device plugged in."
+      exit 1
+    fi
+
+}
+
+start

@@ -2,9 +2,9 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 12 November 2024
-# Updated  : 2 October 2025
-# Purpose  : Stops all EmComm Tools sound-based services (i.e. modems) and
-#            amatuer radio applications to ensure a clean start for the next mode.
+# Updated  : 27 October 2026
+# Purpose  : Stops all EmComm Tools soundcard-based services (i.e. modems)
+#            and radio applications to ensure a clean start for the next mode.
 
 stop_pat() {
   PS_OUT=$(ps -ef | grep "[p]at http")
@@ -19,8 +19,11 @@ stop_pat() {
 # 2. Stop the applications first, then the modems.
 stop_all_services() {
   systemctl --user stop et-service-winlink-ardop
+  systemctl --user stop et-service-winlink-mercury
   systemctl --user stop et-service-winlink-packet
   systemctl --user stop et-service-winlink-native-packet
+  systemctl --user stop et-service-winlink-telnet
+  systemctl --user stop et-service-winlink-xara-hf.service
   systemctl --user stop et-service-ardop
   systemctl --user stop et-service-direwolf-300
   systemctl --user stop et-service-direwolf-9600
@@ -28,10 +31,35 @@ stop_all_services() {
   systemctl --user stop et-service-direwolf-aprs-digipeater
   systemctl --user stop et-service-direwolf-packet-digipeater
 
+  systemctl --user stop et-service-xara-fm-narrow.service
+  systemctl --user stop et-service-xara-fm-wide.service
+  systemctl --user stop et-service-xara-hf-500.service
+  systemctl --user stop et-service-xara-hf-2300.service
+  systemctl --user stop et-service-xara-hf-2750.service
+
+  # Stop modem73 with a sledge hammer (belt and suspenders) as the current
+  # 1.0.7 version can hang on exit.
+  systemctl --user stop et-service-modem73-default
+  systemctl --user stop et-service-modem73-reliability
+  systemctl --user stop et-service-modem73-fast
+  systemctl --user stop et-service-modem73-faster
+  systemctl --user stop et-service-modem73-fastest
+  pkill -9 modem73
+
+  # Stop the Mercury HF modem
+  systemctl --user stop et-service-mercury-arq
+  systemctl --user stop et-service-mercury-broadcast
+  systemctl --user stop et-service-mercury-custom
+  pkill mercury
+
   # Stop VARA with a sledge hammer
   pkill et-winlink
   pkill et-vara
   pkill VARA 
+
+  # Stop xara with a sledge hammer
+  pkill et-xara
+  pkill xara
 
   stop_pat
 }

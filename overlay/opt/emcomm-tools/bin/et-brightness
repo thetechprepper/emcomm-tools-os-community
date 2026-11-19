@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 14 October 2026
+# Purpose : Sets the display brightness to 100%.
+
+# If this is a Panasonic device, specifically set the brightness to 100%
+PS_OUT=$(brightnessctl --list | grep "[p]anasonic") 
+if [[ $? -eq 0 ]]; then
+  et-log "Setting screen brightness to 100% for Panasonic device..."
+  brightnessctl set -d panasonic 100% 
+fi
+
+# Even if this is a Panasonic, we need to set the default device to 100%
+# otherwise the brightness slider will not have the correct value. This
+# command will also work on non-Panasonic devices.
+brightnessctl set 100% 

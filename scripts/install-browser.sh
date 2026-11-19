@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024 
-# Updated : 16 March 2025
+# Updated : 12 August 2026
 # Purpose : Install light weight web browsers
 #
 # Postconditions:
@@ -11,7 +11,7 @@
 
 et-log "Installing Min web browser..."
 
-VERSION="1.34.1"
+VERSION="1.35.6"
 FILE="min-${VERSION}-amd64.deb"
 URL="https://github.com/minbrowser/min/releases/download/v${VERSION}/${FILE}"
 

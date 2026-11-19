@@ -1,13 +1,13 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 11 January 2023
-# Updated : 4 November 2024
+# Updated : 20 August 2026
 # Purpose : Install Pat Winlink client 
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'et-log "\"${last_command}\" command failed with exit code $?."' ERR
 
-VERSION=0.16.0
+VERSION=1.0.0
 FILE="pat_${VERSION}_linux_amd64.deb"
 
 et-log "Installing Pat Winlink client version ${VERSION}..."

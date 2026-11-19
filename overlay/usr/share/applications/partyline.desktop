@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Partyline
+Comment=Group voice over Reticulum
+Exec=partyline
+Icon=/etc/skel/.local/lib/python3.11/site-packages/partyline/icons/app_256.png
+Terminal=false
+Categories=Network;Audio;Chat;
+StartupWMClass=Partyline

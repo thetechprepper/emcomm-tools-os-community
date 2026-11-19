@@ -1,10 +1,16 @@
-# ETC Regression Tests 
+# EmComm Tools  Regression Tests 
 
-- **Build**: ETC R6 Build 12
-- **Date**: 27 March 2026
+- **Build**: ETC R7 Build 38
+- **Date**: 19 November 2026
+
+## First Login
+
+* [ ] User configuration presented
+* [ ] et-user-restore
 
 ## Desktop/Launcher Icons
 
+* [ ] EmComm Tools icon (et-user-app)
 * [ ] JS8Call icon
 * [ ] fldigi icon
 * [ ] et-predict
@@ -82,16 +88,41 @@
   * [ ] RMS station listed
   * [ ] Select RMS gateway => VFO updated
   * [ ] Connect
+* [ ] winlink-xara (RMS)
+* [ ] winlink-mercury (P2P)
+* [ ] wwv
+
+## Reticulum
+  * Python 3.11.17
+  * [ ] Blueprints
+    * [ ] Rnode
+    * [ ] Packet
+    * [ ] Modem73
+    * [ ] Mercury
+    * [ ] Local network
+    * [ ] Internet
+    * [ ] Transport
+  * [ ] MeshChat (launcher)
+  * [ ] NomadNet
+  * [ ] lxmd -p
+  * [ ] partyline (launcher)
 
 ## Bluetooth TNC
 
 * [ ] et-uv-pro
   * [ ] pair
   * [ ] connect
+  * [ ] Reticulum
   * [ ] Winlink
   * [ ] QtTermTCP
   * [ ] YAAC
   * [ ] unpair
+
+## xara
+
+* [ ] bbs-client (1200 baud)
+* [ ] bbs-client2 (xara-hf: 500)
+* [ ] DigiRig Lite & winlink-xara-hf (2300)
 
 ## VARA
 
@@ -100,16 +131,17 @@
 * [ ] et-mode VARA FM (Winlink)
 * [ ] et-mode VARA HF (Winlink)
 
-## SIGINT
+## Mercury HF
 
-* [ ] Artemis
-  * [ ] Available via application search
-  * [ ] Signal database renders
+* [ ] et-mode Mercury HF (Winlink)
+* [ ] et-mercury-stats
 
 ## Security
 
+* [ ] GNU Privacy Guard (OpenPGP)
 * [ ] gpa
 * [ ] Paranoia File & Text Encryption
+* [ ] VeraCrypt
 
 ## fldigi/flmsg/flamp
 
@@ -140,3 +172,39 @@
 * [ ] `offline` folder on Desktop
 * [ ] Check `nets` folder for `amrron` and `ghostnet`
 * [ ] Test gpg signature verifcation (see gpg crypto doc)
+
+## LoRa
+
+* [ ] LoRa listed in Conky
+* [ ] Heltec v4 PnP (/dev/et-lora)
+  * [ ] Offline firmware: rnodeconf --autoinstall --nocheck --fw-version 1.86 
+* [ ] et-reticulum
+  * [ ] rnode blueprint
+  * [ ] packet radio blueprint
+  * [ ] transport blueprint
+  * [ ] modem73 blueprint
+  * [ ] local network blueprint
+  * [ ] internet blueprint
+  * [ ] All permutations of radios and LoRa connected/disconnected
+
+## Modems
+
+* [ ] modem73
+
+## Email/Internet
+
+* [ ] Thunderbird installed
+* [ ] et-mode: winlink-telnet
+
+## Multimedia
+
+* [ ] VLC & DVD playback
+
+## Documentation
+
+* [ ] man et-user
+
+
+## Maintenance
+
+* [ ] et-index
