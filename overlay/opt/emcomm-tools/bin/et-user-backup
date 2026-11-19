@@ -50,7 +50,7 @@ for dir in "${BACKUP_DIRS[@]}"; do
   if [[ -e "${HOME}/${dir}" ]]; then
     EXISTING_DIRS+=("${dir}")
   else
-    et-log "Skipping nonexistent directory: ${dir}"
+    et-log "Skipping nonexistent directory or file: ${dir}"
   fi
 done
 
@@ -66,7 +66,7 @@ TAR_OUT=$(tar -tzf ${BACKUP_FILE})
 
 echo -e "${GREEN}Backup created: ${WHITE}${BACKUP_FILE}\n"
 
-echo -e "${CYAN}Note: Only the following directories were backed up:"
+echo -e "${CYAN}Note: Only the following directories and files were backed up:"
 for dir in "${EXISTING_DIRS[@]}"; do
   echo "* $dir"
 done
