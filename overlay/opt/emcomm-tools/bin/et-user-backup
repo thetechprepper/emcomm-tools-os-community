@@ -42,7 +42,6 @@ BACKUP_DIRS=(
   ".nomadnetwork"
   ".reticulum"
   ".reticulum-meshchat"
-  ".foo"
 )
 
 EXISTING_DIRS=()
