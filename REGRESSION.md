@@ -1,11 +1,12 @@
 # EmComm Tools  Regression Tests 
 
-- **Build**: ETC R7 Build 37
-- **Date**: 10 November 2026
+- **Build**: ETC R7 Build 38
+- **Date**: 19 November 2026
 
 ## First Login
 
 * [ ] User configuration presented
+* [ ] et-user-restore
 
 ## Desktop/Launcher Icons
 
