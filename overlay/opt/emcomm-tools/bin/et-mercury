@@ -1,0 +1,111 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 16 July 2026
+# Updated : 31 August 2026
+# Purpose : Wrapper script for starting Mercury with PnP support
+#
+# Preconditions:
+# 1. Supported radio and audio interface are connected and properly detected
+#
+# Postconditions:
+# 1. Mercury started with sane defaults
+
+ET_MERCURY_HOME="${HOME}/.local/share/emcomm-tools/mercury"
+ET_MERCURY_LOG="${ET_MERCURY_HOME}/session.json"
+
+usage() {
+  echo "usage: $(basename $0) <mode>"
+  echo "  <mode>"
+  echo "    arq       - Automatic Retry Request mode (Winlink)"
+  echo "    broadcast - Broadcast mode (Reticulum)"
+  echo "    custom    - User defined mode for custom settings"
+}
+
+if [[ $# -ne 1 ]]; then
+  et-log "Can't started Mercury modem. Mode not specified."
+  usage
+  exit 1
+fi
+
+MODE="$1"
+
+case "${MODE}" in
+  arq)
+    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.ini.arq"
+    OPTS=""
+  ;;
+  broadcast)
+    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.ini.broadcast"
+    OPTS="-m 0 -b 8100"
+  ;;
+  custom)
+    ET_MERCURY_INI="${ET_MERCURY_HOME}/mercury.ini.custom"
+    OPTS=""
+  ;;
+  *)
+    et-log "Can't started Mercury modem. Mode not supported."
+    usage
+    exit 1
+  ;;
+esac
+
+if [[ ! -e ${ET_MERCURY_HOME} ]]; then
+  et-log "ET_MERCURY_HOME does not exist at ${ET_MERCURY_HOME}. Exiting"
+  exit 1
+fi
+
+if [[ ! -e ${ET_MERCURY_INI} ]]; then
+  et-log "Mercury configuration file not found  at ${ET_MERCURY_INI}. Exiting"
+  exit 1
+fi
+
+start() {
+  update_config
+
+  if [[ $? -eq 0 ]]; then
+
+    systemctl is-active --quiet rigctld
+    if [[ $? -ne 0 ]]; then
+      et-log "Can't start Mercury. rigctld not running. Ensure radio is selected."
+      exit 1
+    fi
+  
+    ALSA_DEVICE=$(et-system-info et-audio-card) 
+
+    CMD="mercury -C ${ET_MERCURY_INI} -J -L ${ET_MERCURY_LOG} -i plughw:${ALSA_DEVICE} -o plughw:${ALSA_DEVICE} ${OPTS}"
+
+    et-log "Starting Mercury in mode ${MODE} with: '${CMD}'"
+    echo
+    ${CMD}
+  else 
+    et-log "Error configurating modem. Can't start Mercury"
+    exit 1
+  fi
+}
+
+update_config () {
+
+  et-log "Attempting to start Mercury in mode: '${MODE}'"
+
+  # 1. Check if the symlink was created by the udev rules
+  if [[ -e /dev/et-audio ]]; then
+
+     # 2. Check that this device was properly tagged with the ET_AUDIO env variable with a udev rule
+     APLAY_OUT=$(arecord -l | grep ET_AUDIO)
+     if [[ $? -eq 0 ]]; then
+
+       # Configure ALSA settings for sound card
+       /opt/emcomm-tools/bin/et-audio update-config
+
+     else
+       et-log "No ET_AUDIO device detected."
+       exit 1
+     fi
+  else
+    et-log "No ET_AUDIO device plugged in."
+    exit 1
+  fi
+}
+
+start

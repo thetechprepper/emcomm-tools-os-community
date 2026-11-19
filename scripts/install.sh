@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 2 May 2026
+# Updated : 26 October 2026
 # Purpose : Main installer for EmComm Tools Community (ETC)
 
 . ./env.sh
@@ -97,7 +97,6 @@ exitIfNotRoot
 ./install-et-portaudio.sh
 
 # Instal SIGINT tools
-./install-artemis.sh
 ./install-minimodem.sh
 
 # Install security tools
@@ -113,5 +112,38 @@ exitIfNotRoot
 # Install WSJT-X (FT8)
 ./install-wsjtx.sh
 
+# Install simple WWV util
+./install-et-wwv.sh
+
 # Security Patches
 ./patch-copy-fail.sh
+
+# Install Reticulum and related applications
+./install-python3.sh
+./install-reticulum.sh
+./install-nomadnet.sh
+./install-meshchat.sh
+./install-partyline.sh
+./install-modem73.sh
+./install-mercury.sh
+./install-mercury-stats.sh
+./install-offline-rnode-firmware.sh
+
+# Debrand Ubuntu
+./debrand.sh
+
+# Email
+./install-thunderbird.sh
+
+# EmComm Tools PnP GUI apps
+./install-et-user-app.sh
+
+# Offline Multimedia (DVD)
+./install-media-player.sh
+
+# Install Rust (root-only) and the xara modem
+./install-rust.sh
+./install-xara.sh
+
+# Install Veracrypt
+#./install-veracrypt.sh

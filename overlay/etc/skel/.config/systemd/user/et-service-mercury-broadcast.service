@@ -1,0 +1,21 @@
+# Author  : Gaston Gonzalez
+# Date    : 16 July 2026
+# Updated : 26 August 2026
+# Purpose : User systemd unit file for EmComm Tools that starts Mercury
+#         : in a broadcast configuration.
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-mercury-broadcast
+#  Start service      : systemctl --user start et-service-mercury-broadcast
+#  Stop service       : systemctl --user stop et-service-mercury-broadcast
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools Mercury HF service for broadcast mode
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-mercury broadcast
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

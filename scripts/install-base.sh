@@ -2,7 +2,7 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 16 March 2024
-# Updated : 28 February 2025
+# Updated : 16 April 2026
 # Purpose : Install base tools and configuration
 set -e
 
@@ -30,4 +30,5 @@ apt install \
   stow \
   xsel \
   tree \
+  tty-clock \
   -y

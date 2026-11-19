@@ -1,0 +1,20 @@
+# Author  : Gaston Gonzalez
+# Date    : 26 October 2026
+# Updated : 27 October 2027
+# Purpose : User systemd unit file for EmComm Tools xara HF service
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-xara-hf-2750
+#  Start service      : systemctl --user start et-service-xara-hf-2750
+#  Stop service       : systemctl --user stop et-service-xara-hf-2750
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools xara HF service (2750 bandwidth)
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-xara start-xara-hf-2750
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

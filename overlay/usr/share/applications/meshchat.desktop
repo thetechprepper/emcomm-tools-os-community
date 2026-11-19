@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=MeshChat
+Comment=MeshChat
+Exec=/opt/emcomm-tools/bin/et-meshchat
+Icon=/opt/ReticulumMeshChat/logo-chat-bubble.png
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=Radio;
+StartupNotify=true

@@ -1,0 +1,19 @@
+# Author  : Gaston Gonzalez
+# Date    : 26 October 2026
+# Purpose : User systemd unit file for EmComm Tools Winlink over xara HF
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-winlink-xara-hf
+#  Start service      : systemctl --user start et-service-winlink-xara-hf
+#  Stop service       : systemctl --user stop et-service-winlink-xara-hf
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools Winlink xara HF service
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-winlink start-xara-hf
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

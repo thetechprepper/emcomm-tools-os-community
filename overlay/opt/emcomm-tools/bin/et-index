@@ -1,0 +1,70 @@
+#!/bin/bash
+# Author  : Gaston Gonzalez
+# Date    : 5 November 2026
+# Purpose : Rebuild one or more offline indices
+source /opt/emcomm-tools/bin/et-common
+
+ET_API_HOME=/opt/emcomm-tools-api
+ET_API_INDEX_DIR=${ET_API_HOME}/index
+
+# All paths are relative to $ET_API_INDEX_DIR.
+INDEX_DIRS=(
+  "faa"
+  "license"
+  "zip2geo"
+)
+
+EXISTING_DIRS=()
+for dir in "${INDEX_DIRS[@]}"; do
+  if [[ -d "${ET_API_INDEX_DIR}/${dir}" ]]; then
+    EXISTING_DIRS+=("${dir}")
+  fi
+done
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") <command> [INDEX]
+
+Commands:
+  list             List available indices
+  reindex INDEX    Rebuild the specified index
+EOF
+}
+
+case "${1:-}" in
+  list)
+    printf '%s\n' "${EXISTING_DIRS[@]}"
+    ;;
+  reindex)
+    INDEX="${2:-}"
+
+    if [[ -z "${INDEX}" ]]; then
+      echo "Error: Missing index name."
+      exit 1
+    fi
+
+    if [[ ! " ${EXISTING_DIRS[*]} " =~ " ${INDEX} " ]]; then
+      echo "Error: Invalid or missing index: ${INDEX}"
+      exit 1
+    fi
+
+    ABS_INDEX_DIR="${ET_API_INDEX_DIR}/${INDEX}"
+
+    if [[ -d "${ABS_INDEX_DIR}" ]]; then
+      echo "Reindexing ${INDEX}..."
+      et-log "Stop EmComm Tools API..."
+      systemctl --user stop et-service-et-api.service
+    
+      et-log "Removing index: ${INDEX}"
+      rm -rfv "${ABS_INDEX_DIR}"
+
+      et-log "Starting EmComm Tools API..."
+       start_and_wait_for_service et-service-et-api.service
+    fi
+
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac

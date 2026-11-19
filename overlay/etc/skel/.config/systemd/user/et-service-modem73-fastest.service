@@ -1,0 +1,20 @@
+# Author  : Gaston Gonzalez
+# Date    : 30 June 2026
+# Purpose : User systemd unit file for EmComm Tools that starts modem73
+#         : in a fastest configuration.
+#
+# Usage: 
+#  Check status       : systemctl --user status et-service-modem73-fastest
+#  Start service      : systemctl --user start et-service-modem73-fastest
+#  Stop service       : systemctl --user stop et-service-modem73-fastest
+#  Reload this config : systemctl --user daemon-reload
+
+[Unit]
+Description=EmComm Tools modem73 service for fastest performance
+
+[Service]
+ExecStart=/opt/emcomm-tools/bin/et-modem73 fastest --headless
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

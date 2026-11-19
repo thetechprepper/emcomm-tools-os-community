@@ -1,0 +1,7 @@
+#!/bin/bash
+# Author   : Gaston Gonzalez
+# Date     : 31 August 2026
+# Purpose  : Test et-mercury-stats installation
+
+OUT=$(which et-mercury-stats)
+exit $?

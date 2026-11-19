@@ -2,20 +2,21 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 20 January 2025
-# Updated : 18 March 2025
+# Updated : 11 November 2026
 # Purpose : Install VARA FM
+set -e
+
 source ./common-checks.sh
+source /opt/emcomm-tools/bin/et-common
 
+DOWNLOAD_FILE="VARA.FM.v4.4.1.setup.zip"
+ETC_TAG="emcomm-tools-os-community-20261027-r7-build34"
+URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/${ETC_TAG}/${DOWNLOAD_FILE}"
 VARA_HOME="$HOME/.wine32/drive_c/VARA FM"
-VARA_PATTERN="VARA%20FM"
 
-./vara-downloader.sh "${VARA_PATTERN}"
-[[ $? -ne 0 ]] && et-log "Error downloading VARA FM" && exit 1
+download_with_retries "${URL}" "${DOWNLOAD_FILE}"
 
-DOWNLOAD_FILE=$(ls *.zip | grep "${VARA_PATTERN}")
-[[ ! -e "${DOWNLOAD_FILE}" ]] && et-log "VARA download file not found" && exit 1
-
-unzip -o ${DOWNLOAD_FILE}
+unzip -o "${DOWNLOAD_FILE}"
 
 wine 'VARA FM setup (Run as Administrator).exe'
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Author  : Gaston Gonzalez
+# Date    : 13 July 2026
+# Purpose : Flash the RAK4631 LoRa device offline.
+#           Uses the cached firmare in EmComm Tools.
+
+rnodeconf \
+  --autoinstall \
+  --nocheck \
+  --fw-version 1.86 \
+  --baud-flash 115200
