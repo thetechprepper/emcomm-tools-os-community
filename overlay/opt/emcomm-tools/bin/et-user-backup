@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 14 January 2025
-# Updated : 5 November 2026
+# Updated : 19 November 2026
 # Purpose : Back up select files from the user's home directory.
 #
 # The backups are limited to the following:
@@ -11,6 +11,7 @@
 # 4. Meshchat
 # 5. Partyline
 # 6. NomadNet
+# 7. JS8Call (select files)
 
 TODAY=$(date +"%Y%m%d")
 BACKUP_FILE="${HOME}/etc-user-backup-${HOSTNAME}-${TODAY}.tar.gz"
@@ -33,6 +34,9 @@ fi
 BACKUP_DIRS=(
   ".config/emcomm-tools"
   ".config/partyline"
+  ".local/share/JS8Call/ALL.TXT"
+  ".local/share/JS8Call/DIRECTED.TXT" 
+  ".local/share/JS8Call/inbox.db3"
   ".local/share/emcomm-tools"
   ".local/share/pat"
   ".nomadnetwork"
@@ -42,10 +46,10 @@ BACKUP_DIRS=(
 
 EXISTING_DIRS=()
 for dir in "${BACKUP_DIRS[@]}"; do
-  if [[ -d "${HOME}/${dir}" ]]; then
+  if [[ -e "${HOME}/${dir}" ]]; then
     EXISTING_DIRS+=("${dir}")
   else
-    et-log "Skipping nonexistent directory: ${dir}"
+    et-log "Skipping nonexistent directory or file: ${dir}"
   fi
 done
 
@@ -61,7 +65,7 @@ TAR_OUT=$(tar -tzf ${BACKUP_FILE})
 
 echo -e "${GREEN}Backup created: ${WHITE}${BACKUP_FILE}\n"
 
-echo -e "${CYAN}Note: Only the following directories were backed up:"
+echo -e "${CYAN}Note: Only the following directories and files were backed up:"
 for dir in "${EXISTING_DIRS[@]}"; do
   echo "* $dir"
 done

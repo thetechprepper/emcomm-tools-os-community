@@ -26,6 +26,7 @@
   * Added ~/.reticulum
   * Added ~/.reticulum-meshchat
   * Added ~/.nomadnetwork
+  * Added ~/.local/share/JS8Call/[ALL.TXT|DIRECTED.TXT|inbox.db3
 * et-wwv
   * Synchronizes the system clock to the top of the minute using WWV/WWVH
 * linbpq
