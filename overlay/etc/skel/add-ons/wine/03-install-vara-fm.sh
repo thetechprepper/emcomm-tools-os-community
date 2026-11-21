@@ -2,14 +2,14 @@
 #
 # Author  : Gaston Gonzalez
 # Date    : 20 January 2025
-# Updated : 11 November 2026
+# Updated : 21 November 2026
 # Purpose : Install VARA FM
 set -e
 
 source ./common-checks.sh
 source /opt/emcomm-tools/bin/et-common
 
-DOWNLOAD_FILE="VARA.FM.v4.4.1.setup.zip"
+DOWNLOAD_FILE="VARA.FM.v4.4.0.setup.zip"
 ETC_TAG="emcomm-tools-os-community-20261027-r7-build34"
 URL="https://github.com/thetechprepper/emcomm-tools-os-community/releases/download/${ETC_TAG}/${DOWNLOAD_FILE}"
 VARA_HOME="$HOME/.wine32/drive_c/VARA FM"

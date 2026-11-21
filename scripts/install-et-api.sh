@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author  : Gaston Gonzalez
 # Date    : 13 August 2025
-# Updated : 24 March 2026
+# Updated : 21 November 2026
 # Purpose : Install EmComm Tools API
 set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
@@ -35,6 +35,7 @@ FILES=(
   "faa.csv"
   "license.csv"
   "rmslist.csv"
+  "weather-forecast-zone.csv"
   "zip2geo.csv"
   "zip2geo-elevation.csv"
 )
