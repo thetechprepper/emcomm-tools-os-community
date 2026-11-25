@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=et-mode
+Comment=Select the EmComm Tools mode of operation
+Exec=env GDK_BACKEND=x11 /opt/et-mode-app/bin/et-mode-app
+Icon=emcomm-tools-icon-black-192
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=HamRadio;
+StartupNotify=true
