@@ -137,6 +137,7 @@ exitIfNotRoot
 
 # EmComm Tools PnP GUI apps
 ./install-et-user-app.sh
+./install-et-mode-app.sh
 
 # Offline Multimedia (DVD)
 ./install-media-player.sh

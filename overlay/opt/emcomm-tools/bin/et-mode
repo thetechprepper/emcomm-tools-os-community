@@ -2,7 +2,7 @@
 #
 # Author   : Gaston Gonzalez
 # Date     : 6 November 2024
-# Updated  : 9 November 2026
+# Updated  : 25 November 2026
 # Purpose  : Configures the system for a specific mode of operation
 
 # Use a simple text file to save the state of the last mode selected
@@ -212,11 +212,42 @@ if [ -e "/opt/xara/bin/xara" ]; then
   options+=("${MODE_ID_WINLINK_XARA_HF}" "Winlink over HF (xara HF)")
 fi
 
-# Prompt user for option and save exit status
-SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
-exit_status=$?
+usage() {
+  echo "usage: $(basename $0) [--list | <mode-id>]"
+  echo "  (no args)   - Interactively select a mode"
+  echo "  --list      - Print available modes as <mode-id><TAB><description>"
+  echo "  <mode-id>   - Start the given mode without the selection menu"
+}
 
-tput sgr 0 && clear
+if [ "$1" == "--list" ]; then
+  for ((i = 0; i < ${#options[@]}; i += 2)); do
+    printf "%s\t%s\n" "${options[i]}" "${options[i+1]}"
+  done
+  exit 0
+elif [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  usage
+  exit 0
+elif [ -n "$1" ]; then
+  SELECTED_MODE=""
+  for ((i = 0; i < ${#options[@]}; i += 2)); do
+    if [ "${options[i]}" == "$1" ]; then
+      SELECTED_MODE="$1"
+      break
+    fi
+  done
+  if [ -z "${SELECTED_MODE}" ]; then
+    et-log "Mode $1 is not available."
+    usage
+    exit 1
+  fi
+  exit_status=0
+else
+  # Prompt user for option and save exit status
+  SELECTED_MODE=$(dialog --clear --menu "Select a mode:" 18 65 10 "${options[@]}" 3>&1 1>&2 2>&3)
+  exit_status=$?
+
+  tput sgr 0 && clear
+fi
 
 if [ $exit_status -eq 0 ]; then
 
